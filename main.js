@@ -54,3 +54,31 @@ if (toggle) {
     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
   });
 }
+// Horizontal scroll Case Carousel
+window.addEventListener('load', () => {
+  if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const track = document.querySelector('.carousel-track');
+  const cards = gsap.utils.toArray('.case-card');
+
+  // total horizontal distance to scroll
+  const totalScroll = track.scrollWidth - window.innerWidth;
+
+  gsap.to(track, {
+    x: () => -totalScroll,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".case-carousel",
+      start: "top top",
+      end: () => `+=${totalScroll}`, // scroll distance matches horizontal width
+      scrub: 1,                      // smooth scrubbing
+      pin: true,                     // pins section during animation
+      anticipatePin: 1,
+      invalidateOnRefresh: true,     // recalculates on resize
+      markers: false                 // set to true for debugging
+    }
+  });
+});
+
