@@ -165,8 +165,8 @@ text-align: left;white-space: nowrap;
 .masonry img{
   width:100%; margin: 0 0 14px; break-inside: avoid; border:1px solid var(--border)
 }
-/* === Case Carousel === */
-.case-carousel {
+/* === Horizontal Carousel === */
+.horizontal-carousel {
   overflow: hidden;
   padding: 0;
   background: var(--surface);
@@ -178,7 +178,7 @@ text-align: left;white-space: nowrap;
   height: 100vh; /* section pinned height */
 }
 
-.carousel-inner {
+.horizontal-carousel .carousel-inner {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -187,7 +187,7 @@ text-align: left;white-space: nowrap;
   overflow: hidden;
 }
 
-.carousel-track {
+.horizontal-carousel .carousel-track {
   display: flex;
   gap: 60px;
   will-change: transform;
@@ -231,6 +231,72 @@ text-align: left;white-space: nowrap;
   border-radius: 16px;
   margin: 0 0 32px 32px;
 }
+/* === Diagonal Carousel Effect === */
+.diagonal-carousel {
+  position: relative;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.diagonal-carousel .carousel-inner {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+}
+
+/* This container applies the tilt */
+.diagonal-carousel .carousel-track {
+  display: flex;
+  gap: 60px;
+  padding-left: 90vw;
+  transform-style: preserve-3d;
+  transform: rotate3d(2, 0, 1, 20deg); /* key line – creates the diagonal tilt */
+  will-change: transform;
+}
+
+/* Each card remains flat in 3D space */
+.case-card {
+  position: relative;
+  min-width: 80vw;
+  height: 70vh;
+  background: var(--card);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  transform-style: preserve-3d;
+  transform: rotateX(-2, 0, -1, -20deg);
+}
+
+
+.case-card .card-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+.case-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.case-card .card-text {
+  position: relative;
+  z-index: 1;
+  padding: 32px;
+  max-width: 400px;
+  color: #fff;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 16px;
+  margin: 0 0 32px 32px;
+}
+
 .case-card h3 { margin: 0 0 4px; font-size: 1.4rem; }
 .case-card h4 { margin: 0 0 12px; font-weight: 600; opacity: 0.8; }
 .case-card p  { margin: 0 0 16px; line-height: 1.4; color: #e5e5e5; }

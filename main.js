@@ -54,25 +54,47 @@ if (toggle) {
     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
   });
 }
-// Horizontal scroll Case Carousel
+
 window.addEventListener('load', () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const track = document.querySelector('.carousel-track');
-  const cards = gsap.utils.toArray('.case-card');
+// Horizontal Scroll Case Carousel
+  const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+  const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
 
   // total horizontal distance to scroll
-  const totalScroll = track.scrollWidth - window.innerWidth;
+  const totalHorizontalScroll = horizontalTrack.scrollWidth - window.innerWidth;
 
-  gsap.to(track, {
-    x: () => -totalScroll,
+  gsap.to(horizontalTrack, {
+   x: () => -totalHorizontalScroll,
     ease: "none",
     scrollTrigger: {
-      trigger: ".case-carousel",
+      trigger: ".horizontal-carousel",
       start: "top top",
-      end: () => `+=${totalScroll}`, // scroll distance matches horizontal width
+      end: () => `+=${totalHorizontalScroll}`, // scroll distance matches horizontal width
+      scrub: 1,                      // smooth scrubbing
+      pin: true,                     // pins section during animation
+      anticipatePin: 1,
+      invalidateOnRefresh: true,     // recalculates on resize
+      markers: false                 // set to true for debugging
+    }
+  });
+// Diagonal Scroll Case Carousel
+  const diagonalTrack = document.querySelector('.diagonal-carousel .carousel-track');
+  const diagonalCards = gsap.utils.toArray('.diagonal-carousel .case-card');
+
+  // total horizontal distance to scroll
+  const totalDiagonalScroll = diagonalTrack.scrollWidth - window.innerWidth;
+
+    gsap.to(diagonalTrack, {
+   x: () => -totalDiagonalScroll + window.innerWidth * 0.05,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".diagonal-carousel",
+      start: "top top",
+      end: () => `+=${totalDiagonalScroll}`, // scroll distance matches horizontal width
       scrub: 1,                      // smooth scrubbing
       pin: true,                     // pins section during animation
       anticipatePin: 1,
