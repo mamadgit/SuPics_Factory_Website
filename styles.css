@@ -194,7 +194,7 @@ text-align: left;white-space: nowrap;
   padding: 0 10vw;
 }
 
-.case-card {
+.horizontal-carousel .case-card {
   position: relative;
   min-width: 80vw;
   height: 70vh;
@@ -207,7 +207,7 @@ text-align: left;white-space: nowrap;
   justify-content: flex-start;
 }
 
-.case-card .card-image img {
+/* .case-card .card-image img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -230,7 +230,7 @@ text-align: left;white-space: nowrap;
   background: rgba(0, 0, 0, 0.35);
   border-radius: 16px;
   margin: 0 0 32px 32px;
-}
+} */
 /* === Diagonal Carousel Effect === */
 .diagonal-carousel {
   position: relative;
@@ -259,7 +259,7 @@ text-align: left;white-space: nowrap;
 }
 
 /* Each card remains flat in 3D space */
-.case-card {
+.diagonal-carousel .case-card {
   position: relative;
   min-width: 80vw;
   height: 70vh;
