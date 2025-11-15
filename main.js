@@ -62,6 +62,7 @@ window.addEventListener('load', () => {
 
 // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+    //To add animations to cards if needed
   const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
 
   // total horizontal distance to scroll
@@ -81,26 +82,33 @@ window.addEventListener('load', () => {
       markers: false                 // set to true for debugging
     }
   });
+// ...existing code...
+
 // Diagonal Scroll Case Carousel
-  const diagonalTrack = document.querySelector('.diagonal-carousel .carousel-track');
-  const diagonalCards = gsap.utils.toArray('.diagonal-carousel .case-card');
+const diagonalTrack = document.querySelector('.diagonal-carousel .carousel-track');
+// To add animations to cards if needed
+const diagonalCards = gsap.utils.toArray('.diagonal-carousel .case-card');
 
-  // total horizontal distance to scroll
-  const totalDiagonalScroll = diagonalTrack.scrollWidth - window.innerWidth;
+// Total diagonal distance to scroll
+const totalDiagonalScroll = diagonalTrack.scrollWidth - window.innerWidth;
 
-    gsap.to(diagonalTrack, {
-   x: () => -totalDiagonalScroll + window.innerWidth * 0.05,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".diagonal-carousel",
-      start: "top top",
-      end: () => `+=${totalDiagonalScroll}`, // scroll distance matches horizontal width
-      scrub: 1,                      // smooth scrubbing
-      pin: true,                     // pins section during animation
-      anticipatePin: 1,
-      invalidateOnRefresh: true,     // recalculates on resize
-      markers: false                 // set to true for debugging
-    }
-  });
+// Extra offset for the last card (adjust as needed)
+const extraOffset = 200; // px
+
+gsap.to(diagonalTrack, {
+  x: () => -totalDiagonalScroll + window.innerWidth * 0.05 - extraOffset,
+  ease: "none",
+  scrollTrigger: {
+    trigger: ".diagonal-carousel",
+    start: "top top",
+    end: () => `+=${totalDiagonalScroll + extraOffset}`, // extend scroll distance
+    scrub: 1,
+    pin: true,
+    anticipatePin: 1,
+    invalidateOnRefresh: true,
+    markers: false
+  }
+});
+// ...existing code...
 });
 
