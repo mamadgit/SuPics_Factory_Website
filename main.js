@@ -58,7 +58,11 @@ if (toggle) {
 window.addEventListener('load', () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
 
+// ...existing code...
   gsap.registerPlugin(ScrollTrigger);
+
+  // Global extra offset for carousels (adjust px as needed)
+  const extraOffset = 1200;
 
 // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
@@ -68,18 +72,19 @@ window.addEventListener('load', () => {
   // total horizontal distance to scroll
   const totalHorizontalScroll = horizontalTrack.scrollWidth - window.innerWidth;
 
+  
   gsap.to(horizontalTrack, {
-   x: () => -totalHorizontalScroll,
+   x: () => -totalHorizontalScroll + window.innerWidth * 0.05 - extraOffset,
     ease: "none",
     scrollTrigger: {
       trigger: ".horizontal-carousel",
       start: "top top",
-      end: () => `+=${totalHorizontalScroll}`, // scroll distance matches horizontal width
-      scrub: 1,                      // smooth scrubbing
-      pin: true,                     // pins section during animation
+      end: () => `+=${totalHorizontalScroll + extraOffset}`, // scroll distance matches horizontal width + extra
+      scrub: 1,
+      pin: true,
       anticipatePin: 1,
-      invalidateOnRefresh: true,     // recalculates on resize
-      markers: false                 // set to true for debugging
+      invalidateOnRefresh: true,
+      markers: false
     }
   });
 // ...existing code...
@@ -92,8 +97,7 @@ const diagonalCards = gsap.utils.toArray('.diagonal-carousel .case-card');
 // Total diagonal distance to scroll
 const totalDiagonalScroll = diagonalTrack.scrollWidth - window.innerWidth;
 
-// Extra offset for the last card (adjust as needed)
-const extraOffset = 200; // px
+// (no duplicate here — reusing the global extraOffset)
 
 gsap.to(diagonalTrack, {
   x: () => -totalDiagonalScroll + window.innerWidth * 0.05 - extraOffset,
@@ -109,6 +113,7 @@ gsap.to(diagonalTrack, {
     markers: false
   }
 });
+// ...existing code...
 // ...existing code...
 });
 
