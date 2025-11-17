@@ -233,7 +233,7 @@ text-align: left;white-space: nowrap;
 } */
 /* === Diagonal Carousel Effect === */
 .diagonal-carousel {
-  position: relative;
+  position: relative; 
   overflow: hidden;
   width: 100%;
   height: 120vh; /* or whatever fits your layout */
