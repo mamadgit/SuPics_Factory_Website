@@ -62,7 +62,7 @@ window.addEventListener('load', () => {
   gsap.registerPlugin(ScrollTrigger);
 
   // Global extra offset for carousels (adjust px as needed)
-  const extraOffset = 1200;
+  const extraOffset = 700;
 
 // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
@@ -74,12 +74,12 @@ window.addEventListener('load', () => {
 
   
   gsap.to(horizontalTrack, {
-   x: () => -totalHorizontalScroll + window.innerWidth * 0.05 - extraOffset,
+   x: () => -totalHorizontalScroll + window.innerWidth * 0.05,
     ease: "none",
     scrollTrigger: {
       trigger: ".horizontal-carousel",
       start: "top top",
-      end: () => `+=${totalHorizontalScroll + extraOffset}`, // scroll distance matches horizontal width + extra
+      end: () => `+=${totalHorizontalScroll}`, // scroll distance matches horizontal width + extra
       scrub: 1,
       pin: true,
       anticipatePin: 1,
