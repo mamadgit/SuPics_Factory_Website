@@ -62,7 +62,7 @@ window.addEventListener('load', () => {
   gsap.registerPlugin(ScrollTrigger);
 
   // Global extra offset for carousels (adjust px as needed)
-  const extraOffset = 700;
+   const extraOffset = 1000;
 
 // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
@@ -87,33 +87,35 @@ window.addEventListener('load', () => {
       markers: false
     }
   });
-// ...existing code...
-
 // Diagonal Scroll Case Carousel
+const diagonalSection = document.querySelector('.diagonal-carousel');
 const diagonalTrack = document.querySelector('.diagonal-carousel .carousel-track');
-// To add animations to cards if needed
-const diagonalCards = gsap.utils.toArray('.diagonal-carousel .case-card');
 
-// Total diagonal distance to scroll
-const totalDiagonalScroll = diagonalTrack.scrollWidth - window.innerWidth;
+// 1. Calculate the full horizontal width of the track
+const trackWidth = diagonalTrack.scrollWidth;
+// 2. Calculate how much we need to move horizontally
+const xMove = -(trackWidth - window.innerWidth);
 
-// (no duplicate here — reusing the global extraOffset)
+// 3. Calculate the Vertical Rise needed
+// We need to lift the track up so the end of it doesn't sink below the screen.
+// The angle is roughly 15 degrees based on your CSS (adjust 0.26 if your angle is different).
+// Math: tan(15 degrees) ≈ 0.268
+const angleInRadians = 5 * (Math.PI / 180);
+const yRise = (trackWidth * Math.sin(angleInRadians)); 
 
 gsap.to(diagonalTrack, {
-  x: () => -totalDiagonalScroll + window.innerWidth * 0.05 - extraOffset,
+  x: xMove, // Move Left
+  y: -yRise, // Move UP simultaneously
   ease: "none",
   scrollTrigger: {
-    trigger: ".diagonal-carousel",
+    trigger: diagonalSection,
     start: "top top",
-    end: () => `+=${totalDiagonalScroll + extraOffset}`, // extend scroll distance
+    end: () => "+=" + trackWidth, // Scroll distance matches track length
     scrub: 1,
     pin: true,
-    anticipatePin: 1,
-    invalidateOnRefresh: true,
-    markers: false
+    invalidateOnRefresh: true, // Recalculate on window resize
   }
 });
-// ...existing code...
 // ...existing code...
 });
 
