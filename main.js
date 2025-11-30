@@ -7,7 +7,7 @@ let idx = 0;
 inner.style.width = `${items[idx].offsetWidth}px`;
 
 setInterval(() => {
-  items[idx].classList.remove('is-active'); 
+  items[idx].classList.remove('is-active');
   idx = (idx + 1) % items.length;
   items[idx].classList.add('is-active');
 
@@ -18,7 +18,7 @@ setInterval(() => {
 
 // Fake search interaction
 const input = document.getElementById('search');
-const btn = document.getElementById('searchBtn'); 
+const btn = document.getElementById('searchBtn');
 if (btn && input) {
   btn.addEventListener('click', () => {
     btn.textContent = 'Searching…';
@@ -58,64 +58,64 @@ if (toggle) {
 window.addEventListener('load', () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
 
-// ...existing code...
+  // ...existing code...
   gsap.registerPlugin(ScrollTrigger);
 
   // Global extra offset for carousels (adjust px as needed)
-   const extraOffset = 1000;
+  const extraOffset = 1000;
 
-// Horizontal Scroll Case Carousel
+  // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+  if (horizontalTrack) {
     //To add animations to cards if needed
-  const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
+    const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
 
-  // total horizontal distance to scroll
-  const totalHorizontalScroll = horizontalTrack.scrollWidth - window.innerWidth;
+    // Helper functions to recalculate values on resize
+    const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
+    const getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth;
 
-  
-  gsap.to(horizontalTrack, {
-   x: () => -totalHorizontalScroll + window.innerWidth * 0.05,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".horizontal-carousel",
-      start: "top top",
-      end: () => `+=${totalHorizontalScroll}`, // scroll distance matches horizontal width + extra
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      markers: false
-    }
-  });
-// Diagonal Scroll Case Carousel
-const diagonalSection = document.querySelector('.diagonal-carousel');
-const diagonalTrack = document.querySelector('.diagonal-carousel .carousel-track');
-
-// 1. Calculate the full horizontal width of the track
-const trackWidth = diagonalTrack.scrollWidth;
-// 2. Calculate how much we need to move horizontally
-const xMove = -(trackWidth - window.innerWidth);
-
-// 3. Calculate the Vertical Rise needed
-// We need to lift the track up so the end of it doesn't sink below the screen.
-// The angle is roughly 15 degrees based on your CSS (adjust 0.26 if your angle is different).
-// Math: tan(15 degrees) ≈ 0.268
-const angleInRadians = 5 * (Math.PI / 180);
-const yRise = (trackWidth * Math.sin(angleInRadians)); 
-
-gsap.to(diagonalTrack, {
-  x: xMove, // Move Left
-  y: -yRise, // Move UP simultaneously
-  ease: "none",
-  scrollTrigger: {
-    trigger: diagonalSection,
-    start: "top top",
-    end: () => "+=" + trackWidth, // Scroll distance matches track length
-    scrub: 1,
-    pin: true,
-    invalidateOnRefresh: true, // Recalculate on window resize
+    gsap.to(horizontalTrack, {
+      x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".horizontal-carousel",
+        start: "top top",
+        end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        markers: false
+      }
+    });
   }
-});
-// ...existing code...
+  // Diagonal Scroll Case Carousel
+  const diagonalSection = document.querySelector('.diagonal-carousel');
+  if (diagonalSection) {
+    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+
+    // Helper functions to recalculate values on resize
+    const getTrackWidth = () => diagonalTrack.scrollWidth;
+    const getXMove = () => -(getTrackWidth() - window.innerWidth);
+    const getYRise = () => {
+      const angleInRadians = 5 * (Math.PI / 180);
+      return getTrackWidth() * Math.sin(angleInRadians);
+    };
+
+    gsap.to(diagonalTrack, {
+      x: getXMove, // Dynamic value
+      y: () => -getYRise(), // Dynamic value
+      ease: "none",
+      scrollTrigger: {
+        trigger: diagonalSection,
+        start: "top top",
+        end: () => "+=" + getTrackWidth(),
+        scrub: 1,
+        pin: true,
+        invalidateOnRefresh: true, // Recalculate on window resize
+      }
+    });
+  }
+  // ...existing code...
 });
 
