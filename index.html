@@ -1,17 +1,24 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <div id="preloader">
+    <img src="logo.gif" alt="Logo" id="loader-logo">
+  </div> -->
   <title>Cosmos-like — Discovery Engine for Creative Teams</title>
-  <meta name="description" content="A discovery engine for creative teams. Organize, search, and resurface your best work." />
+  <meta name="description"
+    content="A discovery engine for creative teams. Organize, search, and resurface your best work." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="../CSS/main.css" />
 </head>
+
 <body>
-  
+
   <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
@@ -21,40 +28,41 @@
         <a href="#gallery">Gallery</a>
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
-    <div class="absolute top-4 right-4">
-      <button id="theme-toggle"
-        class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
+        <div class="absolute top-4 right-4">
+          <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
               bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-        
-        <span class="icon-wrap">
-          <!-- Sun Icon -->
-          <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2"></path>
-            <path d="M12 20v2"></path>
-            <path d="m4.93 4.93 1.41 1.41"></path>
-            <path d="m17.66 17.66 1.41 1.41"></path>
-            <path d="M2 12h2"></path>
-            <path d="M20 12h2"></path>
-            <path d="m6.34 17.66-1.41 1.41"></path>
-            <path d="m19.07 4.93-1.41 1.41"></path>
-          </svg>
-          <!-- Moon Icon -->
-          <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
-          </svg>
-        </span>
-      </button>
-    </div>
+
+            <span class="icon-wrap">
+              <!-- Sun Icon -->
+              <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-sun">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+              <!-- Moon Icon -->
+              <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-moon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
 
       </nav>
       <div class="header-cta">
         <a class="btn ghost" href="#">Log in</a>
         <a class="btn solid" href="#cta">Get started</a>
       </div>
-      <button class="menu-toggle" aria-label="Open menu"> 
+      <button class="menu-toggle" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -65,12 +73,12 @@
     <div class="container hero-inner">
       <h1>
         A discovery engine for
-        <span class="rotator" aria-live="polite"> 
+        <span class="rotator" aria-live="polite">
           <span class="rotator-inner">
-          <span class="rotator-item is-active">creative teams</span>
-          <span class="rotator-item">product teams</span>
-          <span class="rotator-item">researchers</span>
-          <span class="rotator-item">marketers</span>
+            <span class="rotator-item is-active">creative teams</span>
+            <span class="rotator-item">product teams</span>
+            <span class="rotator-item">researchers</span>
+            <span class="rotator-item">marketers</span>
           </span>
         </span>
       </h1>
@@ -83,10 +91,14 @@
       </div>
       <div class="hero-media">
         <div class="grid">
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Inspiration 1" />
-          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1200&auto=format&fit=crop" alt="Inspiration 2" />
-          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop" alt="Inspiration 3" />
-          <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=1200&auto=format&fit=crop" alt="Inspiration 4" />
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+            alt="Inspiration 1" />
+          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1200&auto=format&fit=crop"
+            alt="Inspiration 2" />
+          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop"
+            alt="Inspiration 3" />
+          <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=1200&auto=format&fit=crop"
+            alt="Inspiration 4" />
         </div>
       </div>
       <div class="scroll-indicator">Scroll</div>
@@ -129,7 +141,8 @@
       <p class="sub">Drop anything in. We add the context—topics, people, and places—so it’s discoverable later.</p>
       <div class="ai-panel">
         <div class="ai-media">
-          <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop" alt="Design moodboard" />
+          <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop"
+            alt="Design moodboard" />
         </div>
         <div class="ai-tags">
           <span class="tag">brand</span>
@@ -154,19 +167,25 @@
         <button class="btn solid" id="searchBtn">Search</button>
       </div>
       <div class="masonry">
-        <img src="https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?q=80&w=1200&auto=format&fit=crop" alt="Card 1" />
-        <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop" alt="Card 2" />
-        <img src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1200&auto=format&fit=crop" alt="Card 3" />
-        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" alt="Card 4" />
-        <img src="https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=1200&auto=format&fit=crop" alt="Card 5" />
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop" alt="Card 6" />
+        <img src="https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 1" />
+        <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 2" />
+        <img src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 3" />
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 4" />
+        <img src="https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 5" />
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+          alt="Card 6" />
       </div>
     </div>
   </section>
 
   <!-- Horizontal Case Carousel -->
-<section id="cases" class="section horizontal-carousel">
-  <!-- <div class="pin-spacer"> -->
+  <section id="cases" class="section horizontal-carousel">
+    <!-- <div class="pin-spacer"> -->
     <div class="horizontal-carousel">
       <div class="carousel-inner">
         <div class="carousel-track">
@@ -195,16 +214,17 @@
               <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
             </div>
           </div>
-        <!-- Add more cards if needed -->
+          <!-- Add more cards if needed -->
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- Diagonal Case Carousel -->
-<section id="cases" class="section diagonal-carousel">
-  <!-- <div class="pin-spacer"> -->
+  <section id="cases" class="section diagonal-carousel">
+    <!-- <div class="pin-spacer"> -->
     <div class="diagonal-carousel">
+      <!-- <div class="carousel-frame"> -->
       <div class="carousel-inner">
         <div class="carousel-track">
           <!-- Card 1 -->
@@ -232,11 +252,68 @@
               <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
             </div>
           </div>
-        <!-- Add more cards if needed -->
+          <!-- Card 3 -->
+          <div class="case-card">Diagonal Card 3
+            <div class="card-text">
+              <h3>CRUNCH TIME CAMPAIGN</h3>
+              <h4>Cap’n Crunch</h4>
+              <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+              <a href="#" class="btn ghost sm">View case</a>
+            </div>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+            </div>
+          </div>
+          <div class="case-card">Diagonal Card 4
+            <div class="card-text">
+              <h3>CRUNCH TIME CAMPAIGN</h3>
+              <h4>Cap’n Crunch</h4>
+              <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+              <a href="#" class="btn ghost sm">View case</a>
+            </div>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+            </div>
+          </div>
+          <div class="case-card">Diagonal Card 5
+            <div class="card-text">
+              <h3>CRUNCH TIME CAMPAIGN</h3>
+              <h4>Cap’n Crunch</h4>
+              <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+              <a href="#" class="btn ghost sm">View case</a>
+            </div>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+            </div>
+          </div>
+          <div class="case-card">Diagonal Card 6
+            <div class="card-text">
+              <h3>CRUNCH TIME CAMPAIGN</h3>
+              <h4>Cap’n Crunch</h4>
+              <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+              <a href="#" class="btn ghost sm">View case</a>
+            </div>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+            </div>
+          </div>
+          <div class="case-card">Diagonal Card 7
+            <div class="card-text">
+              <h3>CRUNCH TIME CAMPAIGN</h3>
+              <h4>Cap’n Crunch</h4>
+              <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+              <a href="#" class="btn ghost sm">View case</a>
+            </div>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+            </div>
+          </div>
+          <!-- Add more cards if needed -->
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+      <!-- </div> -->
+      <!-- </div> -->
+  </section>
 
   <!-- Logos / Social Proof -->
   <section class="section logos">
@@ -312,4 +389,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="main.js" defer></script>
 </body>
+
 </html>
