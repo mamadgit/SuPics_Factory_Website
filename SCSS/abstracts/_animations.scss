@@ -1,0 +1,18 @@
+@use 'mixins';
+#preloader {
+  @include mixins.flex-center();
+  position: fixed;
+  inset: 0;
+  background: #000000;     /* Change this if your GIF looks better on dark bg */
+  z-index: 9999;
+}
+
+#loader-logo {
+  width: 150px;            /* adjust size */
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+#content {
+  opacity: 0;              /* hide site initially */
+}
