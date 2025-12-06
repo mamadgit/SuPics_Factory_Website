@@ -1,0 +1,79 @@
+@use '../abstracts/mixins';
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(11, 12, 16, 0.6);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+}
+
+.brand {
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.logo-image {
+    width: 90px;
+    height: 90px;
+    // border-radius: 50%;
+    // display: inline-block;
+    // background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+
+.nav {
+    display: flex;
+    gap: 18px;
+}
+
+.nav a {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.nav a:hover {
+    color: var(--text);
+}
+
+.header-cta {
+    display: flex;
+    gap: 10px;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    color: var(--text);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    margin: 4px 0;
+}
+
+
+@include mixins.respond(sm) {
+    .nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
