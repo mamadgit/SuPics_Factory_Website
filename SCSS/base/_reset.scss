@@ -1,0 +1,21 @@
+@use '../abstracts/variables';
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    transition: background variables.$transition-slow, color variables.$transition-slow;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

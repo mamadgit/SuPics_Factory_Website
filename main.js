@@ -1,3 +1,41 @@
+// window.addEventListener("load", () => {
+//   const tl = gsap.timeline();
+
+//   // logo fade in
+//   tl.to("#loader-logo", {
+//     opacity: 1,
+//     scale: 1,
+//     duration: 1.2,
+//     ease: "power2.out"
+//   });
+
+//   // roll up preloader
+//   tl.to("#preloader", {
+//     y: '-100%', // Move the preloader up off the screen
+//     duration: 1,
+//     ease: "power1.out",
+//     onComplete: () => {
+//       document.getElementById("preloader").style.display = "none";
+//       document.getElementById("content").style.display = "block"; // Show the content after preloader
+//       ScrollTrigger.refresh();
+//   }, "+=2.5");
+
+//   // Show content normally (or add a rolling effect you desire)
+//   tl.fromTo("#content",
+//     {
+//       y: 100, // Start below its final position
+//       opacity: 1 // Keep it visible instantly or adjust as needed
+//     },
+//     {
+//       y: 0, // End at its original position
+//       duration: 1.4,
+//       ease: "power3.out",
+//       clearProps: "filter",
+//       }
+//     }
+//   );
+// });
+
 window.addEventListener("load", () => {
   const tl = gsap.timeline();
   // logo fade in
@@ -17,85 +55,136 @@ window.addEventListener("load", () => {
       document.getElementById("content").style.display = "block"; // Show the content after preloader
     }
   }, "+=2.5");
-// ROLL UP CONTENT
-tl.fromTo("#content",
-  {
-    opacity: 0,
-    y: 100 // Start 100 pixels below its final position
-  },
-  {
-    opacity: 1,
-    y: 0, // End at its original position
-    duration: 1.4,
-    ease: "power3.out",
-    onComplete: () => {
-      ScrollTrigger.refresh();
+  // ROLL UP CONTENT
+  tl.fromTo("#content",
+    {
+      opacity: 0,
+      y: 100 // Start 100 pixels below its final position
+    },
+    {
+      opacity: 1,
+      y: 0, // End at its original position
+      duration: 1.4,
+      ease: "power3.out",
+      clearProps: "y,transform", // Only clear transform, keep opacity:1 (CSS has opacity:0)
+      onComplete: () => {
+        // Set opacity directly on the element to override CSS
+        document.getElementById("content").style.opacity = "1";
+        // Delay refresh to ensure DOM has fully settled
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            ScrollTrigger.refresh(true); // Force a full refresh
+          });
+        });
+      }
     }
-  }
-);
+  );
+  // Theme toggle for Logo and site
+  (function () {
+    const toggle = document.getElementById('theme-toggle');
+    const logoImg = document.querySelector('.brand .logo-image img');
+    const DARK_LOGO = 'SU-LOGO-web.svg';
+    const LIGHT_LOGO = 'SU-LOGO-web-W.svg';
+    const header = document.querySelector('.site-header');
 
-// Text rotator in hero
-const items = Array.from(document.querySelectorAll('.rotator-item'));
-const inner = document.querySelector('.rotator-inner');
-let idx = 0;
-// Set initial width
-inner.style.width = `${items[idx].offsetWidth}px`;
-setInterval(() => {
-  items[idx].classList.remove('is-active');
-  idx = (idx + 1) % items.length;
-  items[idx].classList.add('is-active');
-  // Adjust width smoothly to match the new word
+    function setTheme(isLight, animate = false) {
+      // Only toggle 'light-mode' - dark is the default via :root
+      document.documentElement.classList.toggle('light-mode', isLight);
+
+      if (logoImg) {
+        const newSrc = isLight ? DARK_LOGO : LIGHT_LOGO;
+        const newAlt = isLight ? 'Dark-Image-Logo' : 'Light-Image-Logo';
+        // Toggle header light mode
+        if (header) {
+          header.classList.toggle('white', isLight);
+
+        }
+        if (animate && typeof gsap !== 'undefined') {
+          // Fade out, swap image, fade in
+          gsap.to(logoImg, {
+            opacity: 0,
+            duration: 0.2,
+            ease: 'power1.inOut',
+            onComplete: () => {
+              logoImg.src = newSrc;
+              logoImg.alt = newAlt;
+              gsap.to(logoImg, {
+                opacity: 1,
+                duration: 0.2,
+                ease: 'power1.inOut'
+              });
+            }
+          });
+        } else {
+          // No animation on initial load
+          logoImg.src = newSrc;
+          logoImg.alt = newAlt;
+        }
+      }
+
+      try { localStorage.setItem('siteTheme', isLight ? 'light' : 'dark'); } catch (e) { }
+    }
+
+    // initialize from saved preference or system preference
+    const saved = localStorage.getItem('siteTheme');
+    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    setTheme(saved ? saved === 'light' : prefersLight);
+
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const nowLight = !document.documentElement.classList.contains('light-mode');
+        setTheme(nowLight, true); // animate on user click
+      });
+    }
+  })();
+
+  // Text rotator in hero
+  const items = Array.from(document.querySelectorAll('.rotator-item'));
+  const inner = document.querySelector('.rotator-inner');
+  let idx = 0;
+  // Set initial width
   inner.style.width = `${items[idx].offsetWidth}px`;
-}, 2200);
+  setInterval(() => {
+    items[idx].classList.remove('is-active');
+    idx = (idx + 1) % items.length;
+    items[idx].classList.add('is-active');
+    // Adjust width smoothly to match the new word
+    inner.style.width = `${items[idx].offsetWidth}px`;
+  }, 2200);
 
-// Fake search interaction
-const input = document.getElementById('search');
-const btn = document.getElementById('searchBtn');
-if (btn && input) {
-  btn.addEventListener('click', () => {
-    btn.textContent = 'Searching…';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Search';
-      btn.disabled = false;
-      input.placeholder = 'Found: warm serif moodboards, type another query';
-    }, 900);
-  });
-}
+  // Fake search interaction
+  const input = document.getElementById('search');
+  const btn = document.getElementById('searchBtn');
+  if (btn && input) {
+    btn.addEventListener('click', () => {
+      btn.textContent = 'Searching…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'Search';
+        btn.disabled = false;
+        input.placeholder = 'Found: warm serif moodboards, type another query';
+      }, 900);
+    });
+  }
 
-// theme-toggle.js
-const toggleBtn = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Load saved theme
-if (localStorage.getItem('theme') === 'light') {
-  body.classList.add('light-mode');
-}
-
-// Toggle theme
-toggleBtn.addEventListener('click', () => {
-  const isLight = body.classList.toggle('light-mode');
-  localStorage.setItem('theme', isLight ? 'light' : 'dark');
-});
-
-// Mobile menu (placeholder)
-const toggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.nav');
-if (toggle) {
-  toggle.addEventListener('click', () => {
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-  });
-}
+  // Mobile menu (placeholder)
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.nav');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    });
+  }
 
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
-    // ...existing code...
-    gsap.registerPlugin(ScrollTrigger);
-    // Global extra offset for carousels (adjust px as needed)
-    const extraOffset = 1000;
-    // Horizontal Scroll Case Carousel
-    const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
-    if (horizontalTrack) {
-      //To add animations to cards if needed
+  // ...existing code...
+  gsap.registerPlugin(ScrollTrigger);
+  // Global extra offset for carousels (adjust px as needed)
+  const extraOffset = 1000;
+  // Horizontal Scroll Case Carousel
+  const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+  if (horizontalTrack) {
+    //To add animations to cards if needed
     const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
     // Helper functions to recalculate values on resize
     const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
