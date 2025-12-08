@@ -1,3 +1,20 @@
+// Force page to start at top on refresh — improved
+if ('scrollRestoration' in history) {
+  try { history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
+}
+
+function scrollToTop() { window.scrollTo(0, 0); }
+
+// Run after DOM is ready (covers normal loads)
+window.addEventListener('DOMContentLoaded', scrollToTop);
+
+// Run on pageshow (covers bfcache / back-forward cache restores)
+window.addEventListener('pageshow', (e) => {
+  // small timeout helps override browser restore
+  setTimeout(scrollToTop, 0);
+});
+
+
 // window.addEventListener("load", () => {
 //   const tl = gsap.timeline();
 
@@ -49,7 +66,7 @@ window.addEventListener("load", () => {
   tl.to("#preloader", {
     opacity: 0,
     duration: 1,
-    ease: "power1.out",
+    ease: "power2.out",
     onComplete: () => {
       document.getElementById("preloader").style.display = "none";
       document.getElementById("content").style.display = "block"; // Show the content after preloader
@@ -59,12 +76,12 @@ window.addEventListener("load", () => {
   tl.fromTo("#content",
     {
       opacity: 0,
-      y: 100 // Start 100 pixels below its final position
+      // y: 100 // Start 100 pixels below its final position
     },
     {
       opacity: 1,
-      y: 0, // End at its original position
-      duration: 1.4,
+      // y: 0, // End at its original position
+      duration: 3,
       ease: "power3.out",
       clearProps: "y,transform", // Only clear transform, keep opacity:1 (CSS has opacity:0)
       onComplete: () => {
@@ -79,6 +96,7 @@ window.addEventListener("load", () => {
       }
     }
   );
+
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
