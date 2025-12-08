@@ -14,5 +14,28 @@
 }
 
 #content {
-  opacity: 0;              /* hide site initially */
+  display: none; /* hide site initially until preloader finishes */
+  opacity: 0;             /* hide site initially */
 }
+
+// @use 'mixins';
+// #preloader {
+//   @include mixins.flex-center();
+//   position: fixed;
+//   inset: 0;
+//   background: #000000; /* This remains the same */
+//   z-index: 9999;
+//   transform: translateY(0); /* Reset any previous transform */
+// }
+
+// #loader-logo {
+//   width: 150px; /* Adjust size */
+//   opacity: 0;
+//   transform: scale(0.8);
+// }
+
+// #content {
+//   position: relative; /* Change position if necessary to avoid overlap issues */
+//   opacity: 1; /* Adjust this if you want instant visibility */
+//   /* Remove opacity setting if you want to show content immediately after the preloader rolls up */
+// }

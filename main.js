@@ -1,20 +1,3 @@
-// Force page to start at top on refresh — improved
-if ('scrollRestoration' in history) {
-  try { history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
-}
-
-function scrollToTop() { window.scrollTo(0, 0); }
-
-// Run after DOM is ready (covers normal loads)
-window.addEventListener('DOMContentLoaded', scrollToTop);
-
-// Run on pageshow (covers bfcache / back-forward cache restores)
-window.addEventListener('pageshow', (e) => {
-  // small timeout helps override browser restore
-  setTimeout(scrollToTop, 0);
-});
-
-
 // window.addEventListener("load", () => {
 //   const tl = gsap.timeline();
 
@@ -54,6 +37,8 @@ window.addEventListener('pageshow', (e) => {
 // });
 
 window.addEventListener("load", () => {
+  if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
+  gsap.registerPlugin(ScrollTrigger);
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -66,7 +51,7 @@ window.addEventListener("load", () => {
   tl.to("#preloader", {
     opacity: 0,
     duration: 1,
-    ease: "power2.out",
+    ease: "power1.out",
     onComplete: () => {
       document.getElementById("preloader").style.display = "none";
       document.getElementById("content").style.display = "block"; // Show the content after preloader
@@ -91,6 +76,10 @@ window.addEventListener("load", () => {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             ScrollTrigger.refresh(true); // Force a full refresh
+            // Initialize carousel animations AFTER content is visible and measurements are correct
+            if (typeof initCarouselAnimations === 'function') {
+              initCarouselAnimations();
+            }
           });
         });
       }
@@ -194,61 +183,67 @@ window.addEventListener("load", () => {
     });
   }
 
-  if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
-  // ...existing code...
-  gsap.registerPlugin(ScrollTrigger);
-  // Global extra offset for carousels (adjust px as needed)
-  const extraOffset = 1000;
-  // Horizontal Scroll Case Carousel
-  const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
-  if (horizontalTrack) {
-    //To add animations to cards if needed
-    const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
-    // Helper functions to recalculate values on resize
-    const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
-    const getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth;
+  // Function to initialize the carousel animations
+  // Must be called AFTER content is visible (display: block)
+  function initCarouselAnimations() {
+    // Global extra offset for carousels (adjust px as needed)
+    const extraOffset = 1000;
 
-    gsap.to(horizontalTrack, {
-      x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".horizontal-carousel",
-        start: "top top",
-        end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        markers: false
-      }
-    });
+    // Horizontal Scroll Case Carousel
+    const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+    if (horizontalTrack) {
+      //To add animations to cards if needed
+      const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
+      // Helper functions to recalculate values on resize
+      const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
+      const getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth;
+
+      gsap.to(horizontalTrack, {
+        x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".horizontal-carousel",
+          start: "top top",
+          end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          markers: false
+        }
+      });
+    }
+
+    // Diagonal Scroll Case Carousel
+    const diagonalSection = document.querySelector('.diagonal-carousel');
+    if (diagonalSection) {
+      const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+
+      // Helper functions to recalculate values on resize
+      const getTrackWidth = () => diagonalTrack.scrollWidth;
+      const getXMove = () => -(getTrackWidth() - window.innerWidth);
+      const getYRise = () => {
+        const angleInRadians = 5 * (Math.PI / 180);
+        return getTrackWidth() * Math.sin(angleInRadians);
+      };
+
+      gsap.to(diagonalTrack, {
+        x: getXMove, // Dynamic value
+        y: () => -getYRise(), // Dynamic value
+        ease: "none",
+        scrollTrigger: {
+          trigger: diagonalSection,
+          start: "top top",
+          end: () => "+=" + getTrackWidth(),
+          scrub: 1,
+          pin: true,
+          invalidateOnRefresh: true, // Recalculate on window resize
+        }
+      });
+    }
   }
-  // Diagonal Scroll Case Carousel
-  const diagonalSection = document.querySelector('.diagonal-carousel');
-  if (diagonalSection) {
-    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
 
-    // Helper functions to recalculate values on resize
-    const getTrackWidth = () => diagonalTrack.scrollWidth;
-    const getXMove = () => -(getTrackWidth() - window.innerWidth);
-    const getYRise = () => {
-      const angleInRadians = 5 * (Math.PI / 180);
-      return getTrackWidth() * Math.sin(angleInRadians);
-    };
-
-    gsap.to(diagonalTrack, {
-      x: getXMove, // Dynamic value
-      y: () => -getYRise(), // Dynamic value
-      ease: "none",
-      scrollTrigger: {
-        trigger: diagonalSection,
-        start: "top top",
-        end: () => "+=" + getTrackWidth(),
-        scrub: 1,
-        pin: true,
-        invalidateOnRefresh: true, // Recalculate on window resize
-      }
-    });
-  }
+  // Expose the function so it can be called after preloader
+  window.initCarouselAnimations = initCarouselAnimations;
   // ...existing code...
 });

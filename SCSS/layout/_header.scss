@@ -8,7 +8,7 @@
     background: #0b0c10;
     color: #e9eef3;
     border-bottom: 1px solid var(--border);
-    transition: background variables.$transition-slow, color variables.$transition-slow;
+    transition: background variables.$transition-slow, color variables.$transition-slow, border-bottom variables.$transition-slow;
 
     &.white {
         background: #f7f9fc;
@@ -33,11 +33,12 @@
 }
 
 .logo-image {
-    width: 100px;
+    width: 85px;
     // height: 100px;
     border-radius: 0;
-    display: flex;
+    display: flex; 
     align-items: center;
+    transition: background variables.$transition-slow, color variables.$transition-slow;
 }
 
 .nav {
