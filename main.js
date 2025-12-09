@@ -57,6 +57,15 @@ window.addEventListener("load", () => {
       document.getElementById("content").style.display = "block"; // Show the content after preloader
     }
   }, "+=2.5");
+  requestAnimationFrame(() => {//Giving appropiate time for the content with animation (carousels) to be visible
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true); // Force a full refresh
+      // Initialize carousel animations AFTER content is visible and measurements are correct
+      if (typeof initCarouselAnimations === 'function') {
+        initCarouselAnimations();
+      }
+    });
+  });
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -72,16 +81,6 @@ window.addEventListener("load", () => {
       onComplete: () => {
         // Set opacity directly on the element to override CSS
         document.getElementById("content").style.opacity = "1";
-        // Delay refresh to ensure DOM has fully settled
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            ScrollTrigger.refresh(true); // Force a full refresh
-            // Initialize carousel animations AFTER content is visible and measurements are correct
-            if (typeof initCarouselAnimations === 'function') {
-              initCarouselAnimations();
-            }
-          });
-        });
       }
     }
   );
