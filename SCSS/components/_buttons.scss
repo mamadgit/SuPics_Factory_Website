@@ -1,0 +1,97 @@
+@use '../abstracts/mixins';
+@use '../abstracts/variables';
+
+.btn {
+    @include mixins.flex-center();
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: transform variables.$transition-base, box-shadow variables.$transition-base;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    &.solid {
+        @include mixins.btn-variant(solid);
+    }
+
+    &.ghost {
+        @include mixins.btn-variant(ghost);
+    }
+
+    &.xl {
+        padding: 14px 20px;
+        font-size: 1.05rem;
+    }
+
+    &.sm {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+}
+
+/* Hero Scroll Button - Glassmorphism Style */
+.hero-scroll-btn {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.35);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        transform: translateX(-50%) translateY(-4px);
+    }
+
+    .btn-text {
+        transition: transform 0.3s ease;
+    }
+
+    &:hover .btn-text {
+        transform: translateX(-2px);
+    }
+
+    .btn-chevron {
+        animation: float-chevron 1.5s ease-in-out infinite;
+    }
+
+    &:hover .btn-chevron {
+        animation-duration: 0.8s;
+    }
+}
+
+@keyframes float-chevron {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(4px);
+    }
+}
