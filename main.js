@@ -35,6 +35,17 @@
 //     }
 //   );
 // });
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+let smoother = ScrollSmoother.create({
+  wrapper: '#scroll-wrapper',
+  content: '#scroll-content',
+  smooth: 1.7,
+  // effects: true
+});
+let button = document.querySelector('.hero-scroll-btn');
+button.addEventListener("click", (e) => {
+  smoother.scrollTo(".site-header", true, "top top");
+});
 
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
