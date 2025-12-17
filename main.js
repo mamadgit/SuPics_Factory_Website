@@ -46,6 +46,15 @@ let button = document.querySelector('.hero-scroll-btn');
 button.addEventListener("click", (e) => {
   smoother.scrollTo(".site-header", true, "top top");
 });
+// Pin the header at the top once it reaches there (replaces CSS sticky)
+ScrollTrigger.create({
+  trigger: ".site-header",
+  start: "top top",
+  endTrigger: ".site-footer",
+  end: "bottom bottom",
+  pin: true,
+  pinSpacing: false
+});
 
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
@@ -247,6 +256,7 @@ window.addEventListener("load", () => {
           end: () => "+=" + getTrackWidth(),
           scrub: 1,
           pin: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true, // Recalculate on window resize
         }
       });
