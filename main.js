@@ -1,40 +1,38 @@
-// window.addEventListener("load", () => {
-//   const tl = gsap.timeline();
+window.addEventListener("load", () => {
+  const tl = gsap.timeline();
 
-//   // logo fade in
-//   tl.to("#loader-logo", {
-//     opacity: 1,
-//     scale: 1,
-//     duration: 1.2,
-//     ease: "power2.out"
-//   });
+  // logo fade in
+  tl.to("#loader-logo", {
+    opacity: 1,
+    scale: 1,
+    duration: 1.2,
+    ease: "power2.out"
+  });
 
-//   // roll up preloader
-//   tl.to("#preloader", {
-//     y: '-100%', // Move the preloader up off the screen
-//     duration: 1,
-//     ease: "power1.out",
-//     onComplete: () => {
-//       document.getElementById("preloader").style.display = "none";
-//       document.getElementById("content").style.display = "block"; // Show the content after preloader
-//       ScrollTrigger.refresh();
-//   }, "+=2.5");
+  // roll up preloader
+  // tl.to("#preloader", {
+  //   y: '-100%', // Move the preloader up off the screen
+  //   duration: 1,
+  //   ease: "power1.out",
+  //   onComplete: () => {
+  //     document.getElementById("preloader").style.display = "none";
+  //     document.getElementById("content").style.display = "block"; // Show the content after preloader
+  //     ScrollTrigger.refresh();
+  // }}, "+=2.5");
 
-//   // Show content normally (or add a rolling effect you desire)
-//   tl.fromTo("#content",
-//     {
-//       y: 100, // Start below its final position
-//       opacity: 1 // Keep it visible instantly or adjust as needed
-//     },
-//     {
-//       y: 0, // End at its original position
-//       duration: 1.4,
-//       ease: "power3.out",
-//       clearProps: "filter",
-//       }
-//     }
-//   );
-// });
+  // Show content normally (or add a rolling effect you desire)
+  // tl.fromTo("#content",
+  //   {
+  //     y: 100, // Start below its final position
+  //     opacity: 1 // Keep it visible instantly or adjust as needed
+  //   },
+  //   {
+  //     y: 0, // End at its original position
+  //     duration: 1.4,
+  //     ease: "power3.out",
+  //     clearProps: "filter",
+  //     });
+});
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 let smoother = ScrollSmoother.create({
   wrapper: '#scroll-wrapper',
@@ -50,7 +48,7 @@ button.addEventListener("click", (e) => {
 ScrollTrigger.create({
   trigger: ".site-header",
   start: "top top",
-  endTrigger: ".site-footer",
+  endTrigger: "max",
   end: "bottom bottom",
   pin: true,
   pinSpacing: false
