@@ -36,6 +36,13 @@
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
   gsap.registerPlugin(ScrollTrigger);
+//   ScrollTrigger.addEventListener("refreshInit", () => {
+//   console.log("🔄 ScrollTrigger refreshInit");
+// });
+
+// ScrollTrigger.addEventListener("refresh", () => {
+//   console.log("✅ ScrollTrigger refresh");
+// });
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -96,10 +103,11 @@ window.addEventListener("load", () => {
   ScrollTrigger.create({
     trigger: ".site-header",
     start: "top top",
-    endTrigger: "max",
-    end: "bottom bottom",
+    end: "max",
+    // end: "bottom bottom",
     pin: true,
-    pinSpacing: false
+    pinSpacing: false,
+    // markers: true
   });
   // Theme toggle for Logo and site
   (function () {
@@ -163,16 +171,21 @@ window.addEventListener("load", () => {
   // Text rotator in hero
   const items = Array.from(document.querySelectorAll('.rotator-item'));
   const inner = document.querySelector('.rotator-inner');
-  let idx = 0;
-  // Set initial width
-  inner.style.width = `${items[idx].offsetWidth}px`;
-  setInterval(() => {
-    items[idx].classList.remove('is-active');
-    idx = (idx + 1) % items.length;
-    items[idx].classList.add('is-active');
-    // Adjust width smoothly to match the new word
+
+  if (inner && items.length) {
+    let idx = 0;
+
+    // Set initial width
     inner.style.width = `${items[idx].offsetWidth}px`;
-  }, 2200);
+
+    setInterval(() => {
+      items[idx].classList.remove('is-active');
+      idx = (idx + 1) % items.length;
+      items[idx].classList.add('is-active');
+      inner.style.width = `${items[idx].offsetWidth}px`;
+    }, 2200);
+  }
+
 
   // Fake search interaction
   const input = document.getElementById('search');
@@ -224,7 +237,7 @@ window.addEventListener("load", () => {
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          markers: false
+          // markers: true
         }
       });
     }
@@ -254,6 +267,7 @@ window.addEventListener("load", () => {
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true, // Recalculate on window resize
+          // markers: true
         }
       });
     }
