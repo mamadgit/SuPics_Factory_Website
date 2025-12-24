@@ -36,13 +36,13 @@
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
   gsap.registerPlugin(ScrollTrigger);
-//   ScrollTrigger.addEventListener("refreshInit", () => {
-//   console.log("🔄 ScrollTrigger refreshInit");
-// });
+  //   ScrollTrigger.addEventListener("refreshInit", () => {
+  //   console.log("🔄 ScrollTrigger refreshInit");
+  // });
 
-// ScrollTrigger.addEventListener("refresh", () => {
-//   console.log("✅ ScrollTrigger refresh");
-// });
+  // ScrollTrigger.addEventListener("refresh", () => {
+  //   console.log("✅ ScrollTrigger refresh");
+  // });
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -104,7 +104,6 @@ window.addEventListener("load", () => {
     trigger: ".site-header",
     start: "top top",
     end: "max",
-    // end: "bottom bottom",
     pin: true,
     pinSpacing: false,
     // markers: true
@@ -210,6 +209,59 @@ window.addEventListener("load", () => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
+
+
+  const el = document.querySelector('.reveal-text'); //Retreat text element from HTML
+  const text = el.textContent; //Only take the text content (no HTML)
+  el.textContent = ''; //Remove text nodes making them splittable
+
+  const chars = [];
+
+  [...text].forEach(char => {
+    const span = document.createElement('span');
+    span.textContent = char === ' ' ? '\u00A0' : char;
+    span.style.display = 'inline-block';
+    el.appendChild(span);
+    chars.push(span);
+  });
+
+  // GSAP animation with ScrollTrigger - animates when scrolling to the element
+  const t2 = gsap.timeline({ paused: false });
+
+  t2.fromTo(
+    chars,
+    { y: '1em', opacity: 0 },
+    {
+      y: '0em',
+      opacity: 1,
+      stagger: 0.05,
+      duration: 0.6,
+      ease: 'power3.out'
+    }
+  );
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 100%',
+    end: 'bottom 10%',
+
+    onEnter: () => {
+      t2.restart();
+    },
+
+    onEnterBack: () => {
+      t2.restart();
+    },
+
+    onLeave: () => {
+      t2.pause(0); // reset to start (hidden)
+    },
+
+    onLeaveBack: () => {
+      t2.pause(0); // reset to start (hidden)
+    }
+  });
+
+
 
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
