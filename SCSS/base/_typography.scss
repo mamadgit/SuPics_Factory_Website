@@ -1,0 +1,52 @@
+@use '../abstracts/variables';
+
+@font-face {
+    font-family: 'StabilGrotesk';
+    src: url('#{variables.$pathFont}/StabilGrotesk-Regular.woff2') format('woff2'),
+    url('#{variables.$pathFont}/StabilGrotesk-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'StabilGrotesk';
+    src: url('#{variables.$pathFont}/StabilGrotesk-Medium.woff2') format('woff2'),
+    url('#{variables.$pathFont}/StabilGrotesk-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'StabilGrotesk';
+    src: url('#{variables.$pathFont}/StabilGrotesk-Bold.woff2') format('woff2'),
+    url('#{variables.$pathFont}/StabilGrotesk-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: variables.$baseFont;
+    background: radial-gradient(1200px 800px at 70% -10%, rgba(108, 245, 210, 0.12), transparent 60%), var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background variables.$transition-slow, color variables.$transition-slow;
+    font-size: 1rem; // 10px base is handled by rem() function
+}
+
+
+.kicker {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: .8rem;
+}
+
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.1;
+    margin: 0 0 16px;
+}

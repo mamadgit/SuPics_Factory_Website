@@ -1,0 +1,24 @@
+/* Rotator */
+.rotator {
+    display: inline-block;
+    position: relative;
+    min-width: 10ch;
+    vertical-align: bottom;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.rotator-item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: .5s ease
+}
+
+.rotator-item.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative
+}

@@ -1,0 +1,9 @@
+@use '../abstracts/mixins';
+.card {
+    @include mixins.card(20px);
+}
+
+.card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}

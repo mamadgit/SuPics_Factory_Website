@@ -3,8 +3,8 @@
 
 .site-header {
     position: sticky;
-    top: -1px; 
-    z-index: 50;
+    top: -1px;
+    z-index: 1;
     background: #0b0c10;
     color: #e9eef3;
     border-bottom: 1px solid var(--border);
@@ -36,7 +36,7 @@
     width: 85px;
     // height: 100px;
     border-radius: 0;
-    display: flex; 
+    display: flex;
     align-items: center;
     transition: background variables.$transition-slow, color variables.$transition-slow;
 }

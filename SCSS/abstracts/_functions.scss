@@ -1,0 +1,36 @@
+@use "sass:math";
+
+
+// rem helper
+@function rem($px) {
+    @return ($px / $baseFontSize) * 1rem;
+}
+
+// percentage helper
+@function pct($num, $den: 1) {
+    @return ($num / $den) * 100%;
+}
+
+// Add this helper at the top or before fluid-size
+@function strip-unit($number) {
+    @if type-of($number)=='number' and not unitless($number) {
+        @return math.div($number, ($number * 0 + 1));
+    }
+
+    @return $number;
+}
+
+// simple clamp helper for fluid type if needed
+@function fluid-size($min, $max, $min-vw: 375px, $max-vw: 1920px) {
+    $slope: (
+        $max - $min) / (strip-unit($max-vw) - strip-unit($min-vw)
+    );
+$intercept: $min - $slope * strip-unit($min-vw);
+@return clamp(#{$min}, #{$intercept}vw + #{$slope} * 1vw, #{$max});
+}
+
+// Carousel height calculator
+// Each card (including gap) adds 30vh to the total height
+@function carousel-height($card-count, $per-card: 30vh) {
+    @return $card-count * $per-card;
+}

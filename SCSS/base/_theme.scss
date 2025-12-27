@@ -1,0 +1,10 @@
+@use '../abstracts/mixins';
+@use '../abstracts/variables';
+
+:root {
+    @include mixins.theme-map(variables.$theme-dark);
+}
+
+.light-mode {
+    @include mixins.theme-map(variables.$theme-light);
+}

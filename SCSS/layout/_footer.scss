@@ -1,0 +1,46 @@
+@use '../abstracts/mixins';
+.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.footer-inner {
+    display: flex;
+    gap: 32px;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    font-weight: 800;
+}
+
+.footer-brand .muted {
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.footer-cols {
+    display: flex;
+    gap: 40px;
+}
+
+.footer-cols .col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-cols h4 {
+    margin: 0 0 8px;
+}
+
+
+@include mixins.respond(sm) {
+    .footer-inner {
+        flex-direction: column;
+    }
+}

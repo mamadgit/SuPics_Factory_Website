@@ -1,0 +1,20 @@
+@use '../abstracts/variables';
+.container {
+    width: 100%;
+    max-width: variables.$max-content-width;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container.narrow {
+    max-width: 800px;
+}
+
+
+.max-content-width {
+    max-width: variables.$maxContentWidth;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}

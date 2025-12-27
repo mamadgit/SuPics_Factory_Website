@@ -17,6 +17,17 @@
   // display: none; /* hide site initially until preloader finishes */
   opacity: 0;             /* hide site initially */
 }
+.reveal-text span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.amimated-text {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  // z-index: 1;
+}
+
 
 // @use 'mixins';
 // #preloader {

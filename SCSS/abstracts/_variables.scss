@@ -1,0 +1,87 @@
+// Global design tokens
+$pathFont: "../assets/fonts";
+$baseFont: "StabilGrotesk", Arial, sans-serif;
+$kanjiFont: "Noto Sans JP", sans-serif;
+$baseFontSize: 10px; // base for rem calc
+
+
+// Theme color maps
+$color-brand: (
+    mountain-blue: #1d395a,
+    geisha-red: #be3532,
+    peach: #e8a9a8,
+    forest-green: #1f4037,
+    cream: #f8f0e4,
+    error: #d21c1c
+);
+
+
+$color-grey: (
+    dark: #333,
+    g7: #232323,
+    g6: #444,
+    g5: #666,
+    g4: #888,
+    g3: #b5b5b5,
+    g2: #ececec,
+    g1: #f4f4f4
+);
+
+
+// CSS variable themes (dark + light) expressed as maps
+$theme-dark: (
+    bg: #0b0c10,
+    surface: #12141a,
+    text: #e9eef3,
+    muted: #b9c2cc,
+    accent: #6cf5d2,
+    accent-2: #7aa7ff,
+    border: #1e2230,
+    card: #161923
+);
+
+
+$theme-light: (
+    bg: #f7f9fc,
+    surface: #ffffff,
+    text: #101418,
+    muted: #38424e,
+    accent: #008e6f,
+    accent-2: #0055cc,
+    border: #e1e5eb,
+    card: #f1f3f7
+);
+
+// Animation & Transitions
+$transition-base: 0.3s ease;
+$transition-slow: 0.6s ease;
+$transition-fast: 0.15s ease-out;
+
+// Breakpoints
+$breakpoints: (
+    sm: 720px,
+    md: 960px,
+    lg: 1100px
+);
+
+
+// Utility sizes
+$max-content-width: 1100px; // follows container in original CSS
+$maxContentWidth: 2560px; // from your variables file
+
+// -----------------------------
+// Border radius scale
+// -----------------------------
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+
+// Optional semantic radii
+$radius-button: 10px;
+$radius-image: 12px;
+$radius-card: $radius-lg;
+
+
+// Base spacings
+@forward "./_maps";

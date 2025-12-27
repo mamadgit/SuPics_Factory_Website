@@ -1,0 +1,28 @@
+// Simple grid helper using CSS Grid with CSS vars
+.grid-row {
+    display: grid;
+    grid-column-gap: var(--grid-gap, 16px);
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-column-width, 200px), 1fr));
+    padding-left: var(--grid-gutter, 16px);
+    padding-right: var(--grid-gutter, 16px);
+}
+
+
+.grid-gutter {
+    padding-left: var(--grid-gutter, 16px);
+    padding-right: var(--grid-gutter, 16px);
+}
+
+
+// Prevent double padding on nested grids
+.grid-row,
+.grid-gutter {
+    .grid-row {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+// Utility classes for column spans (will be generated for 6/8/12 in main.scss)
+// Example: .grid-col-1 { grid-column-end: span 1 }

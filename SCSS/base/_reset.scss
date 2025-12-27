@@ -12,7 +12,6 @@ body {
 img {
     max-width: 100%;
     display: block;
-    transition: background variables.$transition-slow, color variables.$transition-slow;
 }
 
 a {

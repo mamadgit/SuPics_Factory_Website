@@ -1,0 +1,64 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use 'variables';
+@use 'maps';
+
+// Generate CSS variables from a map
+@mixin theme-map($map) {
+    @each $key, $val in $map {
+        --#{$key}: #{$val};
+    }
+}
+
+
+// Center helpers
+@mixin flex-center($gap: 0) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $gap;
+}
+
+$breakpoint-map: variables.$breakpoints;
+
+
+@mixin respond($size) {
+    $val: map.get($breakpoint-map, $size);
+
+    @if $val {
+        @media (max-width: $val) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "Breakpoint `#{$size}` not found in $breakpoints map.";
+    }
+}
+
+
+// Card mixin
+@mixin card($padding: 20px) {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: $padding;
+    border-radius: variables.$radius-lg;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+
+// Button generator
+@function _get-btn-prop($variant, $prop) {
+    @return map.get(map.get(maps.$btn-variants, $variant), $prop);
+}
+
+
+@mixin btn-variant($variant) {
+    $bg: _get-btn-prop($variant, background);
+    $color: _get-btn-prop($variant, color);
+    $bcolor: _get-btn-prop($variant, border-color);
+    background: $bg;
+    color: $color;
+    border-color: $bcolor;
+}

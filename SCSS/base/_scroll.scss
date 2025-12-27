@@ -1,0 +1,4 @@
+#scroll-content{
+  position: relative;
+  isolation: isolate; /* creates a clean stacking context */
+}

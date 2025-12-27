@@ -210,7 +210,7 @@ window.addEventListener("load", () => {
     });
   }
 
-
+//Text reveal animation
   const el = document.querySelector('.reveal-text'); //Retreat text element from HTML
   const text = el.textContent; //Only take the text content (no HTML)
   el.textContent = ''; //Remove text nodes making them splittable
@@ -218,11 +218,11 @@ window.addEventListener("load", () => {
   const chars = [];
 
   [...text].forEach(char => {
-    const span = document.createElement('span');
+    const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
     span.textContent = char === ' ' ? '\u00A0' : char;
-    span.style.display = 'inline-block';
-    el.appendChild(span);
-    chars.push(span);
+    span.style.display = 'inline-block'; //To allow transform animations
+    el.appendChild(span);//Insert spans back into the element in the DOM
+    chars.push(span);//Keep track of all spans in an array
   });
 
   // GSAP animation with ScrollTrigger - animates when scrolling to the element

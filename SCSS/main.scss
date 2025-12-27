@@ -1,0 +1,40 @@
+// 1. Abstracts (Variables, Mixins, Functions)
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/maps';
+@use 'abstracts/mixins';
+@use 'abstracts/animations';
+
+// 2. Base (Reset, Typography, Global Styles)
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/globals';
+@use 'base/theme';
+@use 'base/scroll';
+
+// 3. Layout (Structure, Header, Footer)
+@use 'layout/container';
+@use 'layout/grid'; 
+@use 'layout/header';
+@use 'layout/footer';
+
+// 4. Components (Reusable UI elements)
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/nav';
+@use 'components/tags';
+@use 'components/hero';
+@use 'components/fullscreen-cover';
+
+// 5. Sections (Specific page sections)
+@use 'sections/hero' as section-hero; // Aliased to avoid conflict with component
+@use 'sections/features';
+// @use 'sections/rotator';
+@use 'sections/ai-demo';
+@use 'sections/gallery';
+@use 'sections/horizontal-carousel';
+@use 'sections/diagonal-carousel';
+
+// 6. Utilities (Helpers)
+@use 'utilities/helpers';
+@use 'utilities/media';

@@ -1,0 +1,12 @@
+// Additional maps used by mixins
+$btn-variants: (
+    solid: (background: linear-gradient(135deg, var(--accent), var(--accent-2)),
+        color: #061018,
+        border-color: transparent),
+    ghost: (background: transparent,
+        color: var(--text),
+        border-color: var(--border)),
+    danger: (background: #d21c1c,
+        color: #ffffff,
+        border-color: #d21c1c)
+);
