@@ -44,9 +44,39 @@ body {
     font-size: .8rem;
 }
 
+.animated-text {
+    text-align: center;
+    
+    .heading {
+        font-size: clamp(4rem, 12vw, 10rem);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        display: block;
 
-.hero h1 {
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1.1;
-    margin: 0 0 16px;
+        &--solid {
+            color: #fff;
+        }
+
+        &--transparent {
+            color: transparent;
+            -webkit-text-stroke: 2px #fff;
+        }
+    }
+
+    h2 {
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 0 0 24px;
+        color: var(--text);
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--muted);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
