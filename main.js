@@ -209,60 +209,89 @@ window.addEventListener("load", () => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
-
-//Text reveal animation
-  const el = document.querySelector('.reveal-text'); //Retreat text element from HTML
-  const text = el.textContent; //Only take the text content (no HTML)
-  el.textContent = ''; //Remove text nodes making them splittable
+// Function to split text content of an element into spans for each character
+  function splitTextToSpans(el) {
+  const text = el.textContent;//Only take the text content (no HTML)
+  el.textContent = '';//Remove text nodes making them splittable
 
   const chars = [];
 
   [...text].forEach(char => {
     const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
     span.textContent = char === ' ' ? '\u00A0' : char;
-    span.style.display = 'inline-block'; //To allow transform animations
+    span.style.display = 'inline-block';//To allow transform animations
     el.appendChild(span);//Insert spans back into the element in the DOM
     chars.push(span);//Keep track of all spans in an array
   });
 
-  // GSAP animation with ScrollTrigger - animates when scrolling to the element
-  const t2 = gsap.timeline({ paused: false });
+  return chars;
+}
 
-  t2.fromTo(
-    chars,
-    { y: '1em', opacity: 0 },
-    {
-      y: '0em',
-      opacity: 1,
-      stagger: 0.05,
-      duration: 0.6,
-      ease: 'power3.out'
-    }
-  );
-  ScrollTrigger.create({
-    trigger: el,
-    start: 'top 100%',
-    end: 'bottom 10%',
+  //Text reveal animation - applies to ALL .reveal-text elements
+document.querySelectorAll('.reveal-text').forEach(el => {
+  const chars = splitTextToSpans(el);
 
-    onEnter: () => {
-      t2.restart();
-    },
+    // GSAP animation with ScrollTrigger - animates when scrolling to the element
+    const t2 = gsap.timeline({ paused: true });
 
-    onEnterBack: () => {
-      t2.restart();
-    },
+    t2.fromTo(
+      chars,
+      { y: '1em', opacity: 0 },
+      {
+        y: '0em',
+        opacity: 1,
+        stagger: 0.05,
+        duration: 0.6,
+        ease: 'power3.out'
+      }
+    );
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 100%',
+      end: 'bottom 10%',
 
-    onLeave: () => {
-      t2.pause(0); // reset to start (hidden)
-    },
-
-    onLeaveBack: () => {
-      t2.pause(0); // reset to start (hidden)
-    }
+      onEnter: () => {
+        t2.restart();
+      },
+      onEnterBack: () => {
+        t2.restart();
+      },
+      onLeave: () => {
+        t2.pause(0); // reset to start (hidden)
+      },
+      onLeaveBack: () => {
+        t2.pause(0); // reset to start (hidden)
+      }
+    });
   });
+  document.querySelectorAll('.reveal-text-diagonal').forEach(el => {
+    const chars = splitTextToSpans(el);
+    // GSAP animation with ScrollTrigger - animates when scrolling to the element
+    const t3 = gsap.timeline({ paused: true });
 
+    t3.fromTo(
+      chars,
+      { y: '1em', opacity: 0 },
+      {
+        y: '0em',
+        opacity: 1,
+        stagger: 0.05,
+        duration: 0.75,
+        ease: 'power3.out'
+      }
+    );
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 60%',
+      end: 'bottom 0%',
 
+      onEnter: () => t3.play(),
+      onEnterBack: () => t3.play(),
+      onLeave: () => t3.reverse(),
+      onLeaveBack: () => t3.reverse()
 
+    });
+  });
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
   function initCarouselAnimations() {
