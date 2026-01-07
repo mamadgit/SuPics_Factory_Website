@@ -1,6 +1,6 @@
 .hero {
     position: relative;
-    padding: 80px 0 40px;
+    // padding: 80px 0 40px;
     overflow: hidden;
 }
 
@@ -34,20 +34,21 @@
     img {
         width: 100%;
         height: auto;
-        object-fit: cover;
-        border-radius: 4px; 
+        max-height: 450px;    // Add this - cap the height
+        object-fit: contain;  // or 'cover' if you want cropping
+        border-radius: 4px;
     }
-} 
+}
 
 @media (max-width: 768px) {
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    
+
     .hero-text {
         text-align: center;
-        
+
         p {
             max-width: 100%;
             margin: 0 auto;

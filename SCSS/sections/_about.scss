@@ -1,0 +1,24 @@
+@use '../abstracts/mixins';
+.about-section {
+    border-top: 1px solid var(--border);
+    padding: 10px 0;
+    background-color: var(--section-bg);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    // gap: 50px;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.about-image {
+    img {
+        width: 100%;
+        height: auto;
+        max-height: 550px;    // Add this - cap the height
+        object-fit: contain;  // or 'cover' if you want cropping
+        border-radius: 4px;
+    }
+}

@@ -16,7 +16,7 @@
 
     .carousel-track {
         display: flex;
-        gap: 60px;
+        gap: 60px; 
         will-change: transform;
         padding: 0 10vw;
     }
@@ -66,3 +66,33 @@
 //     height: 100vh;
 //     /* section pinned height */
 // }
+
+// All Projects Link - bottom right of horizontal carousel
+.all-projects-link {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    z-index: 10;
+
+    svg {
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        color: var(--accent, #6366f1);
+
+        svg {
+            transform: translateX(5px);
+        }
+    }
+}

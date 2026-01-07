@@ -14,14 +14,14 @@
 
 // 3. Layout (Structure, Header, Footer)
 @use 'layout/container';
-@use 'layout/grid'; 
+@use 'layout/grid';
 @use 'layout/header';
 @use 'layout/footer';
 
 // 4. Components (Reusable UI elements)
 @use 'components/buttons';
 @use 'components/cards';
-@use 'components/nav';
+@use 'components/nav'; 
 @use 'components/tags';
 @use 'components/hero';
 @use 'components/fullscreen-cover';
@@ -34,6 +34,7 @@
 @use 'sections/gallery';
 @use 'sections/horizontal-carousel';
 @use 'sections/diagonal-carousel';
+@use 'sections/about';
 
 // 6. Utilities (Helpers)
 @use 'utilities/helpers';

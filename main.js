@@ -99,6 +99,21 @@ window.addEventListener("load", () => {
   button.addEventListener("click", (e) => {
     smoother.scrollTo(".site-header", true, "top top");
   });
+
+  // Smooth scroll for ALL anchor links to work with ScrollSmoother
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId && targetId !== '#') {
+        e.preventDefault(); // Prevent the default jump behavior
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // Use ScrollSmoother's scrollTo - false = instant jump (no visible scrolling)
+          smoother.scrollTo(targetElement, false, "top 80px"); // 80px offset for fixed header
+        }
+      }
+    });
+  });
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
     trigger: ".site-header",
@@ -108,36 +123,65 @@ window.addEventListener("load", () => {
     pinSpacing: false,
     // markers: true
   });
+
+  // Auto-scroll past hero video when user starts scrolling
+  // This makes a small scroll jump to the header (like clicking Explore)
+  let heroSnapped = false;
+  let pageReady = false; // Prevent snap on page load/refresh
+
+  // Wait 1 second after page load before enabling snap
+  setTimeout(() => {
+    pageReady = true;
+  }, 1000);
+
+  ScrollTrigger.create({
+    trigger: ".hero-fullscreen",
+    start: "top top",
+    end: "bottom 90%", // Triggers when scrolled 10% into the hero
+    onLeave: () => {
+      if (!heroSnapped && pageReady) {
+        heroSnapped = true;
+        smoother.scrollTo(".site-header", true, "top top");
+      }
+    },
+    onEnterBack: () => {
+      // Reset so it can snap again if user scrolls back to top
+      heroSnapped = false;
+    }
+  });
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
-    const logoImg = document.querySelector('.brand .logo-image img');
-    const DARK_LOGO = 'SU-LOGO-web.svg';
-    const LIGHT_LOGO = 'SU-LOGO-web-W.svg';
+    const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
+    const heroLogoImg = document.querySelector('.hero-image img');
+    const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
+    const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
+    const DARK_HERO_LOGO = 'SU-EN-LOGO-typo.png';
+    const LIGHT_HERO_LOGO = 'SU-EN-LOGO-typo-BLACK.png';
     const header = document.querySelector('.site-header');
 
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
 
-      if (logoImg) {
-        const newSrc = isLight ? DARK_LOGO : LIGHT_LOGO;
-        const newAlt = isLight ? 'Dark-Image-Logo' : 'Light-Image-Logo';
+      // Header logo switching
+      if (logoHeaderImg) {
+        const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
+        const newAlt = isLight ? 'Dark-Image-header-Logo' : 'Light-Image-header-Logo';
         // Toggle header light mode
         if (header) {
           header.classList.toggle('white', isLight);
-
         }
         if (animate && typeof gsap !== 'undefined') {
           // Fade out, swap image, fade in
-          gsap.to(logoImg, {
+          gsap.to(logoHeaderImg, {
             opacity: 0,
             duration: 0.2,
             ease: 'power1.inOut',
             onComplete: () => {
-              logoImg.src = newSrc;
-              logoImg.alt = newAlt;
-              gsap.to(logoImg, {
+              logoHeaderImg.src = newSrc;
+              logoHeaderImg.alt = newAlt;
+              gsap.to(logoHeaderImg, {
                 opacity: 1,
                 duration: 0.2,
                 ease: 'power1.inOut'
@@ -146,14 +190,38 @@ window.addEventListener("load", () => {
           });
         } else {
           // No animation on initial load
-          logoImg.src = newSrc;
-          logoImg.alt = newAlt;
+          logoHeaderImg.src = newSrc;
+          logoHeaderImg.alt = newAlt;
+        }
+      }
+
+      // Hero logo switching
+      if (heroLogoImg) {
+        const newHeroSrc = isLight ? LIGHT_HERO_LOGO : DARK_HERO_LOGO;
+        const newHeroAlt = isLight ? 'SU Logo Black' : 'SU Logo White';
+        if (animate && typeof gsap !== 'undefined') {
+          gsap.to(heroLogoImg, {
+            opacity: 0,
+            duration: 0.2,
+            ease: 'power1.inOut',
+            onComplete: () => {
+              heroLogoImg.src = newHeroSrc;
+              heroLogoImg.alt = newHeroAlt;
+              gsap.to(heroLogoImg, {
+                opacity: 1,
+                duration: 0.2,
+                ease: 'power1.inOut'
+              });
+            }
+          });
+        } else {
+          heroLogoImg.src = newHeroSrc;
+          heroLogoImg.alt = newHeroAlt;
         }
       }
 
       try { localStorage.setItem('siteTheme', isLight ? 'light' : 'dark'); } catch (e) { }
     }
-
     // initialize from saved preference or system preference
     const saved = localStorage.getItem('siteTheme');
     const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
@@ -209,27 +277,27 @@ window.addEventListener("load", () => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
-// Function to split text content of an element into spans for each character
+  // Function to split text content of an element into spans for each character
   function splitTextToSpans(el) {
-  const text = el.textContent;//Only take the text content (no HTML)
-  el.textContent = '';//Remove text nodes making them splittable
+    const text = el.textContent;//Only take the text content (no HTML)
+    el.textContent = '';//Remove text nodes making them splittable
 
-  const chars = [];
+    const chars = [];
 
-  [...text].forEach(char => {
-    const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
-    span.textContent = char === ' ' ? '\u00A0' : char;
-    span.style.display = 'inline-block';//To allow transform animations
-    el.appendChild(span);//Insert spans back into the element in the DOM
-    chars.push(span);//Keep track of all spans in an array
-  });
+    [...text].forEach(char => {
+      const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
+      span.textContent = char === ' ' ? '\u00A0' : char;
+      span.style.display = 'inline-block';//To allow transform animations
+      el.appendChild(span);//Insert spans back into the element in the DOM
+      chars.push(span);//Keep track of all spans in an array
+    });
 
-  return chars;
-}
+    return chars;
+  }
 
   //Text reveal animation - applies to ALL .reveal-text elements
-document.querySelectorAll('.reveal-text').forEach(el => {
-  const chars = splitTextToSpans(el);
+  document.querySelectorAll('.reveal-text').forEach(el => {
+    const chars = splitTextToSpans(el);
 
     // GSAP animation with ScrollTrigger - animates when scrolling to the element
     const t2 = gsap.timeline({ paused: true });

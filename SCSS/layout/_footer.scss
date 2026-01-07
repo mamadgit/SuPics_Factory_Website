@@ -1,4 +1,5 @@
 @use '../abstracts/mixins';
+
 .site-footer {
     border-top: 1px solid var(--border);
     padding: 40px 0;
@@ -8,7 +9,7 @@
 .footer-inner {
     display: flex;
     gap: 32px;
-    justify-content: space-between;
+    justify-content: space-between; 
     align-items: flex-start;
     flex-wrap: wrap;
 }
@@ -42,5 +43,53 @@
 @include mixins.respond(sm) {
     .footer-inner {
         flex-direction: column;
+    }
+}
+
+// Footer contact section
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-size: 1.2rem;
+
+    svg {
+        color: var(--muted);
+        flex-shrink: 0;
+    }
+
+    a {
+        color: var(--text);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--accent, #6366f1);
+        }
+    }
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #E1306C; // Instagram brand color
+
+        svg {
+            color: #E1306C;
+        }
     }
 }

@@ -1,28 +1,66 @@
 @use '../abstracts/variables';
 
+// Nian Font Family - All Weights
 @font-face {
-    font-family: 'StabilGrotesk';
-    src: url('#{variables.$pathFont}/StabilGrotesk-Regular.woff2') format('woff2'),
-    url('#{variables.$pathFont}/StabilGrotesk-Regular.woff') format('woff');
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nian'; 
+    src: url('#{variables.$pathFont}/w_Nian_Extra_Light.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'StabilGrotesk';
-    src: url('#{variables.$pathFont}/StabilGrotesk-Medium.woff2') format('woff2'),
-    url('#{variables.$pathFont}/StabilGrotesk-Medium.woff') format('woff');
-    font-weight: 500;
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Semi_Bold.ttf') format('truetype');
+    font-weight: 600;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'StabilGrotesk';
-    src: url('#{variables.$pathFont}/StabilGrotesk-Bold.woff2') format('woff2'),
-    url('#{variables.$pathFont}/StabilGrotesk-Bold.woff') format('woff');
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Bold.ttf') format('truetype');
     font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Extra_Bold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nian';
+    src: url('#{variables.$pathFont}/w_Nian_Black.ttf') format('truetype');
+    font-weight: 900;
     font-style: normal;
     font-display: swap;
 }
@@ -33,7 +71,7 @@ body {
     color: var(--text);
     line-height: 1.6;
     transition: background variables.$transition-slow, color variables.$transition-slow;
-    font-size: 1rem; // 10px base is handled by rem() function
+    font-size: 1.2rem; // 10px base is handled by rem() function
 }
 
 
@@ -45,7 +83,8 @@ body {
 }
 
 .animated-text {
-    text-align: center;
+
+    // text-align: center;
     .heading {
         font-size: clamp(4rem, 12vw, 10rem);
         font-weight: 900;
@@ -63,7 +102,7 @@ body {
     }
 
     h2 {
-        font-size: clamp(40px, 6vw, 72px);
+        font-size: clamp(40px, 6vw, 55px);
         font-weight: 700;
         line-height: 1.1;
         margin: 0 0 24px;
@@ -71,10 +110,11 @@ body {
     }
 
     p {
-        font-size: 1rem;
+        text-align: justify;
+        font-size: 1.25rem;
         line-height: 1.6;
         color: var(--muted);
-        max-width: 400px;
+        max-width: max-content;
         margin-left: auto;
         margin-right: auto;
     }
