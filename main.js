@@ -134,7 +134,20 @@ window.addEventListener("load", () => {
       if(AnimText){
         AnimText.classList.toggle('heading--solid-black', isLight);
       }
-
+      if (animate && typeof gsap !== 'undefined') {
+          // Fade out, swap image, fade in
+          gsap.to(AnimText, {
+            opacity: 0,
+            duration: 0.2,
+            ease: 'power1.inOut',
+            onComplete: () => {
+              gsap.to(AnimText, {
+                opacity: 1,
+                duration: 0.2,
+              });
+            }
+          });
+        }
       // Header logo switching
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
