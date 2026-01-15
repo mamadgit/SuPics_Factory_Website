@@ -1,38 +1,3 @@
-// window.addEventListener("load", () => {
-//   const tl = gsap.timeline();
-
-//   // logo fade in
-//   tl.to("#loader-logo", {
-//     opacity: 1,
-//     scale: 1,
-//     duration: 1.2,
-//     ease: "power2.out"
-//   });
-//   roll up preloader
-//   tl.to("#preloader", {
-//     y: '-100%', // Move the preloader up off the screen
-//     duration: 1,
-//     ease: "power1.out",
-//     onComplete: () => {
-//       document.getElementById("preloader").style.display = "none";
-//       document.getElementById("content").style.display = "block"; // Show the content after preloader
-//       ScrollTrigger.refresh();
-//   }}, "+=2.5");
-
-//   Show content normally (or add a rolling effect you desire)
-//   tl.fromTo("#content",
-//     {
-//       y: 100, // Start below its final position
-//       opacity: 1 // Keep it visible instantly or adjust as needed
-//     },
-//     {
-//       y: 0, // End at its original position
-//       duration: 1.4,
-//       ease: "power3.out",
-//       clearProps: "filter",
-//       });
-// });
-
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
   gsap.registerPlugin(ScrollTrigger);
@@ -154,15 +119,21 @@ window.addEventListener("load", () => {
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
+    const AnimText = document.querySelector('.animated-text .heading');
+    const header = document.querySelector('.site-header');
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
     const DARK_HERO_LOGO = 'SU-EN-LOGO-typo.png';
     const LIGHT_HERO_LOGO = 'SU-EN-LOGO-typo-BLACK.png';
-    const header = document.querySelector('.site-header');
 
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
+
+      //Animated Text Color Switching
+      if(AnimText){
+        AnimText.classList.toggle('heading--solid-black', isLight);
+      }
 
       // Header logo switching
       if (logoHeaderImg) {
