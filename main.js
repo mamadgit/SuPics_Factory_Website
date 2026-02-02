@@ -8,6 +8,11 @@ window.addEventListener("load", () => {
   // ScrollTrigger.addEventListener("refresh", () => {
   //   console.log("✅ ScrollTrigger refresh");
   // });
+const hasHash = !!window.location.hash && window.location.hash !== "#";
+// Decide whether to show preloader on index
+const shouldShowPreloader = !hasHash ;
+
+if (shouldShowPreloader) {
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -26,15 +31,6 @@ window.addEventListener("load", () => {
       document.getElementById("content").style.display = "block"; // Show the content after preloader
     }
   }, "+=2.5");
-  requestAnimationFrame(() => {//Giving appropiate time for the content with animation (carousels) to be visible
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true); // Force a full refresh
-      // Initialize carousel animations AFTER content is visible and measurements are correct
-      if (typeof initCarouselAnimations === 'function') {
-        initCarouselAnimations();
-      }
-    });
-  });
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -53,6 +49,25 @@ window.addEventListener("load", () => {
       }
     }
   );
+} else {
+  // Skip preloader completely when coming from all-projects via hash
+  const preloader = document.getElementById("preloader");
+  const content = document.getElementById("content");
+
+  if (preloader) preloader.style.display = "none";
+  if (content) {
+    content.style.display = "block";
+    content.style.opacity = "1";
+  }
+}
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh(true);
+    // If you added scrollToHashIfAny() earlier, call it here too:
+    if (typeof scrollToHashIfAny === "function") scrollToHashIfAny();
+  });
+});
+
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
   let smoother = ScrollSmoother.create({
     wrapper: '#scroll-wrapper',
@@ -60,25 +75,48 @@ window.addEventListener("load", () => {
     smooth: 1.7,
     // effects: true
   });
-  let button = document.querySelector('.hero-scroll-btn');
-  button.addEventListener("click", (e) => {
+const button = document.querySelector('.hero-scroll-btn');
+if (button) {
+  button.addEventListener("click", () => {
     smoother.scrollTo(".site-header", true, "top top");
   });
+}
+// Smooth scroll for ALL anchor links to work with ScrollSmoother
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const targetId = this.getAttribute('href');
+    if (!targetId) return;
 
-  // Smooth scroll for ALL anchor links to work with ScrollSmoother
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href');
-      if (targetId && targetId !== '#') {
-        e.preventDefault(); // Prevent the default jump behavior
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          // Use ScrollSmoother's scrollTo - false = instant jump (no visible scrolling)
-          smoother.scrollTo(targetElement, false, "top 80px"); // 80px offset for fixed header
-        }
-      }
-    });
+    e.preventDefault();
+
+    if (targetId === '#') {
+      history.pushState(null, "", "#");
+      smoother.scrollTo(0, true);
+      return;
+    }
+
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      // Update the URL hash so it changes (#About, #Contact, etc.)
+      history.pushState(null, "", targetId);
+
+      // Use smoother for transform-based scrolling
+      smoother.scrollTo(targetElement, true, "top 80px");
+    }
   });
+});
+function scrollToHashIfAny() {
+  const hash = window.location.hash; // e.g. "#Contact"
+  if (!hash || hash === "#") return;
+
+  const el = document.querySelector(hash);
+  if (el) {
+    smoother.scrollTo(el, true, "top 80px");
+  }
+}
+
+window.addEventListener("hashchange", scrollToHashIfAny);
+
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
     trigger: ".site-header",
@@ -219,39 +257,39 @@ window.addEventListener("load", () => {
     }
   })();
 
-  // Text rotator in hero
-  const items = Array.from(document.querySelectorAll('.rotator-item'));
-  const inner = document.querySelector('.rotator-inner');
+  // // Text rotator in hero
+  // const items = Array.from(document.querySelectorAll('.rotator-item'));
+  // const inner = document.querySelector('.rotator-inner');
 
-  if (inner && items.length) {
-    let idx = 0;
+  // if (inner && items.length) {
+  //   let idx = 0;
 
-    // Set initial width
-    inner.style.width = `${items[idx].offsetWidth}px`;
+  //   // Set initial width
+  //   inner.style.width = `${items[idx].offsetWidth}px`;
 
-    setInterval(() => {
-      items[idx].classList.remove('is-active');
-      idx = (idx + 1) % items.length;
-      items[idx].classList.add('is-active');
-      inner.style.width = `${items[idx].offsetWidth}px`;
-    }, 2200);
-  }
+  //   setInterval(() => {
+  //     items[idx].classList.remove('is-active');
+  //     idx = (idx + 1) % items.length;
+  //     items[idx].classList.add('is-active');
+  //     inner.style.width = `${items[idx].offsetWidth}px`;
+  //   }, 2200);
+  // }
 
 
   // Fake search interaction
-  const input = document.getElementById('search');
-  const btn = document.getElementById('searchBtn');
-  if (btn && input) {
-    btn.addEventListener('click', () => {
-      btn.textContent = 'Searching…';
-      btn.disabled = true;
-      setTimeout(() => {
-        btn.textContent = 'Search';
-        btn.disabled = false;
-        input.placeholder = 'Found: warm serif moodboards, type another query';
-      }, 900);
-    });
-  }
+  // const input = document.getElementById('search');
+  // const btn = document.getElementById('searchBtn');
+  // if (btn && input) {
+  //   btn.addEventListener('click', () => {
+  //     btn.textContent = 'Searching…';
+  //     btn.disabled = true;
+  //     setTimeout(() => {
+  //       btn.textContent = 'Search';
+  //       btn.disabled = false;
+  //       input.placeholder = 'Found: warm serif moodboards, type another query';
+  //     }, 900);
+  //   });
+  // }
 
   // Mobile menu (placeholder)
   const toggle = document.querySelector('.menu-toggle');
@@ -346,7 +384,7 @@ window.addEventListener("load", () => {
   });
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
-  function initCarouselAnimations() {
+  // function initCarouselAnimations() {
     // Global extra offset for carousels (adjust px as needed)
     const extraOffset = 1000;
 
@@ -404,7 +442,7 @@ window.addEventListener("load", () => {
         }
       });
     }
-  }
+  // }
 
   // Expose the function so it can be called after preloader
   window.initCarouselAnimations = initCarouselAnimations;
