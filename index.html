@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cosmos-like — Discovery Engine for Creative Teams</title>
+  <title>SuPics Website</title>
   <meta name="description"
     content="A discovery engine for creative teams. Organize, search, and resurface your best work." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="styles.css" /> -->
   <link rel="stylesheet" href="CSS/main.css" />
+
 </head>
 
 <body>
@@ -22,31 +23,30 @@
     <div id="scroll-wrapper">
       <div id="scroll-content">
         <section class="hero-fullscreen">
-          <div class="hero-fullscreen">
-            <video autoplay loop muted playsinline>
-              <source src="DEMO_WEBSITE.mp4" type="video/mp4">
-            </video>
-            <!-- Stylish transparent scroll button -->
-            <div class="hero-scroll-btn">
-              <span class="btn-text">Explore</span>
-              <svg class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
+          <video autoplay loop muted playsinline>
+            <source src="DEMO_WEBSITE.mp4" type="video/mp4">
+          </video>
+          <!-- Stylish transparent scroll button -->
+          <div class="hero-scroll-btn">
+            <span class="btn-text">Explore</span>
+            <svg class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </div>
         </section>
         <!-- Header -->
         <header class="site-header">
-          <div class="container header-inner">
+          <div class="container narrow header-inner">
             <a class="brand" href="#">
               <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
             </a>
             <nav class="nav">
               <a href="#Home">Home</a>
               <a href="#Projects">Projects</a>
-              <a href="#about">About Us</a>
-              <a href="#footer">Contact</a>
+              <a href="#Services">Services</a>
+              <a href="#About">About Us</a>
+              <a href="#Contact">Contact</a>
               <div class="absolute top-4 right-4">
                 <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
                   bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -87,24 +87,6 @@
         <!-- Hero -->
         <section id="Home" class="hero">
           <div class="container hero-inner">
-            <!-- <h1>
-              A discovery engine for
-              <span class="rotator" aria-live="polite">
-                <span class="rotator-inner">
-                  <span class="rotator-item is-active">creative teams</span>
-                  <span class="rotator-item">product teams</span>
-                  <span class="rotator-item">researchers</span>
-                  <span class="rotator-item">marketers</span>
-                </span>
-              </span>
-            </h1>
-            <p class="lead">
-              Save everything that inspires you. Search across it instantly. Resurface the right thing at the right time.
-            </p>
-            <div class="hero-cta">
-              <a class="btn solid xl" href="#cta">Try it free</a>
-              <a class="btn ghost xl" href="#how">See how it works</a>
-            </div> -->
             <div class="hero-grid">
               <div class="hero-image">
                 <img src="SU-EN-LOGO-typo.png" alt="Inspiration 1" />
@@ -141,30 +123,63 @@
         </section>
 
         <!-- Horizontal Case Carousel -->
-        <section id="cases" class="section horizontal-carousel">
+        <section id="Projects" class="horizontal-carousel">
           <!-- <div class="pin-spacer"> -->
           <div class="horizontal-carousel">
             <div class="carousel-inner">
               <div class="carousel-track">
                 <!-- Card 1 -->
-                <div class="case-card">Horizontal Card 1
+                <div class="case-card">
                   <div class="card-text">
                     <h3>NUTTER BUTTER, YOU GOOD?</h3>
                     <h4>Nutter Butter</h4>
                     <p>This 56-year-old cookie’s rabbit hole of absurdist escapism consumed the internet.</p>
-                    <a href="#" class="btn ghost sm">View case</a>
+                    <a href="Project-Description.html" class="btn ghost sm">View case</a>
                   </div>
                   <div class="card-image">
-                    <img src="https://a.storyblok.com/f/155984/1920x1080/565559e6e8/adc104_int002g_0.jpg/m/" alt="">
+                    <video src="Cards' Content/project/capitan 1080_1.mp4" autoplay loop muted playsinline></video>
                   </div>
                 </div>
                 <!-- Card 2 -->
-                <div class="case-card">Horizontal Card 2
+                <div class="case-card">
                   <div class="card-text">
                     <h3>CRUNCH TIME CAMPAIGN</h3>
                     <h4>Cap’n Crunch</h4>
                     <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
-                    <a href="#" class="btn ghost sm">View case</a>
+                    <a href="Project-Description.html" class="btn ghost sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+                  </div>
+                </div>
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>CRUNCH TIME CAMPAIGN</h3>
+                    <h4>Cap’n Crunch</h4>
+                    <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+                    <a href="Project-Description.html" class="btn ghost sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+                  </div>
+                </div>
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>CRUNCH TIME CAMPAIGN</h3>
+                    <h4>Cap’n Crunch</h4>
+                    <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+                    <a href="Project-Description.html" class="btn ghost sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+                  </div>
+                </div>
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>CRUNCH TIME CAMPAIGN</h3>
+                    <h4>Cap’n Crunch</h4>
+                    <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+                    <a href="Project-Description.html" class="btn ghost sm">View case</a>
                   </div>
                   <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
@@ -175,7 +190,7 @@
             </div>
           </div>
           <!-- All Projects Link -->
-          <a href="#" class="all-projects-link" target="_blank" rel="noopener noreferrer">
+          <a href="All_Projects.html" class="All-Projects-Link">
             All Projects
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -184,22 +199,29 @@
             </svg>
           </a>
         </section>
+        <section class="typography">
+          <div class="container narrow">
+            <div class="animated-text">
+              hello
+            </div>
+          </div>
+        </section>
         <!-- Diagonal Case Carousel -->
-        <section id="cases" class="section diagonal-carousel">
+        <section id="Services" class="diagonal-carousel">
           <div class="animated-text">
             <div class="intro-text intro-text--solid">
-              <span class="reveal-text-diagonal heading heading--solid"> Your </span>
-              
+              <span class="reveal-text-diagonal heading heading--block heading--solid"> Our </span>
+
             </div>
             <div class="intro-text intro-text--transparent">
-              <span class="reveal-text-diagonal heading heading--transparent">sample</span>
+              <span class="reveal-text-diagonal heading heading--block heading--transparent">Services</span>
             </div>
           </div>
           <div class="diagonal-carousel">
             <div class="carousel-inner">
               <div class="carousel-track">
                 <!-- Card 1 -->
-                <div class="case-card">Diagonal Card 1
+                <div class="case-card">
                   <div class="card-text">
                     <h3>NUTTER BUTTER, YOU GOOD?</h3>
                     <h4>Nutter Butter</h4>
@@ -211,7 +233,7 @@
                   </div>
                 </div>
                 <!-- Card 2 -->
-                <div class="case-card">Diagonal Card 2
+                <div class="case-card">
                   <div class="card-text">
                     <h3>CRUNCH TIME CAMPAIGN</h3>
                     <h4>Cap’n Crunch</h4>
@@ -223,7 +245,7 @@
                   </div>
                 </div>
                 <!-- Card 3 -->
-                <div class="case-card">Diagonal Card 3
+                <div class="case-card">
                   <div class="card-text">
                     <h3>CRUNCH TIME CAMPAIGN</h3>
                     <h4>Cap’n Crunch</h4>
@@ -234,7 +256,7 @@
                     <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
                   </div>
                 </div>
-                <!-- <div class="case-card">Diagonal Card 4
+                <!-- <div class="case-card">  
                       <div class="card-text">
                         <h3>CRUNCH TIME CAMPAIGN</h3>
                         <h4>Cap’n Crunch</h4>
@@ -251,7 +273,7 @@
           </div>
         </section>
         <!-- About Us -->
-        <section id="about" class="about-section">
+        <section id="About" class="about-section">
           <div class="container">
             <div class="section-head">
               <h2>About Us</h2>
@@ -293,11 +315,11 @@
           </div>
         </section>
         <!-- Footer -->
-        <footer id="footer" class="site-footer">
+        <footer id="Contact" class="site-footer">
           <div class="container footer-inner">
             <div class="footer-brand">
               <span class="logo-dot"></span> SuPics Factory
-              <div class="muted">© 2025 SuPics Factory</div>
+              <div class="muted">© 2026 SuPics Factory</div>
             </div>
             <div class="footer-contact">
               <!-- Address -->

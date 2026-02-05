@@ -1,5 +1,5 @@
 window.addEventListener("load", () => {
-  if (typeof gsap === 'undefined' || !document.querySelector('.carousel-track')) return;
+  if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
   //   ScrollTrigger.addEventListener("refreshInit", () => {
   //   console.log("🔄 ScrollTrigger refreshInit");
@@ -8,11 +8,7 @@ window.addEventListener("load", () => {
   // ScrollTrigger.addEventListener("refresh", () => {
   //   console.log("✅ ScrollTrigger refresh");
   // });
-const hasHash = !!window.location.hash && window.location.hash !== "#";
-// Decide whether to show preloader on index
-const shouldShowPreloader = !hasHash ;
 
-if (shouldShowPreloader) {
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -49,25 +45,6 @@ if (shouldShowPreloader) {
       }
     }
   );
-} else {
-  // Skip preloader completely when coming from all-projects via hash
-  const preloader = document.getElementById("preloader");
-  const content = document.getElementById("content");
-
-  if (preloader) preloader.style.display = "none";
-  if (content) {
-    content.style.display = "block";
-    content.style.opacity = "1";
-  }
-}
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    ScrollTrigger.refresh(true);
-    // If you added scrollToHashIfAny() earlier, call it here too:
-    if (typeof scrollToHashIfAny === "function") scrollToHashIfAny();
-  });
-});
-
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
   let smoother = ScrollSmoother.create({
     wrapper: '#scroll-wrapper',
@@ -75,47 +52,54 @@ requestAnimationFrame(() => {
     smooth: 1.7,
     // effects: true
   });
-const button = document.querySelector('.hero-scroll-btn');
-if (button) {
-  button.addEventListener("click", () => {
-    smoother.scrollTo(".site-header", true, "top top");
-  });
-}
-// Smooth scroll for ALL anchor links to work with ScrollSmoother
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const targetId = this.getAttribute('href');
-    if (!targetId) return;
 
-    e.preventDefault();
+  function scrollToHashIfAny() {
+    const hash = window.location.hash; // e.g. "#Contact"
+    if (!hash || hash === "#") return;
 
-    if (targetId === '#') {
-      history.pushState(null, "", "#");
-      smoother.scrollTo(0, true);
-      return;
+    const el = document.querySelector(hash);
+    if (el) {
+      smoother.scrollTo(el, false, "top 80px");
     }
-
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      // Update the URL hash so it changes (#About, #Contact, etc.)
-      history.pushState(null, "", targetId);
-
-      // Use smoother for transform-based scrolling
-      smoother.scrollTo(targetElement, true, "top 80px");
-    }
-  });
-});
-function scrollToHashIfAny() {
-  const hash = window.location.hash; // e.g. "#Contact"
-  if (!hash || hash === "#") return;
-
-  const el = document.querySelector(hash);
-  if (el) {
-    smoother.scrollTo(el, true, "top 80px");
   }
-}
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+      // If you added scrollToHashIfAny() earlier, call it here too:
+      if (typeof scrollToHashIfAny === "function") scrollToHashIfAny();
+    });
+  });
 
-window.addEventListener("hashchange", scrollToHashIfAny);
+  const button = document.querySelector('.hero-scroll-btn');
+  if (button) {
+    button.addEventListener("click", () => {
+      smoother.scrollTo(".site-header", true, "top top");
+    });
+  }
+  // Smooth scroll for ALL anchor links to work with ScrollSmoother
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (!targetId) return;
+
+      e.preventDefault();
+
+      if (targetId === '#') {
+        history.pushState(null, "", "#");
+        smoother.scrollTo(0, true);
+        return;
+      }
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        // Update the URL hash so it changes (#About, #Contact, etc.)
+        history.pushState(null, "", targetId);
+        // Use smoother for transform-based scrolling
+        smoother.scrollTo(targetElement, false, "top 80px");
+      }
+    });
+  });
+
+  window.addEventListener("hashchange", scrollToHashIfAny);
 
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
@@ -169,23 +153,23 @@ window.addEventListener("hashchange", scrollToHashIfAny);
       document.documentElement.classList.toggle('light-mode', isLight);
 
       //Animated Text Color Switching
-      if(AnimText){
+      if (AnimText) {
         AnimText.classList.toggle('heading--solid-black', isLight);
       }
       if (animate && typeof gsap !== 'undefined') {
-          // Fade out, swap image, fade in
-          gsap.to(AnimText, {
-            opacity: 0,
-            duration: 0.2,
-            ease: 'power1.inOut',
-            onComplete: () => {
-              gsap.to(AnimText, {
-                opacity: 1,
-                duration: 0.2,
-              });
-            }
-          });
-        }
+        // Fade out, swap image, fade in
+        gsap.to(AnimText, {
+          opacity: 0,
+          duration: 0.2,
+          ease: 'power1.inOut',
+          onComplete: () => {
+            gsap.to(AnimText, {
+              opacity: 1,
+              duration: 0.2,
+            });
+          }
+        });
+      }
       // Header logo switching
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
@@ -385,66 +369,66 @@ window.addEventListener("hashchange", scrollToHashIfAny);
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
   // function initCarouselAnimations() {
-    // Global extra offset for carousels (adjust px as needed)
-    const extraOffset = 1000;
+  // Global extra offset for carousels (adjust px as needed)
+  const extraOffset = 1000;
 
-    // Horizontal Scroll Case Carousel
-    const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
-    if (horizontalTrack) {
-      //To add animations to cards if needed
-      const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
-      // Helper functions to recalculate values on resize
-      const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
-      const getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth;
+  // Horizontal Scroll Case Carousel
+  const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
+  if (horizontalTrack) {
+    //To add animations to cards if needed
+    const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
+    // Helper functions to recalculate values on resize
+    const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
+    const getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth;
 
-      gsap.to(horizontalTrack, {
-        x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".horizontal-carousel",
-          start: "top top",
-          end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          // markers: true
-        }
-      });
-    }
+    gsap.to(horizontalTrack, {
+      x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".horizontal-carousel",
+        start: "top top",
+        end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        // markers: true
+      }
+    });
+  }
 
-    // Diagonal Scroll Case Carousel
-    const diagonalSection = document.querySelector('.diagonal-carousel');
-    if (diagonalSection) {
-      const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+  // Diagonal Scroll Case Carousel
+  const diagonalSection = document.querySelector('.diagonal-carousel');
+  if (diagonalSection) {
+    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
 
-      // Helper functions to recalculate values on resize
-      const getTrackWidth = () => diagonalTrack.scrollWidth;
-      const getXMove = () => -(getTrackWidth() - window.innerWidth);
-      const getYRise = () => {
-        const angleInRadians = 5 * (Math.PI / 180);
-        return getTrackWidth() * Math.sin(angleInRadians);
-      };
+    // Helper functions to recalculate values on resize
+    const getTrackWidth = () => diagonalTrack.scrollWidth;
+    const getXMove = () => -(getTrackWidth() - window.innerWidth);
+    const getYRise = () => {
+      const angleInRadians = 5 * (Math.PI / 180);
+      return getTrackWidth() * Math.sin(angleInRadians);
+    };
 
-      gsap.to(diagonalTrack, {
-        x: getXMove, // Dynamic value
-        y: () => -getYRise(), // Dynamic value
-        ease: "none",
-        scrollTrigger: {
-          trigger: diagonalSection,
-          start: "top top",
-          end: () => "+=" + getTrackWidth(),
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true, // Recalculate on window resize
-          // markers: true
-        }
-      });
-    }
+    gsap.to(diagonalTrack, {
+      x: getXMove, // Dynamic value
+      y: () => -getYRise(), // Dynamic value
+      ease: "none",
+      scrollTrigger: {
+        trigger: diagonalSection,
+        start: "top top",
+        end: () => "+=" + getTrackWidth(),
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true, // Recalculate on window resize
+        // markers: true
+      }
+    });
+  }
   // }
 
   // Expose the function so it can be called after preloader
-  window.initCarouselAnimations = initCarouselAnimations;
+  // window.initCarouselAnimations = initCarouselAnimations;
   // ...existing code...
 });
