@@ -52,7 +52,7 @@ window.addEventListener("load", () => {
   });
 
 // Smooth scroll for ALL anchor links to work with ScrollSmoother
-document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
+document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
     e.preventDefault();
     const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
@@ -60,7 +60,7 @@ document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
 
     if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
     // go to index without hash
-    window.location.assign('index.html');
+    window.location.assign('../index.html');
   });
 });
   // Pin the header at the top once it reaches there (replaces CSS sticky)
