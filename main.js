@@ -1,4 +1,9 @@
 window.addEventListener("load", () => {
+  // Clear hash on page load to ignore URL hash and reload from beginning
+  // if (window.location.hash) {
+  //   history.replaceState(null, null, window.location.pathname);
+  // }
+  
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
   //   ScrollTrigger.addEventListener("refreshInit", () => {
@@ -85,14 +90,14 @@ window.addEventListener("load", () => {
       e.preventDefault();
 
       if (targetId === '#') {
-        history.pushState(null, "", "#");
+        // history.pushState(null, "", "#");
         smoother.scrollTo(0, true);
         return;
       }
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         // Update the URL hash so it changes (#About, #Contact, etc.)
-        history.pushState(null, "", targetId);
+        // history.pushState(null, "", targetId);
         // Use smoother for transform-based scrolling
         smoother.scrollTo(targetElement, false, "top 80px");
       }

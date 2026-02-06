@@ -73,7 +73,7 @@ document.querySelectorAll('a[href="index.html#"]').forEach(anchor => {
 });
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
-    trigger: ".site-header",
+    trigger: ".site-header", 
     start: "top top",
     end: "max",
     pin: true,

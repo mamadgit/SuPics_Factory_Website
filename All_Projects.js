@@ -1,4 +1,7 @@
 window.addEventListener("load", () => {
+    // if (window.location.hash) {
+  //   history.replaceState(null, null, window.location.pathname);
+  // }
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
 
@@ -55,7 +58,6 @@ window.addEventListener("load", () => {
 document.querySelectorAll('a[href="index.html#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault(); // This stops the "#" from appearing in the URL
-
     const targetId = this.getAttribute('href'); 
 
     if (targetId === '#' || targetId === '') {
