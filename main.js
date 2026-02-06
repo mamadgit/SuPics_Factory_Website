@@ -1,9 +1,5 @@
 window.addEventListener("load", () => {
-  // Clear hash on page load to ignore URL hash and reload from beginning
-  // if (window.location.hash) {
-  //   history.replaceState(null, null, window.location.pathname);
-  // }
-  
+
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger);
   //   ScrollTrigger.addEventListener("refreshInit", () => {
@@ -13,7 +9,6 @@ window.addEventListener("load", () => {
   // ScrollTrigger.addEventListener("refresh", () => {
   //   console.log("✅ ScrollTrigger refresh");
   // });
-
   const tl = gsap.timeline();
   // logo fade in
   tl.to("#loader-logo", {
@@ -58,20 +53,18 @@ window.addEventListener("load", () => {
     // effects: true
   });
 
-  function scrollToHashIfAny() {
-    const hash = window.location.hash; // e.g. "#Contact"
-    if (!hash || hash === "#") return;
+function scrollToStoredTargetIfAny() {
+  const targetId = sessionStorage.getItem('scrollTarget');
+  if (!targetId) return;
+  sessionStorage.removeItem('scrollTarget');
 
-    const el = document.querySelector(hash);
-    if (el) {
-      smoother.scrollTo(el, false, "top 80px");
-    }
-  }
+  const el = document.querySelector(targetId);
+  if (el) smoother.scrollTo(el, false, "top 80px");
+}
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       ScrollTrigger.refresh(true);
-      // If you added scrollToHashIfAny() earlier, call it here too:
-      if (typeof scrollToHashIfAny === "function") scrollToHashIfAny();
+        scrollToStoredTargetIfAny();
     });
   });
 
@@ -86,7 +79,6 @@ window.addEventListener("load", () => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
       if (!targetId) return;
-
       e.preventDefault();
 
       if (targetId === '#') {
@@ -96,15 +88,11 @@ window.addEventListener("load", () => {
       }
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        // Update the URL hash so it changes (#About, #Contact, etc.)
-        // history.pushState(null, "", targetId);
         // Use smoother for transform-based scrolling
         smoother.scrollTo(targetElement, false, "top 80px");
       }
     });
   });
-
-  window.addEventListener("hashchange", scrollToHashIfAny);
 
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({

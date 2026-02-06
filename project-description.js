@@ -52,23 +52,15 @@ window.addEventListener("load", () => {
   });
 
 // Smooth scroll for ALL anchor links to work with ScrollSmoother
-document.querySelectorAll('a[href="index.html#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault(); // This stops the "#" from appearing in the URL
+document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
+  anchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
+    const hash = href.split('#')[1];          // "Projects"
 
-    const targetId = this.getAttribute('href'); 
-
-    if (targetId === '#' || targetId === '') {
-      // If it's the logo/top link, scroll to the very top
-      smoother.scrollTo(0, true); 
-    } else {
-      // For other sections like #Home or #Projects
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        
-        smoother.scrollTo(targetElement, false, "top 80px");
-      }
-    }
+    if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
+    // go to index without hash
+    window.location.assign('index.html');
   });
 });
   // Pin the header at the top once it reaches there (replaces CSS sticky)
