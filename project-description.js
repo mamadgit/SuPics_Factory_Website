@@ -68,7 +68,9 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
-    const AnimText = document.querySelector('.animated-text .heading');
+    // const AnimText = document.querySelector('.animated-text .heading');
+    const SolidHeading = document.querySelector('.animated-text .heading--solid');
+    const TransparentHeading = document.querySelector('.animated-text .heading--transparent');
     const header = document.querySelector('.site-header');
     const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
     const headerEL = document.querySelector(".offcanvas-header");
@@ -99,29 +101,33 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
       onLeaveBack: () => headerEL.classList.remove("is-visible"),
       });
     }
-
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
 
       //Animated Text Color Switching
-      if(AnimText){
-        AnimText.classList.toggle('heading--solid-black', isLight);
-      }
-      if (animate && typeof gsap !== 'undefined') {
-          // Fade out, swap image, fade in
-          gsap.to(AnimText, {
+      if (SolidHeading && TransparentHeading) {
+        if (animate && typeof gsap !== "undefined") {
+          gsap.to(SolidHeading, {
             opacity: 0,
             duration: 0.2,
-            ease: 'power1.inOut',
+            ease: "power1.inOut",
             onComplete: () => {
-              gsap.to(AnimText, {
+              // swap while invisible
+              SolidHeading.classList.toggle("heading--solid-black", isLight);
+              TransparentHeading.classList.toggle("heading--transparent-black", isLight);
+              gsap.to(SolidHeading, {
                 opacity: 1,
                 duration: 0.2,
+                ease: "power1.inOut",
               });
-            }
+            },
           });
+        } else {
+          // no animation on load
+          SolidHeading.classList.toggle("heading--solid-black", isLight);
         }
+      }
       // Header logo switching
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
@@ -129,6 +135,9 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
         // Toggle header light mode
         if (header) {
           header.classList.toggle('white', isLight);
+        }
+        if (headerEL) {
+          headerEL.classList.toggle('white', isLight);
         }
         if (animate && typeof gsap !== 'undefined') {
           // Fade out, swap image, fade in
@@ -152,30 +161,6 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
           logoHeaderImg.alt = newAlt;
         }
       }
-      // Hero logo switching
-      if (heroLogoImg) {
-        const newHeroSrc = isLight ? LIGHT_HERO_LOGO : DARK_HERO_LOGO;
-        const newHeroAlt = isLight ? 'SU Logo Black' : 'SU Logo White';
-        if (animate && typeof gsap !== 'undefined') {
-          gsap.to(heroLogoImg, {
-            opacity: 0,
-            duration: 0.2,
-            ease: 'power1.inOut',
-            onComplete: () => {
-              heroLogoImg.src = newHeroSrc;
-              heroLogoImg.alt = newHeroAlt;
-              gsap.to(heroLogoImg, {
-                opacity: 1,
-                duration: 0.2,
-                ease: 'power1.inOut'
-              });
-            }
-          });
-        } else {
-          heroLogoImg.src = newHeroSrc;
-          heroLogoImg.alt = newHeroAlt;
-        }
-      }
       try { localStorage.setItem('siteTheme', isLight ? 'light' : 'dark'); } catch (e) { }
     }
     // initialize from saved preference or system preference
@@ -190,38 +175,38 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
       });
     }
     // Safety checks
-  let player = null;
-  if (playerEl && typeof Plyr !== "undefined") {
-    player = new Plyr(playerEl, {
-      muted: true,
+    let player = null;
+    if (playerEl && typeof Plyr !== "undefined") {
+      player = new Plyr(playerEl, {
+        muted: true,
+      });
+    // Force muted at start (autoplay policies can be picky)
+    player.muted = true;
+    // When PiP turns on, scroll using ScrollSmoother (GSAP)
+    player.on("enterpictureinpicture", () => {
+      // If the page is in fullscreen, exit it (PiP and fullscreen conflict)
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      if (!PiP) return;
+      if (typeof smoother !== "undefined" && smoother) {
+        smoother.scrollTo(PiP, true); // smooth scroll to the element
+      } else {
+        // fallback if ScrollSmoother isn't available for some reason
+        PiP.scrollIntoView({ behavior: "smooth" });
+      }
     });
-  // Force muted at start (autoplay policies can be picky)
-  player.muted = true;
-  // When PiP turns on, scroll using ScrollSmoother (GSAP)
-  player.on("enterpictureinpicture", () => {
-    // If the page is in fullscreen, exit it (PiP and fullscreen conflict)
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
-    }
-    if (!PiP) return;
-    if (typeof smoother !== "undefined" && smoother) {
-      smoother.scrollTo(PiP, true); // smooth scroll to the element
-    } else {
-      // fallback if ScrollSmoother isn't available for some reason
-      PiP.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-  player.on("leavepictureinpicture", () => {
-    const full = document.querySelector(".project-fullscreen");
-    if (!full) return;
-    if (smoother) {
-      smoother.scrollTo(full, true, -headerH);
-    } else {
-      full.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-}
-})();
+    player.on("leavepictureinpicture", () => {
+      const full = document.querySelector(".project-fullscreen");
+      if (!full) return;
+      if (smoother) {
+        smoother.scrollTo(full, true, -headerH);
+      } else {
+        full.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }
+  })();
 
   // Mobile menu (placeholder)
   const toggle = document.querySelector('.menu-toggle');
