@@ -15,7 +15,19 @@
         color: #101418;
     }
 }
-
+.offcanvas-header {
+  position: fixed;
+  width: 100vw;
+  background: #0b0c10;
+  color: #e9eef3;
+  z-index: 2;        // higher than .site-header (yours is 1)
+  will-change: transform;
+  transform: translateY(-110%);
+  transition: transform 0.35s ease;
+}
+.offcanvas-header.is-visible{
+    transform: translateY(0);
+}
 
 .header-inner {
     display: flex;
@@ -24,6 +36,14 @@
     height: 100px;
 }
 
+.header-left {
+  justify-content: flex-start;
+  padding-left: 24px; // push logo inward as much as you want
+}
+
+.header-right {
+  justify-content: flex-end;
+}
 .brand {
     font-weight: 800;
     letter-spacing: 0.4px; 

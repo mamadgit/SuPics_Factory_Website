@@ -83,36 +83,44 @@ body {
 }
 
 .animated-text {
-
     // text-align: center;
-    .heading {
-        font-size: clamp(4rem, 12vw, 10rem);
-        font-weight: 900;
-        letter-spacing: -0.03em;
-        display: block;
+.heading {
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
 
-        &--solid {
-            color: #fff;
-        }
-        &--solid-black{
-            color: #000000;
-        }
+  &--block {
+    display: block;
+  }
 
-        &--transparent {
-            color: transparent;
-            -webkit-text-stroke: 2px #fff;
-        }
-        &--transparent-black {
-            color: transparent;
-            -webkit-text-stroke: 2px #000000;
-        }
-    }
+  &--inline {
+    display: inline-block; // or inline-block
+  }
+
+  &--solid {
+    color: #fff;
+  }
+
+  &--solid-black {
+    color: #000000;
+  }
+
+  &--transparent {
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
+  }
+
+  &--transparent-black {
+    color: transparent;
+    -webkit-text-stroke: 2px #000000;
+  }
+}
 
     h2 {
         font-size: clamp(40px, 6vw, 55px);
         font-weight: 700;
         line-height: 1.1;
-        margin: 0 0 24px;
+        // margin: 0 0 24px;
         color: var(--text);
     }
 
@@ -126,3 +134,17 @@ body {
         margin-right: auto;
     }
 }
+    .intro-text-thirdpage {
+        padding-left: 20px;
+        font-size: 2rem;
+        color: var(--text);
+        max-width: 1000px; // caps the width
+
+        &--solid {
+            margin-left: 0;
+        }
+        &--transparent {
+            margin-left: 20%;
+            margin-top: -100px;
+        }
+    }
