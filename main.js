@@ -148,7 +148,7 @@ function scrollToStoredTargetIfAny() {
       document.documentElement.classList.toggle('light-mode', isLight);
 
       //Animated Text Color Switching
-      if (SolidHeading) {
+      if (SolidHeading && TransparentHeading) {
         if (animate && typeof gsap !== "undefined") {
           gsap.to(SolidHeading, {
             opacity: 0,
@@ -170,7 +170,6 @@ function scrollToStoredTargetIfAny() {
           SolidHeading.classList.toggle("heading--solid-black", isLight);
         }
       }
-      
       // Header logo switching
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
@@ -412,7 +411,7 @@ if (diagonalSection) {
   const diagonalTrack = diagonalSection.querySelector('.carousel-track');
   const ANGLE_DEG = 8;
   const ANGLE = ANGLE_DEG * (Math.PI / 180);
-  const START_BACK_X = 500; // your start offset
+  const START_BACK_X = 150; // your start offset
   const getTrackWidth = () => diagonalTrack.scrollWidth;
   const getXEnd = () => -(getTrackWidth() - window.innerWidth);
   const getXTravel = () => Math.abs(getXEnd() - START_BACK_X);
