@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="styles.css" /> -->
+   <link rel="stylesheet" href="https://cdn.plyr.io/3.8.4/plyr.css"/>
   <link rel="stylesheet" href="../CSS/main.css" />
 </head>
 
@@ -18,60 +19,60 @@
   <div id="preloader">
     <video src="../logo.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
   </div>
+    <!-- Header -->
+  <header class="offcanvas-header">
+    <div class="container narrow header-inner">
+        <a class="brand" href="#">
+          <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
+        </a>
+      <nav class="nav">
+        <a href="../index.html#Home">Home</a>
+        <a href="../index.html#Projects">Projects</a>
+        <a href="../index.html#Services">Services</a>
+        <a href="../index.html#About">About Us</a>
+        <a href="../index.html#Contact">Contact</a>
+        <div class="absolute top-4 right-4">
+          <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <span class="icon-wrap">
+              <!-- Sun Icon -->
+              <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-sun">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+              <!-- Moon Icon -->
+              <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-moon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+      <div class="header-cta">
+        <!-- <a class="btn ghost" href="#">Log in</a> -->
+        <!-- <a class="btn solid" href="#cta">Get started</a> -->
+      </div>
+      <button class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
   <div id="content">
     <div id="scroll-wrapper">
       <div id="scroll-content">
-        <!-- Header -->
-        <header class="site-header">
-          <div class="container narrow header-inner">
-              <a class="brand" href="#">
-                <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
-              </a>
-            <nav class="nav">
-              <a href="../index.html#Home">Home</a>
-              <a href="../index.html#Projects">Projects</a>
-              <a href="../index.html#Services">Services</a>
-              <a href="../index.html#About">About Us</a>
-              <a href="../index.html#Contact">Contact</a>
-              <div class="absolute top-4 right-4">
-                <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
-                  bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                  <span class="icon-wrap">
-                    <!-- Sun Icon -->
-                    <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="lucide lucide-sun">
-                      <circle cx="12" cy="12" r="4"></circle>
-                      <path d="M12 2v2"></path>
-                      <path d="M12 20v2"></path>
-                      <path d="m4.93 4.93 1.41 1.41"></path>
-                      <path d="m17.66 17.66 1.41 1.41"></path>
-                      <path d="M2 12h2"></path>
-                      <path d="M20 12h2"></path>
-                      <path d="m6.34 17.66-1.41 1.41"></path>
-                      <path d="m19.07 4.93-1.41 1.41"></path>
-                    </svg>
-                    <!-- Moon Icon -->
-                    <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="lucide lucide-moon">
-                      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </nav>
-            <div class="header-cta">
-              <!-- <a class="btn ghost" href="#">Log in</a> -->
-              <!-- <a class="btn solid" href="#cta">Get started</a> -->
-            </div>
-            <button class="menu-toggle" aria-label="Open menu">
-              <span></span><span></span><span></span>
-            </button>
-          </div>
-        </header>
         <section class="project-fullscreen">
-            <video autoplay loop muted playsinline controls>
+            <video id="Plyr" autoplay loop muted playsinline controls>
               <source src="../Card-Content/نسخه نهایی موشن صابکول_1.mp4" type="video/mp4">
             </video>
         </section>
@@ -88,7 +89,7 @@
             </div>
         </section>
         <!-- Description -->
-         <section class="project-description">
+         <section id="pipTarget" class="project-description">
             <div class="grid">
                 <div class="container">
                     <div class="typography">
@@ -156,6 +157,7 @@
         <script src="../GSAP/minified/gsap.min.js"></script>
         <script src="../GSAP/minified/ScrollTrigger.min.js"></script>
         <script src="../GSAP/minified/ScrollSmoother.min.js"></script>
+        <script src="https://cdn.plyr.io/3.8.4/plyr.js"></script>
         <script src="../project-description.js" defer></script>
       </div>
     </div>
