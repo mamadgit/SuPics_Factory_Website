@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
 
   if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother);
   //   ScrollTrigger.addEventListener("refreshInit", () => {
   //   console.log("🔄 ScrollTrigger refreshInit");
   // });
@@ -45,7 +45,7 @@ window.addEventListener("load", () => {
       }
     }
   );
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  // gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
   let smoother = ScrollSmoother.create({
     wrapper: '#scroll-wrapper',
     content: '#scroll-content',
@@ -93,7 +93,6 @@ function scrollToStoredTargetIfAny() {
       }
     });
   });
-
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
     trigger: ".site-header",
@@ -103,38 +102,41 @@ function scrollToStoredTargetIfAny() {
     pinSpacing: false,
     // markers: true
   });
-
   // Auto-scroll past hero video when user starts scrolling
   // This makes a small scroll jump to the header (like clicking Explore)
   let heroSnapped = false;
   let pageReady = false; // Prevent snap on page load/refresh
-
-  // Wait 1 second after page load before enabling snap
+  // Wait 1.5 seconds after page load before enabling snap
   setTimeout(() => {
     pageReady = true;
-  }, 1000);
+  }, 1500);
 
   ScrollTrigger.create({
     trigger: ".hero-fullscreen",
     start: "top top",
-    end: "bottom 90%", // Triggers when scrolled 10% into the hero
+    end: "bottom 90%",
     onLeave: () => {
-      if (!heroSnapped && pageReady) {
-        heroSnapped = true;
-        smoother.scrollTo(".site-header", true, "top top");
-      }
+      if (heroSnapped || !pageReady) return;
+      heroSnapped = true;
+      // stop smooth momentum from carrying past your target
+      smoother.paused(true);
+      // do the snap (instant jump within paused state)
+      smoother.scrollTo(".site-header", true, "top top");
+      // resume after it lands
+      gsap.delayedCall(0.2, () => smoother.paused(false));
     },
     onEnterBack: () => {
-      // Reset so it can snap again if user scrolls back to top
       heroSnapped = false;
     }
   });
+
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
-    const AnimText = document.querySelector('.animated-text .heading');
+    const SolidHeading = document.querySelector('.animated-text .heading--solid');
+    const TransparentHeading = document.querySelector('.animated-text .heading--transparent');
     const header = document.querySelector('.site-header');
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
@@ -146,23 +148,29 @@ function scrollToStoredTargetIfAny() {
       document.documentElement.classList.toggle('light-mode', isLight);
 
       //Animated Text Color Switching
-      if (AnimText) {
-        AnimText.classList.toggle('heading--solid-black', isLight);
+      if (SolidHeading) {
+        if (animate && typeof gsap !== "undefined") {
+          gsap.to(SolidHeading, {
+            opacity: 0,
+            duration: 0.2,
+            ease: "power1.inOut",
+            onComplete: () => {
+              // swap while invisible
+              SolidHeading.classList.toggle("heading--solid-black", isLight);
+              TransparentHeading.classList.toggle("heading--transparent-black", isLight);
+              gsap.to(SolidHeading, {
+                opacity: 1,
+                duration: 0.2,
+                ease: "power1.inOut",
+              });
+            },
+          });
+        } else {
+          // no animation on load
+          SolidHeading.classList.toggle("heading--solid-black", isLight);
+        }
       }
-      if (animate && typeof gsap !== 'undefined') {
-        // Fade out, swap image, fade in
-        gsap.to(AnimText, {
-          opacity: 0,
-          duration: 0.2,
-          ease: 'power1.inOut',
-          onComplete: () => {
-            gsap.to(AnimText, {
-              opacity: 1,
-              duration: 0.2,
-            });
-          }
-        });
-      }
+      
       // Header logo switching
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
@@ -331,12 +339,19 @@ function scrollToStoredTargetIfAny() {
       }
     });
   });
-  document.querySelectorAll('.reveal-text-diagonal').forEach(el => {
-    const chars = splitTextToSpans(el);
-    // GSAP animation with ScrollTrigger - animates when scrolling to the element
-    const t3 = gsap.timeline({ paused: true });
+// Animate "Our" then "Services" as one sequence (no extra scroll)
+document.querySelectorAll('.animated-text').forEach(container => {
+  const parts = container.querySelectorAll('.reveal-text-diagonal');
+  if (!parts.length) return;
 
-    t3.fromTo(
+  // Build one timeline for the whole block
+  const tl = gsap.timeline({ paused: true });
+
+  parts.forEach((el) => {
+    const chars = splitTextToSpans(el);
+
+    // each word animates, then the next word starts right after
+    tl.fromTo(
       chars,
       { y: '1em', opacity: 0 },
       {
@@ -345,20 +360,22 @@ function scrollToStoredTargetIfAny() {
         stagger: 0.05,
         duration: 0.75,
         ease: 'power3.out'
-      }
+      },
+      '-=0.65' // start immediately after previous segment ends
     );
-    ScrollTrigger.create({
-      trigger: el,
-      start: 'top 60%',
-      end: 'bottom 0%',
-
-      onEnter: () => t3.play(),
-      onEnterBack: () => t3.play(),
-      onLeave: () => t3.reverse(),
-      onLeaveBack: () => t3.reverse()
-
-    });
   });
+  // One ScrollTrigger controls the whole sequence
+  ScrollTrigger.create({
+    trigger: container,      // trigger when the block enters view
+    start: 'top 30%',
+    end: 'bottom -30%',
+    onEnter: () => tl.play(),
+    onEnterBack: () => tl.play(),
+    onLeave: () => tl.reverse(),
+    onLeaveBack: () => tl.reverse()
+  });
+});
+
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
   // function initCarouselAnimations() {
@@ -389,38 +406,36 @@ function scrollToStoredTargetIfAny() {
       }
     });
   }
-
   // Diagonal Scroll Case Carousel
-  const diagonalSection = document.querySelector('.diagonal-carousel');
-  if (diagonalSection) {
-    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+const diagonalSection = document.querySelector('.diagonal-carousel');
+if (diagonalSection) {
+  const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+  const ANGLE_DEG = 8;
+  const ANGLE = ANGLE_DEG * (Math.PI / 180);
+  const START_BACK_X = 500; // your start offset
+  const getTrackWidth = () => diagonalTrack.scrollWidth;
+  const getXEnd = () => -(getTrackWidth() - window.innerWidth);
+  const getXTravel = () => Math.abs(getXEnd() - START_BACK_X);
+  // y = x * tan(theta)
+  const getYEnd = () => -getXTravel() * Math.tan(ANGLE);
 
-    // Helper functions to recalculate values on resize
-    const getTrackWidth = () => diagonalTrack.scrollWidth;
-    const getXMove = () => -(getTrackWidth() - window.innerWidth);
-    const getYRise = () => {
-      const angleInRadians = 5 * (Math.PI / 180);
-      return getTrackWidth() * Math.sin(angleInRadians);
-    };
-
-    gsap.to(diagonalTrack, {
-      x: getXMove, // Dynamic value
-      y: () => -getYRise(), // Dynamic value
-      ease: "none",
-      scrollTrigger: {
-        trigger: diagonalSection,
-        start: "top top",
-        end: () => "+=" + getTrackWidth(),
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true, // Recalculate on window resize
-        // markers: true
-      }
-    });
-  }
+  gsap.set(diagonalTrack, { x: START_BACK_X, y: 0 });
+  gsap.to(diagonalTrack, {
+    x: () => getXEnd(),
+    y: () => getYEnd(),
+    ease: "none",
+    scrollTrigger: {
+      trigger: diagonalSection,
+      start: "top top",
+      end: () => "+=" + getXTravel(),   // match scroll distance to actual travel
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    }
+  });
+}
   // }
-
   // Expose the function so it can be called after preloader
   // window.initCarouselAnimations = initCarouselAnimations;
   // ...existing code...

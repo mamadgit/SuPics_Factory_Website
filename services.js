@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
   if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  gsap.registerPlugin(ScrollTrigger);
 
   const tl = gsap.timeline();
   // logo fade in
@@ -43,6 +43,7 @@ window.addEventListener("load", () => {
       }
     }
   );
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
   let smoother = ScrollSmoother.create({
     wrapper: '#scroll-wrapper',
     content: '#scroll-content',
@@ -62,6 +63,15 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     window.location.assign('../index.html');
   });
 });
+  // Pin the header at the top once it reaches there (replaces CSS sticky)
+  ScrollTrigger.create({
+    trigger: ".site-header", 
+    start: "top top",
+    end: "max",
+    pin: true,
+    pinSpacing: false,
+    // markers: true
+  });
 
   // Theme toggle for Logo and site
   (function () {
@@ -70,35 +80,12 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     const heroLogoImg = document.querySelector('.hero-image img');
     const AnimText = document.querySelector('.animated-text .heading');
     const header = document.querySelector('.site-header');
-    const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
-    const headerEL = document.querySelector(".offcanvas-header");
-    const PiP = document.getElementById('pipTarget');
-    const playerEl = document.getElementById("Plyr");
+    const heroFull = document.querySelector('#heroFull');
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
     const DARK_HERO_LOGO = 'SU-EN-LOGO-typo.png';
     const LIGHT_HERO_LOGO = 'SU-EN-LOGO-typo-BLACK.png';
-
-    // Pin the header at the top once it reaches there (replaces CSS sticky)
-    ScrollTrigger.create({
-      trigger: ".site-header", 
-      start: "top top",
-      end: "max",
-      pin: true,
-      pinSpacing: false,
-      // markers: true
-    });
-    if(headerEL){
-      //header starts hidden
-      headerEL.classList.remove("is-visible");
-      ScrollTrigger.create({
-      trigger: ".project-fullscreen",
-      start: "bottom top",
-      scroller: smoother?.wrapper() || window,
-      onEnter: ()=> headerEL.classList.add("is-visible"),
-      onLeaveBack: () => headerEL.classList.remove("is-visible"),
-      });
-    }
+    const target = document.getElementById('pipTarget');
 
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
@@ -176,6 +163,26 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
           heroLogoImg.alt = newHeroAlt;
         }
       }
+      if (heroFull) {
+        const newSrc = isLight ? heroFull.dataset.light : heroFull.dataset.dark;
+        const newAlt = isLight ? 'Full Img White' : 'Full Img Black';
+
+        if (animate && typeof gsap !== 'undefined') {
+          gsap.to(heroFull, {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => {
+              heroFull.src = newSrc;
+              heroFull.alt = newAlt;
+              gsap.to(heroFull, { opacity: 1, duration: 0.2 });
+            }
+          });
+        } else {
+          heroFull.src = newSrc;
+          heroFull.alt = newAlt;
+        }
+      }
+
       try { localStorage.setItem('siteTheme', isLight ? 'light' : 'dark'); } catch (e) { }
     }
     // initialize from saved preference or system preference
@@ -189,39 +196,7 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
         setTheme(nowLight, true); // animate on user click
       });
     }
-    // Safety checks
-  let player = null;
-  if (playerEl && typeof Plyr !== "undefined") {
-    player = new Plyr(playerEl, {
-      muted: true,
-    });
-  // Force muted at start (autoplay policies can be picky)
-  player.muted = true;
-  // When PiP turns on, scroll using ScrollSmoother (GSAP)
-  player.on("enterpictureinpicture", () => {
-    // If the page is in fullscreen, exit it (PiP and fullscreen conflict)
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
-    }
-    if (!PiP) return;
-    if (typeof smoother !== "undefined" && smoother) {
-      smoother.scrollTo(PiP, true); // smooth scroll to the element
-    } else {
-      // fallback if ScrollSmoother isn't available for some reason
-      PiP.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-  player.on("leavepictureinpicture", () => {
-    const full = document.querySelector(".project-fullscreen");
-    if (!full) return;
-    if (smoother) {
-      smoother.scrollTo(full, true, -headerH);
-    } else {
-      full.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-}
-})();
+  })();
 
   // Mobile menu (placeholder)
   const toggle = document.querySelector('.menu-toggle');
@@ -231,6 +206,22 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
+  // Function to split text content of an element into spans for each character
+  function splitTextToSpans(el) {
+    const text = el.textContent;//Only take the text content (no HTML)
+    el.textContent = '';//Remove text nodes making them splittable
 
+    const chars = [];
+
+    [...text].forEach(char => {
+      const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
+      span.textContent = char === ' ' ? '\u00A0' : char;
+      span.style.display = 'inline-block';//To allow transform animations
+      el.appendChild(span);//Insert spans back into the element in the DOM
+      chars.push(span);//Keep track of all spans in an array
+    });
+    return chars;
+  }
+  
   // ...existing code...
 });
