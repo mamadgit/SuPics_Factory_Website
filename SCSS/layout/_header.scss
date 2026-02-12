@@ -21,9 +21,14 @@
   background: #0b0c10;
   color: #e9eef3;
   z-index: 2;        // higher than .site-header (yours is 1)
+  border-bottom: 1px solid var(--border);
+  transition: background variables.$transition-slow, color variables.$transition-slow, border-bottom variables.$transition-slow, transform 0.35s ease;
   will-change: transform;
   transform: translateY(-110%);
-  transition: transform 0.35s ease;
+      &.white {
+        background: #f7f9fc;
+        color: #101418;
+    }
 }
 .offcanvas-header.is-visible{
     transform: translateY(0);
