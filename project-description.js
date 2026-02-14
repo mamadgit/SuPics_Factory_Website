@@ -75,25 +75,24 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     const headerEL = document.querySelector(".offcanvas-header");
     const PiP = document.getElementById('pipTarget');
     const playerEl = document.getElementById("Plyr");
-    
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
 
     // Pin the header at the top once it reaches there (replaces CSS sticky)
-    ScrollTrigger.create({
-      trigger: ".site-header", 
-      start: "top top",
-      end: "max",
-      pin: true,
-      pinSpacing: false,
-      // markers: true
-    });
+    // ScrollTrigger.create({
+    //   trigger: ".site-header", 
+    //   start: "top top",
+    //   end: "max",
+    //   pin: true,
+    //   pinSpacing: false,
+    //   // markers: true
+    // });
     if(headerEL){
       //header starts hidden
       headerEL.classList.remove("is-visible");
       ScrollTrigger.create({
       trigger: ".project-fullscreen",
-      start: "bottom top",
+      start: "top top",
       scroller: smoother?.wrapper() || window,
       onEnter: ()=> headerEL.classList.add("is-visible"),
       onLeaveBack: () => headerEL.classList.remove("is-visible"),
