@@ -1,12 +1,20 @@
 // Simple grid helper using CSS Grid with CSS vars
 .grid-row {
     display: grid;
+    align-items: center;
     grid-column-gap: var(--grid-gap, 16px);
-    grid-template-columns: repeat(auto-fill, minmax(var(--grid-column-width, 200px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 250px), 1fr));
     padding-left: var(--grid-gutter, 16px);
     padding-right: var(--grid-gutter, 16px);
 }
-
+.grid-row-second{
+    display: grid;
+    column-gap: 40px;
+    row-gap: 40px;
+    padding: 40px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
+}
 
 .grid-gutter {
     padding-left: var(--grid-gutter, 16px);
