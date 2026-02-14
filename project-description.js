@@ -68,7 +68,6 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
-    // const AnimText = document.querySelector('.animated-text .heading');
     const SolidHeading = document.querySelector('.animated-text .heading--solid');
     const TransparentHeading = document.querySelector('.animated-text .heading--transparent');
     const header = document.querySelector('.site-header');
@@ -76,10 +75,9 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     const headerEL = document.querySelector(".offcanvas-header");
     const PiP = document.getElementById('pipTarget');
     const playerEl = document.getElementById("Plyr");
+    
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
-    const DARK_HERO_LOGO = 'SU-EN-LOGO-typo.png';
-    const LIGHT_HERO_LOGO = 'SU-EN-LOGO-typo-BLACK.png';
 
     // Pin the header at the top once it reaches there (replaces CSS sticky)
     ScrollTrigger.create({
