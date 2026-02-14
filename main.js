@@ -54,13 +54,35 @@ window.addEventListener("load", () => {
   });
 
 function scrollToStoredTargetIfAny() {
-  const targetId = sessionStorage.getItem('scrollTarget');
+  // 1) Prefer sessionStorage (your custom navigation)
+  let targetId = sessionStorage.getItem("scrollTarget");
+
+  // 2) If none, fall back to the URL hash (new tab / direct link)
+  if (!targetId && window.location.hash) {
+    targetId = window.location.hash; // includes the leading #
+  }
+
   if (!targetId) return;
-  sessionStorage.removeItem('scrollTarget');
+
+  // Clean sessionStorage (only if it came from there)
+  sessionStorage.removeItem("scrollTarget"); //This allows refreshing from URL to land back on the hash
 
   const el = document.querySelector(targetId);
-  if (el) smoother.scrollTo(el, false, "top 80px");
+  if (!el) return;
+
+  // Scroll (ScrollSmoother if available, otherwise native)
+  if (typeof smoother !== "undefined" && smoother) {
+    smoother.scrollTo(el, false, "top 80px");
+  } else {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Remove the hash from the URL (keeps the page position)
+  if (window.location.hash) {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
 }
+
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       ScrollTrigger.refresh(true);
@@ -283,6 +305,35 @@ function scrollToStoredTargetIfAny() {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
+
+  const section = document.querySelector(".typography");
+  const wrap = section?.querySelector(".animated-text");
+  const our = section?.querySelector(".word-our");
+  const services = section?.querySelector(".word-services");
+
+  if (section && wrap && our && services) {
+    // Put them off-screen-ish (or just “far”) at the start
+    gsap.set(our, { x: -200, opacity: 0 });
+    gsap.set(services, { x: 200, opacity: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 70%",
+        end: "top 20%",
+        scrub: 1,
+        invalidateOnRefresh: true,
+        // markers: true
+      }
+    });
+
+    // Phase 1: Our comes in (left -> center)
+    tl.to(our, { x: 0, opacity: 1, ease: "power1.out", duration: 1 });
+
+    // Phase 2: Services comes in (right -> center)
+    tl.to(services, { x: 0, opacity: 1, ease: "power1.out", duration: 1 });
+  }
+
   // Function to split text content of an element into spans for each character
   function splitTextToSpans(el) {
     const text = el.textContent;//Only take the text content (no HTML)
