@@ -49,10 +49,16 @@ window.addEventListener("load", () => {
   let smoother = ScrollSmoother.create({
     wrapper: '#scroll-wrapper',
     content: '#scroll-content',
-    smooth: 1.7,
+    smooth: 1.7
     // effects: true
   });
-
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+        scrollToStoredTargetIfAny();
+    });
+  });
+  
 function scrollToStoredTargetIfAny() {
   // 1) Prefer sessionStorage (your custom navigation)
   let targetId = sessionStorage.getItem("scrollTarget");
@@ -83,11 +89,14 @@ function scrollToStoredTargetIfAny() {
   }
 }
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true);
-        scrollToStoredTargetIfAny();
-    });
+  // Pin the header at the top once it reaches there (replaces CSS sticky)
+  ScrollTrigger.create({
+    trigger: ".site-header",
+    start: "top top",
+    end: "max",
+    pin: true,
+    pinSpacing: false,
+    // markers: true
   });
 
   const button = document.querySelector('.hero-scroll-btn');
@@ -115,15 +124,7 @@ function scrollToStoredTargetIfAny() {
       }
     });
   });
-  // Pin the header at the top once it reaches there (replaces CSS sticky)
-  ScrollTrigger.create({
-    trigger: ".site-header",
-    start: "top top",
-    end: "max",
-    pin: true,
-    pinSpacing: false,
-    // markers: true
-  });
+
   // Auto-scroll past hero video when user starts scrolling
   // This makes a small scroll jump to the header (like clicking Explore)
   let heroSnapped = false;
@@ -157,8 +158,8 @@ function scrollToStoredTargetIfAny() {
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
-    const SolidHeading = document.querySelector('.animated-text .heading--solid');
-    const TransparentHeading = document.querySelector('.animated-text .heading--transparent');
+    const SolidHeadings = Array.from(document.querySelectorAll('.animated-text .heading--solid'));
+    const TransparentHeadings = Array.from(document.querySelectorAll('.animated-text .heading--transparent'));
     const header = document.querySelector('.site-header');
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
@@ -169,18 +170,17 @@ function scrollToStoredTargetIfAny() {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
 
-      //Animated Text Color Switching
-      if (SolidHeading && TransparentHeading) {
+      // Animated Text Color Switching (apply to all matching headings)
+      if (SolidHeadings.length || TransparentHeadings.length) {
         if (animate && typeof gsap !== "undefined") {
-          gsap.to(SolidHeading, {
+          gsap.to(SolidHeadings, {
             opacity: 0,
             duration: 0.2,
             ease: "power1.inOut",
             onComplete: () => {
-              // swap while invisible
-              SolidHeading.classList.toggle("heading--solid-black", isLight);
-              TransparentHeading.classList.toggle("heading--transparent-black", isLight);
-              gsap.to(SolidHeading, {
+              SolidHeadings.forEach(el => el.classList.toggle("heading--solid-black", isLight));
+              TransparentHeadings.forEach(el => el.classList.toggle("heading--transparent-black", isLight));
+              gsap.to(SolidHeadings, {
                 opacity: 1,
                 duration: 0.2,
                 ease: "power1.inOut",
@@ -188,8 +188,8 @@ function scrollToStoredTargetIfAny() {
             },
           });
         } else {
-          // no animation on load
-          SolidHeading.classList.toggle("heading--solid-black", isLight);
+          SolidHeadings.forEach(el => el.classList.toggle("heading--solid-black", isLight));
+          TransparentHeadings.forEach(el => el.classList.toggle("heading--transparent-black", isLight));
         }
       }
       // Header logo switching
@@ -298,13 +298,13 @@ function scrollToStoredTargetIfAny() {
   // }
 
   // Mobile menu (placeholder)
-  const toggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.nav');
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-    });
-  }
+  // const toggle = document.querySelector('.menu-toggle');
+  // const nav = document.querySelector('.nav');
+  // if (toggle) {
+  //   toggle.addEventListener('click', () => {
+  //     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+  //   });
+  // }
 
   const section = document.querySelector(".typography");
   const wrap = section?.querySelector(".animated-text");
@@ -482,6 +482,7 @@ if (diagonalSection) {
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
+      // markers: true,
     }
   });
 }
