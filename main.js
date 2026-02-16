@@ -324,14 +324,15 @@ function scrollToStoredTargetIfAny() {
         scrub: 1,
         invalidateOnRefresh: true,
         // markers: true
+        
       }
     });
 
     // Phase 1: Our comes in (left -> center)
-    tl.to(our, { x: 0, opacity: 1, ease: "power1.out", duration: 1 });
+    tl.to(our, { x: 0, opacity: 1, ease: "power1.inOut", duration: 3 });
 
     // Phase 2: Services comes in (right -> center)
-    tl.to(services, { x: 0, opacity: 1, ease: "power1.out", duration: 1 });
+    tl.to(services, { x: 0, opacity: 1, ease: "power1.inOut", duration:3});
   }
 
   // Function to split text content of an element into spans for each character
