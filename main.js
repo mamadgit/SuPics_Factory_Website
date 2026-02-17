@@ -306,35 +306,6 @@ function scrollToStoredTargetIfAny() {
   //   });
   // }
 
-  const section = document.querySelector(".typography");
-  const wrap = section?.querySelector(".animated-text");
-  const our = section?.querySelector(".word-our");
-  const services = section?.querySelector(".word-services");
-
-  if (section && wrap && our && services) {
-    // Put them off-screen-ish (or just “far”) at the start
-    gsap.set(our, { x: -200, opacity: 0 });
-    gsap.set(services, { x: 200, opacity: 0 });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
-        end: "top 20%",
-        scrub: 1,
-        invalidateOnRefresh: true,
-        // markers: true
-        
-      }
-    });
-
-    // Phase 1: Our comes in (left -> center)
-    tl.to(our, { x: 0, opacity: 1, ease: "power1.inOut", duration: 3 });
-
-    // Phase 2: Services comes in (right -> center)
-    tl.to(services, { x: 0, opacity: 1, ease: "power1.inOut", duration:3});
-  }
-
   // Function to split text content of an element into spans for each character
   function splitTextToSpans(el) {
     const text = el.textContent;//Only take the text content (no HTML)
@@ -426,13 +397,11 @@ document.querySelectorAll('.animated-text').forEach(container => {
     onLeaveBack: () => tl.reverse()
   });
 });
-
   // Function to initialize the carousel animations
   // Must be called AFTER content is visible (display: block)
   // function initCarouselAnimations() {
   // Global extra offset for carousels (adjust px as needed)
   const extraOffset = 1000;
-
   // Horizontal Scroll Case Carousel
   const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
   if (horizontalTrack) {
@@ -457,6 +426,99 @@ document.querySelectorAll('.animated-text').forEach(container => {
       }
     });
   }
+  
+// const section = document.querySelector(".typography");
+// if (!section) return;
+// const wrap = section.querySelector(".animated-text");
+// const our = section.querySelector(".word-our");
+// const services = section.querySelector(".word-services");
+
+// if (!wrap || !our || !services) return;
+// // Initial off-screen state
+// gsap.set([our, services], { opacity: 0 });
+// gsap.set(our, { x: -200 });
+// gsap.set(services, { x: 200 });
+// // Timeline (paused by default)
+// const typeTl = gsap.timeline({ paused: true });
+// typeTl
+//   .to(our, {
+//     x: 0,
+//     opacity: 1,
+//     duration: 0.9,
+//     ease: "power1.out"
+//   })
+//   .to(services, {
+//     x: 0,
+//     opacity: 1,
+//     duration: 0.9,
+//     ease: "power1.out"
+//   });
+// // Helper to safely pause/resume ScrollSmoother
+// const toggleSmoother = (state) => {
+//   if (typeof smoother !== "undefined" && smoother) {
+//     smoother.paused(state);
+//   }
+// };
+// // Resume smoother when animation finishes
+// typeTl.eventCallback("onComplete", () => toggleSmoother(false));
+// typeTl.eventCallback("onReverseComplete", () => toggleSmoother(false));
+
+// ScrollTrigger.create({
+//   trigger: section,
+//   start: "top 50%",// when the top of section hits half of viewport
+//   end: "bottom 50%",// when the bottom of section hits half of viewport 
+//   onEnter: () => {
+//     toggleSmoother(true);
+//     typeTl.timeScale(1).restart(true); 
+//   },
+
+//   onEnterBack: () => {
+//     toggleSmoother(true);
+//     typeTl.timeScale(1).restart(true); 
+//   },
+
+//   onLeave: () => {
+//     toggleSmoother(false);
+//     typeTl.timeScale(3).reverse(); // optional: reset so it never sits completed
+//   },
+
+//   onLeaveBack: () => {
+//     toggleSmoother(false);
+//     typeTl.timeScale(3).reverse();
+//   },
+
+//    markers: true
+// });
+
+const section = document.querySelector(".hero-fullscreen.slogan");
+const wrap = section?.querySelector(".animated-text");
+const our = section?.querySelector(".word-our");
+const services = section?.querySelector(".word-services");
+
+if (section && wrap && our && services) {
+  gsap.set(our, { x: -200, opacity: 0 });
+  gsap.set(services, { x: 200, opacity: 0 });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,        // pins .typography (the 100vh wrapper)
+      start: "top top",
+      end: "+=1500",
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      // markers: true,
+    }
+  });
+
+  tl.to(our, { x: 0, opacity: 1, ease: "none", duration: 3 });
+  tl.to(services, { x: 0, opacity: 1, ease: "none", duration: 3 });
+  tl.to({}, { duration: 2 });
+  tl.addLabel("exit");
+  tl.to(our, { x: -200, opacity: 0, ease: "none", duration: 3 }, "exit");
+  tl.to(services, { x: 200, opacity: 0, ease: "none", duration: 3 }, "exit");
+}
   // Diagonal Scroll Case Carousel
 const diagonalSection = document.querySelector('.diagonal-carousel');
 if (diagonalSection) {
