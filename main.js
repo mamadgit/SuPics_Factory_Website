@@ -1,30 +1,48 @@
+// Run ASAP so the correct preloader shows immediately
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem("siteTheme"); } catch (e) {}
+
+  const prefersLight =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  const isLight = saved ? saved === "light" : prefersLight;
+  document.documentElement.classList.toggle("light-mode", isLight);
+})();
+
 window.addEventListener("load", () => {
+  if (typeof gsap === "undefined") return;
 
-  if (typeof gsap === 'undefined') return;
+  const activePreloaderId = document.documentElement.classList.contains("light-mode")
+    ? "preloader-light"
+    : "preloader";
+
+  const activePreloader = document.getElementById(activePreloaderId);
+
   gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother);
-  //   ScrollTrigger.addEventListener("refreshInit", () => {
-  //   console.log("🔄 ScrollTrigger refreshInit");
-  // });
 
-  // ScrollTrigger.addEventListener("refresh", () => {
-  //   console.log("✅ ScrollTrigger refresh");
-  // });
   const tl = gsap.timeline();
-  // logo fade in
+
   tl.to("#loader-logo", {
     opacity: 1,
     scale: 1,
     duration: 1.2,
     ease: "power2.out"
   });
-  // fade out preloader
-  tl.to("#preloader", {
+
+  tl.to(activePreloader, {
     opacity: 0,
     duration: 1,
     ease: "power1.out",
     onComplete: () => {
-      document.getElementById("preloader").style.display = "none";
-      document.getElementById("content").style.display = "block"; // Show the content after preloader
+      // hide BOTH (in case)
+      const p1 = document.getElementById("preloader");
+      const p2 = document.getElementById("preloader-light");
+      if (p1) p1.style.display = "none";
+      if (p2) p2.style.display = "none";
+
+      document.getElementById("content").style.display = "block";
     }
   }, "+=2.5");
   // ROLL UP CONTENT
@@ -494,10 +512,12 @@ const section = document.querySelector(".hero-fullscreen.slogan");
 const wrap = section?.querySelector(".animated-text");
 const our = section?.querySelector(".word-our");
 const services = section?.querySelector(".word-services");
+const feelings = section?.querySelector(".word-feelings");
 
 if (section && wrap && our && services) {
   gsap.set(our, { x: -200, opacity: 0 });
   gsap.set(services, { x: 200, opacity: 0 });
+  gsap.set(feelings, { y: 200, opacity: 0 });
 
   const tl = gsap.timeline({
     scrollTrigger: {
@@ -514,10 +534,12 @@ if (section && wrap && our && services) {
 
   tl.to(our, { x: 0, opacity: 1, ease: "none", duration: 3 });
   tl.to(services, { x: 0, opacity: 1, ease: "none", duration: 3 });
+  tl.to(feelings, { y: 0, opacity: 1, ease: "none", duration: 3 });
   tl.to({}, { duration: 2 });
   tl.addLabel("exit");
   tl.to(our, { x: -200, opacity: 0, ease: "none", duration: 3 }, "exit");
   tl.to(services, { x: 200, opacity: 0, ease: "none", duration: 3 }, "exit");
+  tl.to(feelings, { y: 200, opacity: 0, ease: "none", duration: 3 }, "exit");
 }
   // Diagonal Scroll Case Carousel
 const diagonalSection = document.querySelector('.diagonal-carousel');

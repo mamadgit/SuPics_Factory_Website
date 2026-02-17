@@ -8,6 +8,27 @@
   /* Change this if your GIF looks better on dark bg */
   z-index: 9999;
 }
+#preloader-light {
+  @include mixins.flex-center();
+  position: fixed;
+  inset: 0;
+  background: #e9e9e9;
+  /* Change this if your GIF looks better on dark bg */
+  z-index: 9999;
+}
+/* Default: assume dark mode */
+#preloader-light {
+  display: none;
+}
+
+/* When light mode is active */
+html.light-mode #preloader {
+  display: none;
+}
+
+html.light-mode #preloader-light {
+  display: flex; // because your mixin likely uses flex
+}
 
 #loader-logo {
   width: 150px;
