@@ -9,9 +9,9 @@
 }
 .grid-row-second{
     display: grid;
-    column-gap: 40px;
+    column-gap: 150px;
     row-gap: 40px;
-    padding: 40px;
+    padding: 40px 100px;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
 }
