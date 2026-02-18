@@ -62,6 +62,26 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     window.location.assign('../index.html');
   });
 });
+let heroSnapped = false;
+
+ScrollTrigger.create({
+  trigger: ".project-fullscreen",
+  // Fire when you've scrolled 10% into the section
+  start: "top+=15% top",
+  // Use the same scroller as ScrollSmoother
+  onEnter: () => {
+    if (heroSnapped) return;
+    heroSnapped = true;
+    smoother.paused(true);
+    // snap to the bottom of the fullscreen section
+    smoother.scrollTo(".project-fullscreen", true, "bottom 99px");
+    gsap.delayedCall(0.2, () => smoother.paused(false));
+  },
+  // Allow snapping again when user comes back up above the trigger
+  onLeaveBack: () => {
+    heroSnapped = false;
+  }
+});
 
   // Theme toggle for Logo and site
   (function () {
@@ -92,7 +112,7 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
       headerEL.classList.remove("is-visible");
       ScrollTrigger.create({
       trigger: ".project-fullscreen",
-      start: "top top",
+      start: "bottom 35%",
       scroller: smoother?.wrapper() || window,
       onEnter: ()=> headerEL.classList.add("is-visible"),
       onLeaveBack: () => headerEL.classList.remove("is-visible"),

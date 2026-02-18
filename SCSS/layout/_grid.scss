@@ -12,10 +12,19 @@
     column-gap: 150px;
     row-gap: 40px;
     padding: 40px 100px;
+    margin: 0 0 130px;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
+}
+.grid-all-projects{
+    display: grid;
+    row-gap: 40px;
+    column-gap: 40px;
+    padding: 40px;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
 }
-
 .grid-gutter {
     padding-left: var(--grid-gutter, 16px);
     padding-right: var(--grid-gutter, 16px);
