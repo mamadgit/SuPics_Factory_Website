@@ -404,15 +404,37 @@ document.querySelectorAll('.animated-text').forEach(container => {
       '-=0.65' // start immediately after previous segment ends
     );
   });
+  const toggleSmoother = (state) => {
+  if (typeof smoother !== "undefined" && smoother) {
+    smoother.paused(state);
+  }
+};
+// Resume smoother when animation finishes
+tl.eventCallback("onComplete", () => toggleSmoother(false));
   // One ScrollTrigger controls the whole sequence
   ScrollTrigger.create({
     trigger: container,      // trigger when the block enters view
-    start: 'top 30%',
-    end: 'bottom -30%',
-    onEnter: () => tl.play(),
-    onEnterBack: () => tl.play(),
-    onLeave: () => tl.reverse(),
-    onLeaveBack: () => tl.reverse()
+    start: 'top 10%',
+    end: 'bottom',
+  onEnter: () => {
+    toggleSmoother(true);
+    tl.restart(true); 
+  },
+
+  onEnterBack: () => {
+    toggleSmoother(true);
+    tl.restart(true); 
+  },
+
+  onLeave: () => {
+    toggleSmoother(false);
+    tl.reverse(); // optional: reset so it never sits completed
+  },
+
+  onLeaveBack: () => {
+    toggleSmoother(false);
+    tl.reverse();
+  },
   });
 });
   // Function to initialize the carousel animations
