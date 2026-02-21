@@ -49,7 +49,6 @@ window.addEventListener("load", () => {
     smooth: 1.7,
     // effects: true
   });
-
 // Smooth scroll for ALL anchor links to work with ScrollSmoother
 document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
@@ -62,25 +61,23 @@ document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
     window.location.assign('../index.html');
   });
 });
+
 let heroSnapped = false;
 
 ScrollTrigger.create({
   trigger: ".project-fullscreen",
-  // Fire when you've scrolled 10% into the section
   start: "top+=15% top",
-  // Use the same scroller as ScrollSmoother
   onEnter: () => {
+    // if (!userInteracted) return;   // <-- key line
     if (heroSnapped) return;
     heroSnapped = true;
     smoother.paused(true);
-    // snap to the bottom of the fullscreen section
     smoother.scrollTo(".project-fullscreen", true, "bottom 99px");
     gsap.delayedCall(0.2, () => smoother.paused(false));
   },
-  // Allow snapping again when user comes back up above the trigger
-  onLeaveBack: () => {
-    heroSnapped = false;
-  }
+    onLeaveBack: () => {
+      heroSnapped = false;
+    }
 });
 
   // Theme toggle for Logo and site
@@ -98,15 +95,6 @@ ScrollTrigger.create({
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
 
-    // Pin the header at the top once it reaches there (replaces CSS sticky)
-    // ScrollTrigger.create({
-    //   trigger: ".site-header", 
-    //   start: "top top",
-    //   end: "max",
-    //   pin: true,
-    //   pinSpacing: false,
-    //   // markers: true
-    // });
     if(headerEL){
       //header starts hidden
       headerEL.classList.remove("is-visible");
@@ -118,6 +106,7 @@ ScrollTrigger.create({
       onLeaveBack: () => headerEL.classList.remove("is-visible"),
       });
     }
+
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
