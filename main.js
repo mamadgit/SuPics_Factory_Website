@@ -2,7 +2,6 @@
 (() => {
   let saved = null;
   try { saved = localStorage.getItem("siteTheme"); } catch (e) {}
-
   const prefersLight =
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: light)").matches;
@@ -17,20 +16,16 @@ window.addEventListener("load", () => {
   const activePreloaderId = document.documentElement.classList.contains("light-mode")
     ? "preloader-light"
     : "preloader";
-
   const activePreloader = document.getElementById(activePreloaderId);
 
   gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother);
-
   const tl = gsap.timeline();
-
   tl.to("#loader-logo", {
     opacity: 1,
     scale: 1,
     duration: 1.2,
     ease: "power2.out"
   });
-
   tl.to(activePreloader, {
     opacity: 0,
     duration: 1,
@@ -63,50 +58,99 @@ window.addEventListener("load", () => {
       }
     }
   );
-  // gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-  let smoother = ScrollSmoother.create({
-    wrapper: '#scroll-wrapper',
-    content: '#scroll-content',
-    smooth: 1.7
-    // effects: true
+  //Disable native browser scroll restoration
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  const smoother = ScrollSmoother.create({
+    wrapper: "#scroll-wrapper",
+    content: "#scroll-content",
+    smooth: 1.7,
   });
+  // Save/restore using smoother's scrollTop
+  const KEY = "smootherScrollTop";
+  // Function to toggle smoother state (defined once and only here)
+  const toggleSmoother = (state) => {
+    if (typeof smoother !== "undefined" && smoother) {
+      smoother.paused(state);
+    }
+  };
+  // Save on refresh / navigate away
+  window.addEventListener("pagehide", () => {
+    try {
+      sessionStorage.setItem(KEY, String(smoother.scrollTop()));
+    } catch (e) {}
+  });
+  function navType() {
+    // Modern API
+    const nav = performance.getEntriesByType?.("navigation")?.[0];
+    if (nav && nav.type) return nav.type; // "navigate" | "reload" | "back_forward" | "prerender"
+    // Fallback (older)
+    const legacy = performance.navigation?.type;
+    if (legacy === 1) return "reload";
+    if (legacy === 2) return "back_forward";
+    return "navigate";
+  }
+  // Only restore on a real reload (refresh button / Ctrl+R)
+  const shouldRestore = navType() === "reload";
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true);
-        scrollToStoredTargetIfAny();
-    });
+    ScrollTrigger.refresh();
+    if (!shouldRestore) {
+      // URL enter / fresh navigation: start at top
+      try {
+        sessionStorage.removeItem(KEY);
+      } catch (e) {}
+      smoother.scrollTo(0, false);
+      ScrollTrigger.update();
+      return;
+    }
+    // Reload: restore
+    const saved = sessionStorage.getItem(KEY);
+    if (saved != null) {
+      const y = parseFloat(saved);
+      if (!Number.isNaN(y)) {
+        // Check if smoother is currently paused due to your ScrollTrigger setup
+        // We'll temporarily unpause it if it is, apply scroll, then re-apply the pause if needed.
+        const wasSmootherPaused = smoother.paused();
+        if (wasSmootherPaused) {
+          toggleSmoother(false); // Temporarily unpause to allow scrolling
+        }
+        smoother.scrollTo(y, false);
+        ScrollTrigger.update();
+        if (wasSmootherPaused) {
+          // If it was paused before, re-pause it after restoring scroll
+          toggleSmoother(true);
+        }
+      }
+    }
   });
-  
+  // The first one should handle all initial ScrollTrigger refreshes and scroll restorations.
+  requestAnimationFrame(() => {
+    scrollToStoredTargetIfAny();
+  });
+
 function scrollToStoredTargetIfAny() {
   // 1) Prefer sessionStorage (your custom navigation)
   let targetId = sessionStorage.getItem("scrollTarget");
-
   // 2) If none, fall back to the URL hash (new tab / direct link)
   if (!targetId && window.location.hash) {
     targetId = window.location.hash; // includes the leading #
   }
-
   if (!targetId) return;
-
   // Clean sessionStorage (only if it came from there)
   sessionStorage.removeItem("scrollTarget"); //This allows refreshing from URL to land back on the hash
-
   const el = document.querySelector(targetId);
   if (!el) return;
-
   // Scroll (ScrollSmoother if available, otherwise native)
   if (typeof smoother !== "undefined" && smoother) {
     smoother.scrollTo(el, false, "top 80px");
   } else {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-
   // Remove the hash from the URL (keeps the page position)
   if (window.location.hash) {
     history.replaceState(null, "", window.location.pathname + window.location.search);
   }
 }
-
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   ScrollTrigger.create({
     trigger: ".site-header",
@@ -116,7 +160,6 @@ function scrollToStoredTargetIfAny() {
     pinSpacing: false,
     // markers: true
   });
-
   const button = document.querySelector('.hero-scroll-btn');
   if (button) {
     button.addEventListener("click", () => {
@@ -142,7 +185,6 @@ function scrollToStoredTargetIfAny() {
       }
     });
   });
-
   // Auto-scroll past hero video when user starts scrolling
   // This makes a small scroll jump to the header (like clicking Explore)
   let heroSnapped = false;
@@ -170,7 +212,6 @@ function scrollToStoredTargetIfAny() {
       heroSnapped = false;
     }
   });
-
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
@@ -187,7 +228,6 @@ function scrollToStoredTargetIfAny() {
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
-
       // Animated Text Color Switching (apply to all matching headings)
       if (SolidHeadings.length || TransparentHeadings.length) {
         if (animate && typeof gsap !== "undefined") {
@@ -240,7 +280,6 @@ function scrollToStoredTargetIfAny() {
           logoHeaderImg.alt = newAlt;
         }
       }
-
       // Hero logo switching
       if (heroLogoImg) {
         const newHeroSrc = isLight ? LIGHT_HERO_LOGO : DARK_HERO_LOGO;
@@ -265,14 +304,12 @@ function scrollToStoredTargetIfAny() {
           heroLogoImg.alt = newHeroAlt;
         }
       }
-
       try { localStorage.setItem('siteTheme', isLight ? 'light' : 'dark'); } catch (e) { }
     }
     // initialize from saved preference or system preference
     const saved = localStorage.getItem('siteTheme');
     const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
     setTheme(saved ? saved === 'light' : prefersLight);
-
     if (toggle) {
       toggle.addEventListener('click', () => {
         const nowLight = !document.documentElement.classList.contains('light-mode');
@@ -281,56 +318,11 @@ function scrollToStoredTargetIfAny() {
     }
   })();
 
-  // // Text rotator in hero
-  // const items = Array.from(document.querySelectorAll('.rotator-item'));
-  // const inner = document.querySelector('.rotator-inner');
-
-  // if (inner && items.length) {
-  //   let idx = 0;
-
-  //   // Set initial width
-  //   inner.style.width = `${items[idx].offsetWidth}px`;
-
-  //   setInterval(() => {
-  //     items[idx].classList.remove('is-active');
-  //     idx = (idx + 1) % items.length;
-  //     items[idx].classList.add('is-active');
-  //     inner.style.width = `${items[idx].offsetWidth}px`;
-  //   }, 2200);
-  // }
-
-
-  // Fake search interaction
-  // const input = document.getElementById('search');
-  // const btn = document.getElementById('searchBtn');
-  // if (btn && input) {
-  //   btn.addEventListener('click', () => {
-  //     btn.textContent = 'Searching…';
-  //     btn.disabled = true;
-  //     setTimeout(() => {
-  //       btn.textContent = 'Search';
-  //       btn.disabled = false;
-  //       input.placeholder = 'Found: warm serif moodboards, type another query';
-  //     }, 900);
-  //   });
-  // }
-
-  // Mobile menu (placeholder)
-  // const toggle = document.querySelector('.menu-toggle');
-  // const nav = document.querySelector('.nav');
-  // if (toggle) {
-  //   toggle.addEventListener('click', () => {
-  //     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-  //   });
-  // }
-
   // Function to split text content of an element into spans for each character
   function splitTextToSpans(el) {
     const text = el.textContent;//Only take the text content (no HTML)
     el.textContent = '';//Remove text nodes making them splittable
-
     const chars = [];
-
     [...text].forEach(char => {
       const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
       span.textContent = char === ' ' ? '\u00A0' : char;
@@ -338,14 +330,11 @@ function scrollToStoredTargetIfAny() {
       el.appendChild(span);//Insert spans back into the element in the DOM
       chars.push(span);//Keep track of all spans in an array
     });
-
     return chars;
   }
-
   //Text reveal animation - applies to ALL .reveal-text elements
   document.querySelectorAll('.reveal-text').forEach(el => {
     const chars = splitTextToSpans(el);
-
     // GSAP animation with ScrollTrigger - animates when scrolling to the element
     const t2 = gsap.timeline({ paused: true });
 
@@ -364,7 +353,6 @@ function scrollToStoredTargetIfAny() {
       trigger: el,
       start: 'top 100%',
       end: 'bottom 10%',
-
       onEnter: () => {
         t2.restart();
       },
@@ -379,72 +367,14 @@ function scrollToStoredTargetIfAny() {
       }
     });
   });
-// Animate "Our" then "Services" as one sequence (no extra scroll)
-document.querySelectorAll('.animated-text').forEach(container => {
-  const parts = container.querySelectorAll('.reveal-text-diagonal');
-  if (!parts.length) return;
 
-  // Build one timeline for the whole block
-  const tl = gsap.timeline({ paused: true });
-
-  parts.forEach((el) => {
-    const chars = splitTextToSpans(el);
-
-    // each word animates, then the next word starts right after
-    tl.fromTo(
-      chars,
-      { y: '1em', opacity: 0 },
-      {
-        y: '0em',
-        opacity: 1,
-        stagger: 0.05,
-        duration: 0.75,
-        ease: 'power3.out'
-      },
-      '-=0.65' // start immediately after previous segment ends
-    );
-  });
-  const toggleSmoother = (state) => {
-  if (typeof smoother !== "undefined" && smoother) {
-    smoother.paused(state);
-  }
-};
-// Resume smoother when animation finishes
-tl.eventCallback("onComplete", () => toggleSmoother(false));
-  // One ScrollTrigger controls the whole sequence
-  ScrollTrigger.create({
-    trigger: container,      // trigger when the block enters view
-    start: 'top 10%',
-    end: 'bottom',
-  onEnter: () => {
-    toggleSmoother(true);
-    tl.restart(true); 
-  },
-
-  onEnterBack: () => {
-    toggleSmoother(true);
-    tl.restart(true); 
-  },
-
-  onLeave: () => {
-    toggleSmoother(false);
-    tl.reverse(); // optional: reset so it never sits completed
-  },
-
-  onLeaveBack: () => {
-    toggleSmoother(false);
-    tl.reverse();
-  },
-  });
-});
-  // Function to initialize the carousel animations
-  // Must be called AFTER content is visible (display: block)
-  // function initCarouselAnimations() {
   // Global extra offset for carousels (adjust px as needed)
   const extraOffset = 1000;
   // Horizontal Scroll Case Carousel
-  const horizontalTrack = document.querySelector('.horizontal-carousel .carousel-track');
-  if (horizontalTrack) {
+    const horizontalSection = document.querySelector('.horizontal-carousel');
+  const horizontalTrack = document.querySelector('.carousel-track');
+  if (horizontalSection) {
+
     //To add animations to cards if needed
     const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
     // Helper functions to recalculate values on resize
@@ -455,7 +385,7 @@ tl.eventCallback("onComplete", () => toggleSmoother(false));
       x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
       ease: "none",
       scrollTrigger: {
-        trigger: ".horizontal-carousel",
+        trigger: horizontalSection,
         start: "top top",
         end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
         scrub: 1,
@@ -465,71 +395,9 @@ tl.eventCallback("onComplete", () => toggleSmoother(false));
         // markers: true
       }
     });
+    console.log("Horizontal scroll distance:", getHorizontalScrollDistance());
   }
-  
-// const section = document.querySelector(".typography");
-// if (!section) return;
-// const wrap = section.querySelector(".animated-text");
-// const our = section.querySelector(".word-our");
-// const services = section.querySelector(".word-services");
-
-// if (!wrap || !our || !services) return;
-// // Initial off-screen state
-// gsap.set([our, services], { opacity: 0 });
-// gsap.set(our, { x: -200 });
-// gsap.set(services, { x: 200 });
-// // Timeline (paused by default)
-// const typeTl = gsap.timeline({ paused: true });
-// typeTl
-//   .to(our, {
-//     x: 0,
-//     opacity: 1,
-//     duration: 0.9,
-//     ease: "power1.out"
-//   })
-//   .to(services, {
-//     x: 0,
-//     opacity: 1,
-//     duration: 0.9,
-//     ease: "power1.out"
-//   });
-// // Helper to safely pause/resume ScrollSmoother
-// const toggleSmoother = (state) => {
-//   if (typeof smoother !== "undefined" && smoother) {
-//     smoother.paused(state);
-//   }
-// };
-// // Resume smoother when animation finishes
-// typeTl.eventCallback("onComplete", () => toggleSmoother(false));
-// typeTl.eventCallback("onReverseComplete", () => toggleSmoother(false));
-
-// ScrollTrigger.create({
-//   trigger: section,
-//   start: "top 50%",// when the top of section hits half of viewport
-//   end: "bottom 50%",// when the bottom of section hits half of viewport 
-//   onEnter: () => {
-//     toggleSmoother(true);
-//     typeTl.timeScale(1).restart(true); 
-//   },
-
-//   onEnterBack: () => {
-//     toggleSmoother(true);
-//     typeTl.timeScale(1).restart(true); 
-//   },
-
-//   onLeave: () => {
-//     toggleSmoother(false);
-//     typeTl.timeScale(3).reverse(); // optional: reset so it never sits completed
-//   },
-
-//   onLeaveBack: () => {
-//     toggleSmoother(false);
-//     typeTl.timeScale(3).reverse();
-//   },
-
-//    markers: true
-// });
-
+//Animation for WE Evoke Feelings
 const section = document.querySelector(".hero-fullscreen.slogan");
 const wrap = section?.querySelector(".animated-text");
 const our = section?.querySelector(".word-our");
@@ -550,10 +418,9 @@ if (section && wrap && our && services) {
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
-      // markers: true,
+      //  markers: true,
     }
   });
-
   tl.to(our, { x: 0, opacity: 1, ease: "none", duration: 3 });
   tl.to(services, { x: 0, opacity: 1, ease: "none", duration: 3 });
   tl.to(feelings, { y: 0, opacity: 1, ease: "none", duration: 3 });
@@ -563,6 +430,53 @@ if (section && wrap && our && services) {
   tl.to(services, { x: 200, opacity: 0, ease: "none", duration: 3 }, "exit");
   tl.to(feelings, { y: 200, opacity: 0, ease: "none", duration: 3 }, "exit");
 }
+// Animate "Our" then "Services" as one sequence (no extra scroll)
+  document.querySelectorAll('.animated-text').forEach(container => {
+    const parts = container.querySelectorAll('.reveal-text-diagonal');
+    if (!parts.length) return;
+    // Build one timeline for the whole block
+    const tl = gsap.timeline({ paused: true });
+    parts.forEach((el) => {
+      const chars = splitTextToSpans(el);
+      // each word animates, then the next word starts right after
+      tl.fromTo(
+        chars,
+        { y: '1em', opacity: 0 },
+        {
+          y: '0em',
+          opacity: 1,
+          stagger: 0.05,
+          duration: 0.75,
+          ease: 'power3.out'
+        },
+        '-=0.65' // start immediately after previous segment ends
+      );
+    });
+  // Resume smoother when animation finishes
+    tl.eventCallback("onComplete", () => toggleSmoother(false));
+      // One ScrollTrigger controls the whole sequence
+      ScrollTrigger.create({
+        trigger: container,      // trigger when the block enters view
+        start: 'top 10%',
+        end: 'bottom',
+      onEnter: () => {
+        toggleSmoother(true);
+        tl.restart();
+      },
+      onEnterBack: () => {
+        toggleSmoother(true);
+        tl.restart();
+      },
+      onLeave: () => {
+        toggleSmoother(false);
+        tl.reverse(); // optional: reset so it never sits completed
+      },
+      onLeaveBack: () => {
+        toggleSmoother(false);
+        tl.reverse();
+      },
+      });
+    });
   // Diagonal Scroll Case Carousel
 const diagonalSection = document.querySelector('.diagonal-carousel');
 if (diagonalSection) {
@@ -589,12 +503,9 @@ if (diagonalSection) {
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
-      // markers: true,
+      //  markers: true,
     }
   });
 }
-  // }
-  // Expose the function so it can be called after preloader
-  // window.initCarouselAnimations = initCarouselAnimations;
-  // ...existing code...
 });
+// after gsap.registerPlugin(...)
