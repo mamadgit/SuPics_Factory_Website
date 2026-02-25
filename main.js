@@ -412,7 +412,7 @@ if (section && wrap && our && services) {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: section,        // pins .typography (the 100vh wrapper)
-      start: "top top",
+      start: "top 10%",
       end: "+=1500",
       scrub: 1,
       pin: true,

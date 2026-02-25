@@ -83,16 +83,15 @@ body {
 
 .animated-text {
   text-align: center;
-  display: flex;
   flex-direction: column;
   align-items: center;   // centers each line
   gap: 0;                // adjust if you want spacing between lines
 
-  &--project-details-text{
-    display: block;
-    margin: 43px 0;
+  &--slogan{
+    display: flex;
   }
   &--project-detials-title{
+    display: flex;
     flex-direction: row;
     gap: 2em;
   }
@@ -105,7 +104,7 @@ body {
 .heading {
   font-size: clamp(4rem, 12vw, 10rem);
   font-weight: 900;
-  letter-spacing: -0.05em;
+  // letter-spacing: -0.05em;
 
   &--block {
     display: block;

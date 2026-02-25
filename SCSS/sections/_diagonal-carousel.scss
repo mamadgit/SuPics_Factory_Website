@@ -54,9 +54,9 @@
         position: relative;
         flex: 0 0 80vw;
         height: 70vh;
-        background: var(--card, #222);
+        // background: var(--card, #222);
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+        // box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
         transform-style: preserve-3d;
         transform: rotateY(0deg);
         display: flex;
@@ -76,24 +76,24 @@
             transform: scale(1.22);
         }
         /* Card text overlay */
-        .card-text {
-            position: relative;
-            z-index: 1;
-            padding: 32px;
-            max-width: 450px;
-            color: #fff;
-            backdrop-filter: blur(8px);
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 16px;
-            margin: 32px 32px 32px 32px;
+        // .card-text {
+        //     position: relative;
+        //     z-index: 1;
+        //     padding: 32px;
+        //     max-width: 450px;
+        //     color: #fff;
+        //     backdrop-filter: blur(8px);
+        //     background: rgba(0, 0, 0, 0.35);
+        //     border-radius: 16px;
+        //     margin: 32px 32px 32px 32px;
             
-            // transition:
-            // max-width 0.45s ease,
-            // max-height 0.45s ease,
-            // padding 0.45s ease,
-            // border-radius 0.45s,
-            // background 0.3s ease;
-        }
+        //     // transition:
+        //     // max-width 0.45s ease,
+        //     // max-height 0.45s ease,
+        //     // padding 0.45s ease,
+        //     // border-radius 0.45s,
+        //     // background 0.3s ease;
+        // }
         // &.is-expanded{
         //     max-width: max-content;
         //     max-height: max-content;

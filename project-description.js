@@ -1,30 +1,45 @@
-window.addEventListener("load", () => {
-  if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+// Run ASAP so the correct preloader shows immediately
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem("siteTheme"); } catch (e) {}
+  const prefersLight =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
 
+  const isLight = saved ? saved === "light" : prefersLight;
+  document.documentElement.classList.toggle("light-mode", isLight);
+})();
+
+window.addEventListener("load", () => {
+  if (typeof gsap === "undefined") return;
+
+  const activePreloaderId = document.documentElement.classList.contains("light-mode")
+    ? "preloader-light"
+    : "preloader";
+  const activePreloader = document.getElementById(activePreloaderId);
+
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother);
   const tl = gsap.timeline();
-  // logo fade in
   tl.to("#loader-logo", {
     opacity: 1,
     scale: 1,
     duration: 1.2,
     ease: "power2.out"
   });
-  // fade out preloader
-  tl.to("#preloader", {
+  tl.to(activePreloader, {
     opacity: 0,
     duration: 1,
     ease: "power1.out",
     onComplete: () => {
-      document.getElementById("preloader").style.display = "none";
-      document.getElementById("content").style.display = "block"; // Show the content after preloader
+      // hide BOTH (in case)
+      const p1 = document.getElementById("preloader");
+      const p2 = document.getElementById("preloader-light");
+      if (p1) p1.style.display = "none";
+      if (p2) p2.style.display = "none";
+
+      document.getElementById("content").style.display = "block";
     }
   }, "+=2.5");
-  requestAnimationFrame(() => {//Giving appropiate time for the content with animation (carousels) to be visible
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true); // Force a full refresh
-    });
-  });
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -43,12 +58,15 @@ window.addEventListener("load", () => {
       }
     }
   );
-  let smoother = ScrollSmoother.create({
-    wrapper: '#scroll-wrapper',
-    content: '#scroll-content',
+  // //Disable native browser scroll restoration
+  // if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  const smoother = ScrollSmoother.create({
+    wrapper: "#scroll-wrapper",
+    content: "#scroll-content",
     smooth: 1.7,
-    // effects: true
   });
+
 // Smooth scroll for ALL anchor links to work with ScrollSmoother
 document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
@@ -85,8 +103,8 @@ ScrollTrigger.create({
     const toggle = document.getElementById('theme-toggle');
     const logoHeaderImg = document.querySelector('.brand .logo-header-image img');
     const heroLogoImg = document.querySelector('.hero-image img');
-    const SolidHeading = document.querySelector('.animated-text .heading--solid');
-    const TransparentHeading = document.querySelector('.animated-text .heading--transparent');
+    const SolidHeadings = Array.from(document.querySelectorAll('.animated-text .heading--solid'));
+    const TransparentHeadings = Array.from(document.querySelectorAll('.animated-text .heading--transparent'));
     const header = document.querySelector('.site-header');
     const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
     const headerEL = document.querySelector(".offcanvas-header");
@@ -106,23 +124,20 @@ ScrollTrigger.create({
       onLeaveBack: () => headerEL.classList.remove("is-visible"),
       });
     }
-
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
-
       //Animated Text Color Switching
-      if (SolidHeading && TransparentHeading) {
+      if (SolidHeadings.length || TransparentHeadings.length) {
         if (animate && typeof gsap !== "undefined") {
-          gsap.to(SolidHeading, {
+          gsap.to(SolidHeadings, {
             opacity: 0,
             duration: 0.2,
             ease: "power1.inOut",
             onComplete: () => {
-              // swap while invisible
-              SolidHeading.classList.toggle("heading--solid-black", isLight);
-              TransparentHeading.classList.toggle("heading--transparent-black", isLight);
-              gsap.to(SolidHeading, {
+              SolidHeadings.forEach(el => el.classList.toggle("heading--solid-black", isLight));
+              TransparentHeadings.forEach(el => el.classList.toggle("heading--transparent-black", isLight));
+              gsap.to(SolidHeadings, {
                 opacity: 1,
                 duration: 0.2,
                 ease: "power1.inOut",
@@ -130,8 +145,8 @@ ScrollTrigger.create({
             },
           });
         } else {
-          // no animation on load
-          SolidHeading.classList.toggle("heading--solid-black", isLight);
+          SolidHeadings.forEach(el => el.classList.toggle("heading--solid-black", isLight));
+          TransparentHeadings.forEach(el => el.classList.toggle("heading--transparent-black", isLight));
         }
       }
       // Header logo switching
