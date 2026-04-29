@@ -1,81 +1,50 @@
 @use 'mixins';
+@use 'variables';
+
+@mixin preloader-shared {
+  @include mixins.flex-center();
+  position: fixed;
+  inset: 0;
+  z-index: 9999; 
+}
 
 #preloader {
-  @include mixins.flex-center();
-  position: fixed;
-  inset: 0;
-  background: #000000;
-  /* Change this if your GIF looks better on dark bg */
-  z-index: 9999;
-}
-#preloader-light {
-  @include mixins.flex-center();
-  position: fixed;
-  inset: 0;
-  background: #e9e9e9;
-  /* Change this if your GIF looks better on dark bg */
-  z-index: 9999;
-}
-/* Default: assume dark mode */
-#preloader-light {
-  display: none;
+  @include preloader-shared();
+  background: #000000; // Fixed dark for the default preloader
+
+  /* Fallback or specific override if needed */
+  /* transition: background var(--transition-base); */
 }
 
-/* When light mode is active */
-html.light-mode #preloader {
-  display: none;
+#preloader-light {
+  @include preloader-shared();
+  background: #e9e9e9; // Fixed light for the light preloader
+  display: none; 
 }
 
-html.light-mode #preloader-light {
-  display: flex; // because your mixin likely uses flex
+/* Mode-based visibility for preloaders */
+html.light-mode {
+  #preloader {
+    display: none;
+  }
+
+  #preloader-light {
+    display: flex;
+  }
 }
 
 #loader-logo {
   width: 150px;
-  /* adjust size */
   opacity: 0;
   transform: scale(0.8);
 }
 
 #content {
-  // display: none; /* hide site initially until preloader finishes */
   opacity: 0;
-  /* hide site initially */
+  /* hide site initially until preloader finishes (handled by GSAP) */
 }
 
-// .reveal-text {
-//   white-space: nowrap;  /* Prevents character wrapping when split into spans */
-// }
-
-.reveal-text span {
-  display: inline-block;
-  will-change: transform, opacity;
-}
+.reveal-text span,
 .reveal-text-diagonal span {
-  display: inline-block;
-  will-change: transform, opacity;
+  @include mixins.gsap-reveal-prep();
 }
-
-
-
-// @use 'mixins';
-// #preloader {
-//   @include mixins.flex-center();
-//   position: fixed;
-//   inset: 0;
-//   background: #000000; /* This remains the same */
-//   z-index: 9999;
-//   transform: translateY(0); /* Reset any previous transform */
-// }
-
-// #loader-logo {
-//   width: 150px; /* Adjust size */
-//   opacity: 0;
-//   transform: scale(0.8);
-// }
-
-// #content {
-//   position: relative; /* Change position if necessary to avoid overlap issues */
-//   opacity: 1; /* Adjust this if you want instant visibility */
-//   /* Remove opacity setting if you want to show content immediately after the preloader rolls up */
-// }

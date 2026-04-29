@@ -2,170 +2,183 @@
 
 // Nian Font Family - All Weights
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Thin.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian'; 
-    src: url('#{variables.$pathFont}/w_Nian_Extra_Light.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Extra_Light.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+ 
+@font-face {
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Semi_Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Semi_Bold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Extra_Bold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Extra_Bold.ttf') format('truetype');
-    font-weight: 800;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Nian';
-    src: url('#{variables.$pathFont}/w_Nian_Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Nian';
+  src: url('#{variables.$pathFont}/w_Nian_Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
-    font-family: variables.$baseFont;
-    background: radial-gradient(1200px 800px at 70% -10%, rgba(108, 245, 210, 0.12), transparent 60%), var(--bg);
-    color: var(--text);
-    line-height: 1;
-    transition: background variables.$transition-slow, color variables.$transition-slow;
-    font-size: 1.2rem; // 10px base is handled by rem() function
+  font-family: variables.$baseFont;
+  background: radial-gradient(1200px 800px at 70% -10%, rgba(108, 245, 210, 0.12), transparent 60%), var(--bg);
+  color: var(--text);
+  line-height: 1;
+  transition: background variables.$transition-slow, color variables.$transition-slow;
+  font-size: 1.2rem; // 10px base is handled by rem() function
 }
 
 .kicker {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    font-size: .8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .8rem;
 }
 
 .animated-text {
   text-align: center;
   flex-direction: column;
-  align-items: center;   // centers each line
-  gap: 0;                // adjust if you want spacing between lines
+  align-items: center; // centers each line
+  gap: 0; // adjust if you want spacing between lines
 
-  &--slogan{
+  &--slogan {
     display: flex;
   }
-  &--project-detials-title{
+
+  &--project-detials-title {
     display: flex;
     flex-direction: row;
     gap: 2em;
   }
- .line-1 {
-  display: flex;
-  justify-content: center;
-  align-items: baseline; // keeps big text aligned nicely
-  gap: 2rem;           // replaces margin-right on solid, etc.
-}
-.heading {
-  font-size: clamp(4rem, 12vw, 10rem);
-  font-weight: 900;
-  // letter-spacing: -0.05em;
 
-  &--block {
-    display: block;
+  .line-1 {
+    display: flex;
+    justify-content: center;
+    align-items: baseline; // keeps big text aligned nicely
+    gap: 2rem; // replaces margin-right on solid, etc.
   }
-  &--inline {
-    display: inline-block; // or inline-block
-  }
-  &--solid {
-    color: #fff;
-    // margin-right: 2.5rem;
-  }
-  &--solid-black {
-    color: #000000;
-  }
-  &--transparent {
-    color: transparent;
-    -webkit-text-stroke: 2px #fff;
-  }
-  &--transparent-black {
-    color: transparent;
-    -webkit-text-stroke: 2px #000000;
-  }
-  &--word-feelings{
-    letter-spacing: 0.05em;
-    margin-left: 2rem;
-  }
-}
-    h2 {
-        font-size: clamp(40px, 6vw, 55px);
-        font-weight: 700;
-        line-height: 1.1;
-         margin: 10px 10px;
-        color: var(--text);
+
+  .heading {
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 900;
+    // letter-spacing: -0.05em;
+
+    &--block {
+      display: block;
     }
-    p {
-        text-align: justify;
-        font-size: 1.25rem;
-        line-height: 1.6;
-        color: var(--muted);
-        max-width: max-content;
-        margin-left: auto;
-        margin-right: auto;
+
+    &--inline {
+      display: inline-block; // or inline-block
     }
-    ul {
+
+    &--solid {
+      color: #fff;
+      // margin-right: 2.5rem;
+    }
+
+    &--solid-black {
+      color: #000000;
+    }
+
+    &--transparent {
+      color: transparent;
+      -webkit-text-stroke: 2px #fff;
+    }
+
+    &--transparent-black {
+      color: transparent;
+      -webkit-text-stroke: 2px #000000;
+    }
+
+    &--word-feelings {
+      letter-spacing: 0.05em;
+      margin-left: 2rem;
+    }
+  }
+
+  h2 {
+    font-size: clamp(40px, 6vw, 55px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 10px 10px;
+    color: var(--text);
+  }
+
+  p {
+    text-align: justify;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  ul {
     font-size: 1.25rem;
     line-height: 1.6;
     color: var(--muted);
     margin: 1.5rem auto;
-    padding-left: 1.5rem; /* keeps bullets readable */
-    text-align: left;     /* prevents justification */
-    }
+    padding-left: 1.5rem;
+    /* keeps bullets readable */
+    text-align: left;
+    /* prevents justification */
+  }
 
 }
+
 .word-our,
-.word-services  {
+.word-services {
   display: inline-block;
   will-change: transform, opacity;
 }
-.word-feelings{
+
+.word-feelings {
   will-change: transform, opacity;
 }
-
-
-

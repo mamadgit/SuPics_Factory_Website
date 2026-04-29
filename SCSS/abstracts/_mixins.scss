@@ -62,3 +62,9 @@ $breakpoint-map: variables.$breakpoints;
     color: $color;
     border-color: $bcolor;
 }
+
+// GSAP text reveal preparation
+@mixin gsap-reveal-prep {
+    display: inline-block;
+    will-change: transform, opacity;
+}

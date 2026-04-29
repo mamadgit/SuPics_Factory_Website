@@ -21,7 +21,14 @@
         display: flex;
         gap: 60px; 
         will-change: transform;
-        padding: 0 10vw;
+        // padding: 0 10vw;
+        margin: 0 10vw;
+
+        cursor: grab;
+    
+        &:active {
+            cursor: grabbing;
+        }
     }
 
     .case-card {
