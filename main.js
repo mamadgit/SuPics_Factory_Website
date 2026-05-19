@@ -216,7 +216,24 @@ window.addEventListener("load", () => {
   const button = document.querySelector('.hero-scroll-btn');
   if (button){
     button.addEventListener("click", () => {
+      if(smoother){
         smoother.scrollTo(".site-header", true, "top top");
+      }
+      else{
+        //Mobile no smoother. Disable native mobile scroller by locking the body
+        document.body.style.overflow = "hidden";
+        gsap.to(window, {
+          duration: 0.6,
+          scrollTo:{
+            y: ".site-header",
+            autoKill: false
+          },
+          ease: "power1.out",
+          onComplete: () =>{
+            document.body.style.overflow = "";
+          }
+        });
+      }
     });
   }
   //#endregion
@@ -231,20 +248,29 @@ window.addEventListener("load", () => {
       if (!targetId) return;
       e.preventDefault();
 
-      if (targetId === '#') {
-        // history.pushState(null, "", "#");
-        if(smoother){
-          smoother.scrollTo(0, true);
-        }
-        else{
-          window.scrollTo({top: 0, behavior:'smooth'})
-        }
-        return;
+    if (targetId === '#') {
+      if (smoother) {
+        smoother.scrollTo(0, false); //Still declare smoother but set to false because smoother is active for large screens
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: "auto"
+        });
       }
+      return;
+    }
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        // Use smoother for transform-based scrolling
-        smoother.scrollTo(targetElement, false, "top 80px");
+        if (smoother) {
+          // Use smoother for transform-based scrolling if it exists
+          smoother.scrollTo(targetElement, false, "top 80px");
+        } else {
+          // Fallback for mobile: native scrolling with 80px offset
+          const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({
+            top: targetPosition,
+          });
+        }
       }
     });
   });
@@ -262,70 +288,44 @@ window.addEventListener("load", () => {
   
   // Auto-scroll past hero video when user starts scrolling
   // This makes a small scroll jump to the header (like clicking Explore)
-  // ScrollTrigger.create({
-  //   trigger: ".hero-fullscreen",
-  //   start: "top top",
-  //   end: "bottom 90%",
-  //   onLeave: () => {
-  //     if (heroSnapped || !pageReady) return;
-  //     heroSnapped = true;
-  //     // stop smooth momentum from carrying past your target
-  //     if(smoother){
-  //     // Desktop: Stop smoother momentum, snap, then resume
-  //     smoother.paused(true);
-  //     // do the snap (instant jump within paused state)
-  //     smoother.scrollTo(".site-header", true, "top top");
-  //     // resume after it lands
-  //     gsap.delayedCall(0.2, () => smoother.paused(false));
-  //     }
-  //     else{
-  //       // Mobile: No smoother, just use the ScrollToPlugin directly
-  //       const ScrollTween = gsap.to(window,{
-  //         duration: 0.6,
-  //         scrollTo: ".site-header",
-  //         ease: "power2.inOut"
-  //       });
-  //       ScrollTween.paused();
-  //     }
-  //   },
-  //   onEnterBack: () => {
-  //     heroSnapped = false;
-  //   }
-  // });
-  if(smoother){
-    ScrollTrigger.create({
-      trigger: ".hero-fullscreen",
-      start: "top top",
-      end: "bottom 90%",
+  ScrollTrigger.create({
+    trigger: ".hero-fullscreen",
+    start: "top top",
+    end: "bottom 90%",
+    onLeave: () => {
+      if (heroSnapped || !pageReady) return;
+      heroSnapped = true;
+      // stop smooth momentum from carrying past your target
+      if(smoother){
+      // Desktop: Stop smoother momentum, snap, then resume
+      smoother.paused(true);
+      // do the snap (instant jump within paused state)
+      smoother.scrollTo(".site-header", true, "top top");
+      // resume after it lands
+      gsap.delayedCall(0.2, () => smoother.paused(false));
+      }
+      else {
+        // Mobile: No smoother. Kill native momentum by locking the body.
+        document.body.style.overflow = "hidden";
 
-      onLeave: () =>{
-        if(heroSnapped || !pageReady) return;
-        heroSnapped = true;
-        smoother.paused(true);
-        smoother.scrollTo(".site-header", true, "top top");
-        gsap.delayedCall(0.2, () => smoother.paused(false));
-      },
-      onEnterBack: ()=>{
-        heroSnapped = false;
+        gsap.to(window, {
+          duration: 0.6,
+          scrollTo: {
+            y: ".site-header",
+            autoKill: false // prevents the tween from dying if the user tries to scroll
+          },
+          ease: "power1.out",
+          onComplete: () => {
+            // Restore native scrolling once the snap finishes
+            document.body.style.overflow = "";
+          }
+        });
       }
-    });
-  }
-  else {
-    ScrollTrigger.create({
-      onUpdate: (self) => {
-        const lastscroll = 0;
-        const current = self.scroll();
-        const delta = current - lastscroll;
-        if(Math.abs(delta) > 10){
-          gsap.to(window,{
-            duration:0.6,
-            scrollTo: ".site-header",
-            ease: "power2.inOut"
-          });
-        }
-      }
-    });
-  }
+    },
+    onEnterBack: () => {
+      heroSnapped = false;
+    }
+  });
   //#endregion
 
   //================================================
@@ -338,12 +338,19 @@ window.addEventListener("load", () => {
   menuToggle.addEventListener('click', () =>{
     navLinks.classList.toggle('active');
 
+    if (navLinks.classList.contains('active')){
+      document.body.style.overflow = 'hidden';
+    }else{
+      document.body.style.overflow = '';
+    }
+  });
+  
     navActive.forEach(item => {
       item.addEventListener('click', () =>{
         navLinks.classList.remove('active');
+        document.body.style.overflow = '';
       });
     });
-  });
   //#endregion
 
   // ===============================================
