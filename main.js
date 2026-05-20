@@ -238,40 +238,89 @@ window.addEventListener("load", () => {
   }
   //#endregion
 
-  // ===============================================
-  //#region   ANCHOR (HASH) LINK SMOOTH SCROLLING
-  // ===============================================
-  // Smooth scroll for ALL anchor links to work with ScrollSmoother
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href');
-      if (!targetId) return;
-      e.preventDefault();
+  // ==================================================
+  //#region   HASH NAVIGATION FOR DESKTOP & MOBILE
+  // ==================================================
+  const MobileBreakPoint = 768; 
+  const BrandLogo = document.querySelector('a.brand')
+  const navMenu = document.querySelector('.nav');
+  const navLinks = document.querySelectorAll ('.nav a');
+  const AllHashLinks = document.querySelectorAll('a[href^="#"]');
 
-    if (targetId === '#') {
-      if (smoother) {
-        smoother.scrollTo(0, false); //Still declare smoother but set to false because smoother is active for large screens
-      } else {
+  // let smoother;
+
+  function ToggleMobileMenu(){
+    navMenu.classList.toggle('active');
+    //Prevent body from scrolling when menu is open
+    if(navMenu.classList.contains('active')){
+      document.body.style.overflow = 'hidden';
+    } 
+    else{
+      document.body.style.overflow = '';
+    }
+  }
+  function CloseMobileMenu(){
+    if(navMenu.classList.contains('active')){
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+    /**
+   * Handles smooth scrolling to a target element.
+   * @param {string} TaregtID - The ID of the element to scroll to (e.g., "#Projects").
+   */
+  function SmoothScrollTo (TargetID){
+    if (!TargetID) return;
+  
+  if(TargetID === '#'){
+    if(smoother){
+      smoother.scrollTo(0, false)
+    } else{
+      window.scrollTo({top: 0, behavior: "auto"})
+    }
+    return
+  }
+    const TargetElement = document.querySelector(TargetID);
+    if(TargetElement){
+      if(smoother){
+        smoother.scrollTo(TargetElement, false, "top 80px");
+      }else{
+        const offset = 100;
+        const TargetPosition = TargetElement.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({
-          top: 0,
-          behavior: "auto"
+          top: TargetPosition,
         });
       }
+    }
+  }
+
+  //1. The single listener to decide what to do on logo/ click
+  BrandLogo.addEventListener('click', (e) => {
+    e.preventDefault(); //prevent default jump in both cases
+
+    if(window.innerWidth < MobileBreakPoint){
+      //On Mobile its a Menu
+      ToggleMobileMenu();
+    }
+    else{
+      //On Desktop it scrolls to the top
+      SmoothScrollTo('#');
+    }
+  });
+  
+  //2. Listener for all other hash links (e.g., Projects, Services, etc)
+  AllHashLinks.forEach(anchor => {
+    //We skip the BrandLogo because we gave it its own listener
+    if(anchor === BrandLogo){
       return;
     }
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        if (smoother) {
-          // Use smoother for transform-based scrolling if it exists
-          smoother.scrollTo(targetElement, false, "top 80px");
-        } else {
-          // Fallback for mobile: native scrolling with 80px offset
-          const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
-          window.scrollTo({
-            top: targetPosition,
-          });
-        }
-      }
+    anchor.addEventListener('click', function(e){
+      e.preventDefault();
+      const TargetID = this.getAttribute('href');
+      //Close the mobile menu if a link is clicked
+      CloseMobileMenu();
+      //Scroll to the section
+      SmoothScrollTo(TargetID);
     });
   });
   //#endregion
@@ -328,30 +377,6 @@ window.addEventListener("load", () => {
   });
   //#endregion
 
-  //================================================
-  //#region       MOBILE MENU NAVIGATION
-  //================================================
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav');
-  const navActive = document.querySelectorAll('.nav a');
-
-  menuToggle.addEventListener('click', () =>{
-    navLinks.classList.toggle('active');
-
-    if (navLinks.classList.contains('active')){
-      document.body.style.overflow = 'hidden';
-    }else{
-      document.body.style.overflow = '';
-    }
-  });
-  
-    navActive.forEach(item => {
-      item.addEventListener('click', () =>{
-        navLinks.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-    });
-  //#endregion
 
   // ===============================================
   //#region   THEME TOGGLE FOR LOGO AND MAIN IMAGE
