@@ -153,11 +153,12 @@ body {
   }
 
   h2 {
-    font-size: clamp(40px, 6vw, 55px);
+    font-size: clamp(20px, 5.4vw, 55px);
     font-weight: 700;
     line-height: 1.1;
     margin: 10px 10px;
     color: var(--text);
+    white-space: nowrap;
   }
 
   p {
