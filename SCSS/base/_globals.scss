@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     transition: color variables.$transition-base;
+    -webkit-tap-highlight-color: transparent;
 }
 
 

@@ -58,7 +58,9 @@ $menu-transition: 0.4s;
     letter-spacing: 0.4px; 
     display: flex;
     align-items: center;
-    gap: 10px
+    gap: 10px;
+        -webkit-tap-highlight-color: transparent;
+
 }
 
 .logo-header-image {
@@ -68,6 +70,7 @@ $menu-transition: 0.4s;
     display: flex;
     align-items: center;
     transition: background variables.$transition-slow, color variables.$transition-slow;
+    
 }
 
 .nav {
@@ -148,6 +151,7 @@ $menu-transition: 0.4s;
             text-transform: uppercase;
             color: #ffffff;
             transition: color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
             // Hover state (.nav a:hover)
             &:hover {
                 color: #007BFF; // Change to your project's accent color

@@ -21,6 +21,8 @@
 
     &.ghost {
         @include mixins.btn-variant(ghost);
+        
+        color: white;
     }
 
     &.xl {
@@ -38,7 +40,7 @@
 /* Hero Scroll Button - Glassmorphism Style */
 .hero-scroll-btn {
     position: absolute;
-    bottom: 40px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -59,7 +61,7 @@
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     z-index: 10;
-
+    -webkit-tap-highlight-color: transparent;
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         border-color: rgba(255, 255, 255, 0.35);
