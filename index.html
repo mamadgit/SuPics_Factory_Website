@@ -18,9 +18,9 @@
   <div id="preloader">
     <video src="logo.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
   </div>
-  <!-- <div id="preloader-light">
+  <div id="preloader-light">
     <video src="logo-light.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
-  </div> -->
+  </div>
   <div id="content">
     <div id="scroll-wrapper">
       <div id="scroll-content">
@@ -117,28 +117,31 @@
           <div class="bg-gradient"></div>
         </section>
         <!-- Horizontal Case Carousel -->
-        <section id="Projects" class="horizontal-carousel">
+        <section class="horizontal-carousel">
           <!-- <div class="pin-spacer"> -->
-          <div class="horizontal-carousel">
+          <!-- <div class="horizontal-carousel"> -->
             <div class="carousel-inner">
-              <div class="carousel-track">
+              <div id="Projects" class="carousel-track">
                 <!-- Card 1 -->
                 <div class="case-card">
                   <div class="card-text">
-                    <h2>Roots in earth</h2>
-                    <p>This 56-year-old cookie’s rabbit hole of absurdist escapism consumed the internet.</p>
+                    <div class="h3-wrapper">
+                      <h3>ROOTS IN EARTH</h3>
+                    </div>
+                    <p>This 56-year-old cookie's rabbit hole of absurdist escapism consumed the internet.</p>
                     <a href="Project-Descriptions/Project-Description1.html" class="btn ghost sm">View case</a>
                   </div>
                   <div class="card-image">
-                    <img src="Card-Content/Cover-Images/Rishe dar Khak - FINAL BN_1.mp4_20260124_174944.493.jpg" alt=""
-                      style="transform: scale(1.1);">
+                    <img src="Card-Content/Cover-Images/Rishe dar Khak - FINAL BN_1.mp4_20260124_174944.493.jpg" alt="">
                   </div>
                 </div>
                 <!-- Card 2 -->
                 <div class="case-card">
                   <div class="card-text">
-                    <h2>CRUNCH TIME CAMPAIGN</h2>
-                    <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
+                    <div class="h3-wrapper">
+                      <h3>ROOTS IN EARTH</h3>
+                    </div>
+                    <p>A nostalgic voyage through cereal seas-reviving childhood joy for adults.</p>
                     <a href="Project-Descriptions/Project-Description2.html" class="btn ghost sm">View case</a>
                   </div>
                   <div class="card-image">
@@ -147,11 +150,13 @@
                 </div>
                 <!-- Card 3 -->
                 <div class="case-card">
-                  <div class="card-text">
-                    <h3>CRUNCH TIME CAMPAIGN</h3>
-                    <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
-                    <a href="Project-Descriptions/Project-Description3.html" class="btn ghost sm">View case</a>
-                  </div>
+                    <div class="card-text">
+                      <div class="h3-wrapper">
+                        <h3>CRUNCH TIME CAMPAIGN</h3>
+                      </div>
+                      <p>A nostalgic voyage through cereal seas-reviving childhood joy for adults.</p>
+                      <a href="Project-Descriptions/Project-Description3.html" class="btn ghost sm">View case</a>
+                    </div>
                   <div class="card-image">
                     <img src="Card-Content/Cover-Images/mothaf najaf haml dar LQ 1.mp4_20260124_174703.7001.jpg" alt="">
                   </div>
@@ -159,7 +164,9 @@
                 <!-- Card 4 -->
                 <div class="case-card">
                   <div class="card-text">
-                    <h3>CRUNCH TIME CAMPAIGN</h3>
+                      <div class="h3-wrapper">
+                        <h3>CRUNCH TIME CAMPAIGN</h3>
+                      </div>
                     <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
                     <a href="Project-Descriptions/Project-Description4.html" class="btn ghost sm">View case</a>
                   </div>
@@ -170,7 +177,9 @@
                 <!-- Card 5 -->
                 <div class="case-card">
                   <div class="card-text">
-                    <h3>CRUNCH TIME CAMPAIGN</h3>
+                    <div class="h3-wrapper">
+                      <h3>CRUNCH TIME CAMPAIGN</h3>
+                    </div>
                     <p>A nostalgic voyage through cereal seas – reviving childhood joy for adults.</p>
                     <a href="Project-Descriptions/Project-Description5.html" class="btn ghost sm">View case</a>
                   </div>
@@ -181,7 +190,7 @@
                 <!-- Add more cards if needed -->
               </div>
             </div>
-          </div>
+          <!-- </div> -->
           <!-- All Projects Link -->
           <a href="All_Projects.html" class="All-Projects-Link">
             All Projects
@@ -345,7 +354,7 @@
                     This unique combination of art, technology, and organizational intelligence
                     enables us to create projects that are not only visually compelling and
                     impactful, but also capable of improving performance and productivity within
-                    our clients’ organizations.
+                    our clients' organizations.
                   </p>
                 </div>
               </div>
@@ -402,6 +411,7 @@
         <script src="./GSAP/minified/ScrollSmoother.min.js"></script>
         <script src="./GSAP/minified/Observer.min.js"></script>
         <script src="./GSAP/minified/ScrollToPlugin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fitty/2.3.6/fitty.min.js"></script>
         <script src="main.js" defer></script>
       </div>
     </div>
