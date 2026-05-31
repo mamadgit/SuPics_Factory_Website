@@ -105,7 +105,7 @@ body {
   }
 
   .heading {
-    font-size: clamp(4rem, 12vw, 10rem);
+    font-size: clamp(4rem, 18vw, 10rem);
     font-weight: 900;
     // letter-spacing: -0.05em;
 
@@ -139,6 +139,16 @@ body {
     &--word-feelings {
       letter-spacing: 0.05em;
       margin-left: 2rem;
+    }
+  }
+  @media (max-width: 768px){
+    .heading{
+      font-size: clamp(5.5rem, 12vw, 10rem);
+      font-weight: 1000;
+        &--word-feelings {
+          letter-spacing: 0.05em;
+          margin-left: 0rem;
+      }
     }
   }
 
