@@ -246,8 +246,7 @@ window.addEventListener("load", () => {
   const navMenu = document.querySelector('.nav');
   const navLinks = document.querySelectorAll ('.nav a');
   const AllHashLinks = document.querySelectorAll('a[href^="#"]');
-
-  // let smoother;
+  const ThemeToggle = document.getElementById('theme-toggle');
 
   function ToggleMobileMenu(){
     navMenu.classList.toggle('active');
@@ -377,7 +376,6 @@ window.addEventListener("load", () => {
   });
   //#endregion
 
-
   // ===============================================
   //#region   THEME TOGGLE FOR LOGO AND MAIN IMAGE
   // ===============================================
@@ -482,9 +480,18 @@ window.addEventListener("load", () => {
         toggle.addEventListener('click', () => {
           const nowLight = !document.documentElement.classList.contains('light-mode');
           setTheme(nowLight, true); // animate on user click
+
+          //Mobile Navigation for toggle is written here (rather than mobile nav section)
+          if(window.innerWidth < MobileBreakPoint){
+            // Wait 40ms to allow the 400ms GSAP animations to finish before closing
+            setTimeout(() => {
+              CloseMobileMenu();
+            }, 40); 
+          }
         });
       }
     })();
+    
   //#endregion
 
   // ==========================================
@@ -544,44 +551,88 @@ window.addEventListener("load", () => {
   // ==========================================
   //#region   HORIZONTAL CAROUSEL SCROLL
   // ==========================================
-    // Global extra offset for carousels (adjust px as needed)
-    const Offset = 1000;
-    // Horizontal Scroll Case Carousel
-    const horizontalSection = document.querySelector('.horizontal-carousel');
-    const horizontalTrack = document.querySelector('.carousel-track');
+  const horizontalSection = document.querySelector('.carousel-inner');
+  const horizontalTrack = document.querySelector('.carousel-track');
 
-    if (horizontalSection) {
-      //To add animations to cards if needed
-      const horizontalCards = gsap.utils.toArray('.horizontal-carousel .case-card');
-      // Helper functions to recalculate values on resize
-      const getHorizontalTrackWidth = () => horizontalTrack.scrollWidth;
-      if(window.innerWidth > 1024){
-        getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth + Offset;
+  if (horizontalSection && horizontalTrack) {
+    const Offset = 500;
+    let isOverCarousel = false;
+    let currentX = 0;
+    let targetX = 0;
+    let rafId = null;
+
+    const getMaxScroll = () => {
+      const trackWidth = horizontalTrack.scrollWidth;
+      const viewWidth = window.innerWidth;
+      let extra = Offset;
+      if (viewWidth < 768) extra = 100;
+      else if (viewWidth < 1024) extra = 300;
+      return trackWidth - viewWidth + extra;
+    };
+
+    // Smooth lerp animation loop
+    const ease = 0.1;
+    function animate() {
+      currentX += (targetX - currentX) * ease;
+
+      // Stop the loop when close enough
+      if (Math.abs(targetX - currentX) < 0.5) {
+        currentX = targetX;
+        gsap.set(horizontalTrack, { x: -currentX });
+        rafId = null;
+        return;
       }
-      else{
-        getHorizontalScrollDistance = () => getHorizontalTrackWidth() - window.innerWidth +500;
 
-      }
-
-      gsap.to(horizontalTrack, {
-        x: () => -getHorizontalScrollDistance() + window.innerWidth * 0.05,
-        ease: "none",
-        scrollTrigger: {
-          trigger: horizontalSection,
-          start: "top top",
-          end: () => `+=${getHorizontalScrollDistance()}`, // Dynamic scroll distance
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          // markers: true
-        }
-      });
+      gsap.set(horizontalTrack, { x: -currentX });
+      rafId = requestAnimationFrame(animate);
     }
+
+    function startAnimate() {
+      if (!rafId) rafId = requestAnimationFrame(animate);
+    }
+
+    // Pin the section manually when cursor enters
+    horizontalSection.addEventListener('mouseenter', () => {
+      isOverCarousel = true;
+    });
+
+    horizontalSection.addEventListener('mouseleave', () => {
+      isOverCarousel = false;
+    });
+
+    // Intercept wheel events
+    horizontalSection.addEventListener('wheel', (e) => {
+      if (!isOverCarousel) return; // let it scroll the page
+
+      const maxScroll = getMaxScroll();
+
+      // If we've hit the end or the start, let the page scroll
+      const atStart = targetX <= 0 && e.deltaY < 0;
+      const atEnd = targetX >= maxScroll && e.deltaY > 0;
+
+      if (atStart || atEnd) return;
+
+      // Consume the scroll event — drive the carousel instead
+      e.preventDefault();
+
+      targetX += e.deltaY;
+      targetX = Math.max(0, Math.min(targetX, maxScroll));
+
+      startAnimate();
+    }, { passive: false });
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      const maxScroll = getMaxScroll();
+      targetX = Math.min(targetX, maxScroll);
+      currentX = Math.min(currentX, maxScroll);
+      gsap.set(horizontalTrack, { x: -currentX });
+    });
+  }
   //#endregion
 
   // ==========================================
-  //#region   WE AVOKE FEELINGS SECTION
+  //#region   WE EVOKE FEELINGS SECTION
   // ==========================================
     const section = document.querySelector(".hero-fullscreen.slogan");
     const wrap = section?.querySelector(".animated-text");
@@ -700,4 +751,16 @@ window.addEventListener("load", () => {
     });
   }
 //#endregion
+
+//Requesting animation frame for fitty to load
+  // document.fonts.ready.then(function () {
+  //     // Give the browser a frame to finish layout
+  //     requestAnimationFrame(function() {
+  //         fitty('.case-card .card-text .h3-wrapper h3', {
+  //             minSize: 10,
+  //             maxSize: 29,
+  //             multiLine: false
+  //         });
+  //     });
+  // });
 });
