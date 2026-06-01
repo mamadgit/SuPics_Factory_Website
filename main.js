@@ -73,6 +73,8 @@ window.addEventListener("load", () => {
   // =========================================
   //#region     SCROLLSMOOTHER SETUP
   // =========================================
+  const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
+
   //Disable native browser scroll restoration
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
@@ -364,16 +366,16 @@ window.addEventListener("load", () => {
   });
 }
 
-function handleSnap(target) {
+function handleSnap(target, offset = headerH) {
   if (smoother) {
     smoother.paused(true);
-    smoother.scrollTo(target, true, "top top");
+    smoother.scrollTo(target, true, `top ${offset}px`);
     gsap.delayedCall(0.2, () => smoother.paused(false));
   } else {
     document.body.style.overflow = "hidden";
     gsap.to(window, {
       duration: 0.6,
-      scrollTo: { y: target, autoKill: false },
+      scrollTo: { y: target, autoKill: false, offsetY: offset},
       ease: "power1.out",
       onComplete: () => {
         document.body.style.overflow = "";
@@ -382,10 +384,10 @@ function handleSnap(target) {
   }
 }
   // range-based trigger → fires after scrolling through hero
-  scrollAutoSnap(".hero-fullscreen", ".site-header", "top top", "bottom 90%");
+  scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
 
   // point trigger → fires exactly when hero exits
-  scrollAutoSnap(".hero", ".carousel-inner", "bottom top");
+  scrollAutoSnap(".hero", ".carousel-inner", "top top", "bottom 45%");
   //#endregion
 
   // ===============================================
