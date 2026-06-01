@@ -371,7 +371,9 @@ function handleSnap(target, offset = headerH) {
     smoother.paused(true);
     smoother.scrollTo(target, true, `top ${offset}px`);
     gsap.delayedCall(0.2, () => smoother.paused(false));
-  } else {
+  } 
+  else 
+    {
     document.body.style.overflow = "hidden";
     gsap.to(window, {
       duration: 0.6,
@@ -387,7 +389,7 @@ function handleSnap(target, offset = headerH) {
   scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
 
   // point trigger → fires exactly when hero exits
-  scrollAutoSnap(".hero", ".carousel-inner", "top top", "bottom 45%");
+  scrollAutoSnap(".hero", ".carousel-track", "top top", "bottom 45%");
   //#endregion
 
   // ===============================================
