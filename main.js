@@ -334,46 +334,58 @@ window.addEventListener("load", () => {
     pageReady = true;
   }, 1500);
   
-  // Auto-scroll past hero video when user starts scrolling
-  // This makes a small scroll jump to the header (like clicking Explore)
-  ScrollTrigger.create({
-    trigger: ".hero-fullscreen",
-    start: "top top",
-    end: "bottom 90%",
-    onLeave: () => {
-      if (heroSnapped || !pageReady) return;
-      heroSnapped = true;
-      // stop smooth momentum from carrying past your target
-      if(smoother){
-      // Desktop: Stop smoother momentum, snap, then resume
-      smoother.paused(true);
-      // do the snap (instant jump within paused state)
-      smoother.scrollTo(".site-header", true, "top top");
-      // resume after it lands
-      gsap.delayedCall(0.2, () => smoother.paused(false));
-      }
-      else {
-        // Mobile: No smoother. Kill native momentum by locking the body.
-        document.body.style.overflow = "hidden";
+  function scrollAutoSnap(trigger, target, start, end = null) {
+  let snapped = false; // local flag per trigger instance
 
-        gsap.to(window, {
-          duration: 0.6,
-          scrollTo: {
-            y: ".site-header",
-            autoKill: false // prevents the tween from dying if the user tries to scroll
-          },
-          ease: "power1.out",
-          onComplete: () => {
-            // Restore native scrolling once the snap finishes
-            document.body.style.overflow = "";
+  ScrollTrigger.create({
+    trigger: trigger,
+    start: start,
+    ...(end && { end: end }),
+
+    ...(end
+      ? {
+          onLeave: () => {
+            if (snapped || !pageReady) return;
+            snapped = true;
+            handleSnap(target);
           }
-        });
-      }
-    },
+        }
+      : {
+          onEnter: () => {
+            if (snapped || !pageReady) return;
+            snapped = true;
+            handleSnap(target);
+          }
+        }),
+
     onEnterBack: () => {
-      heroSnapped = false;
+      snapped = false;
     }
   });
+}
+
+function handleSnap(target) {
+  if (smoother) {
+    smoother.paused(true);
+    smoother.scrollTo(target, true, "top top");
+    gsap.delayedCall(0.2, () => smoother.paused(false));
+  } else {
+    document.body.style.overflow = "hidden";
+    gsap.to(window, {
+      duration: 0.6,
+      scrollTo: { y: target, autoKill: false },
+      ease: "power1.out",
+      onComplete: () => {
+        document.body.style.overflow = "";
+      }
+    });
+  }
+}
+  // range-based trigger → fires after scrolling through hero
+  scrollAutoSnap(".hero-fullscreen", ".site-header", "top top", "bottom 90%");
+
+  // point trigger → fires exactly when hero exits
+  scrollAutoSnap(".hero", ".carousel-inner", "bottom top");
   //#endregion
 
   // ===============================================
