@@ -576,7 +576,7 @@ function handleSnap(target, offset = headerH) {
     let currentX = 0;
     let targetX = 0;
     let rafId = null;
-
+    //Function for determining the extra scroll width for screen
     const getMaxScroll = () => {
       const trackWidth = horizontalTrack.scrollWidth;
       const viewWidth = window.innerWidth;
@@ -600,10 +600,12 @@ function handleSnap(target, offset = headerH) {
       }
 
       gsap.set(horizontalTrack, { x: -currentX });
+      //Recursive call to animate to allow currentX updated and the carousel move forward
       rafId = requestAnimationFrame(animate);
     }
-
+    //Initialise the animate function
     function startAnimate() {
+      //use rafId as guard check to only start animation if one isn't running already
       if (!rafId) rafId = requestAnimationFrame(animate);
     }
 
@@ -616,24 +618,20 @@ function handleSnap(target, offset = headerH) {
       isOverCarousel = false;
     });
 
-    // Intercept wheel events
+    // Intercept wheel event
     horizontalSection.addEventListener('wheel', (e) => {
       if (!isOverCarousel) return; // let it scroll the page
 
       const maxScroll = getMaxScroll();
-
       // If we've hit the end or the start, let the page scroll
       const atStart = targetX <= 0 && e.deltaY < 0;
       const atEnd = targetX >= maxScroll && e.deltaY > 0;
 
       if (atStart || atEnd) return;
-
       // Consume the scroll event — drive the carousel instead
       e.preventDefault();
-
       targetX += e.deltaY;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
-
       startAnimate();
     }, { passive: false });
 
@@ -644,6 +642,51 @@ function handleSnap(target, offset = headerH) {
       currentX = Math.min(currentX, maxScroll);
       gsap.set(horizontalTrack, { x: -currentX });
     });
+    
+    // Touch support
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLocked = null; // 'horizontal' or 'vertical'
+
+    //With the "touchstart" listener remember where the finger first touched the screen
+    horizontalSection.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchLocked = null;
+    }, { passive: true });
+
+    horizontalSection.addEventListener('touchmove', (e) => {
+      const dx = touchStartX - e.touches[0].clientX;
+      const dy = touchStartY - e.touches[0].clientY;
+
+      // Lock direction on first significant move
+      if (!touchLocked) {
+        if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        touchLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
+      }
+      // Vertical swipe — let the page scroll normally
+      if (touchLocked === 'vertical') return;
+
+      //If at the beginning or end don't block vertical scrolling
+      const maxScroll = getMaxScroll();
+      const atStart = targetX <= 0 && dx < 0;
+      const atEnd = targetX >= maxScroll && dx > 0;
+      if (atStart || atEnd) return;
+
+      // Horizontal swipe — drive the carousel
+      e.preventDefault();
+      targetX += dx;
+      targetX = Math.max(0, Math.min(targetX, maxScroll));
+      startAnimate();
+
+      // Reset so next move is a delta, not cumulative
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: false });
+
+    horizontalSection.addEventListener('touchend', () => {
+      touchLocked = null;
+    }, { passive: true });
   }
   //#endregion
 
