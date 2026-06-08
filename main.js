@@ -115,6 +115,9 @@ window.addEventListener("load", () => {
     if (typeof smoother !== "undefined" && smoother) {
       smoother.paused(state);
     }
+    else if (!smoother){
+      document.body.style.overflow = state ? "hidden": "";
+    }
   };
   
   // Save on refresh / navigate away
@@ -781,34 +784,108 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    DIAGONAL CAROUSEL SCROLL
 // ==========================================
-  const diagonalSection = document.querySelector('.diagonal-carousel');
-  if (diagonalSection) {
-    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
-    const ANGLE_DEG = 8;
-    const ANGLE = ANGLE_DEG * (Math.PI / 180);
-    const START_BACK_X = 150; // your start offset
-    const getTrackWidth = () => diagonalTrack.scrollWidth;
-    const getXEnd = () => -(getTrackWidth() - window.innerWidth);
-    const getXTravel = () => Math.abs(getXEnd() - START_BACK_X);
-    const getYEnd = () => -getXTravel() * Math.tan(ANGLE);
+const diagonalSection = document.querySelector('.diagonal-carousel');
 
-    gsap.set(diagonalTrack, { x: START_BACK_X, y: 0 });
-    gsap.to(diagonalTrack, {
-      x: () => getXEnd(),
-      y: () => getYEnd(),
-      ease: "none",
-      scrollTrigger: {
-        trigger: diagonalSection,
-        start: "top top",
-        end: () => "+=" + getXTravel(),   // match scroll distance to actual travel
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        //  markers: true,
-      }
+if (diagonalSection) {
+  const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+
+  const ANGLE_DEG = 8;
+  const ANGLE = ANGLE_DEG * (Math.PI / 180);
+  const START_BACK_X = 150;
+
+  let isOverCarousel = false;
+  let currentX = 0;
+  let targetX = 0;
+  let rafId = null;
+
+  const ease = 0.1;
+
+  // Initial position
+  gsap.set(diagonalTrack, {
+    x: START_BACK_X,
+    y: 0
+  });
+
+  const getTrackWidth = () => diagonalTrack.scrollWidth;
+
+  const getMaxScroll = () => {
+    return getTrackWidth() - window.innerWidth + START_BACK_X;
+  };
+
+  function animate() {
+    currentX += (targetX - currentX) * ease;
+
+    const x = START_BACK_X - currentX;
+    const y = -currentX * Math.tan(ANGLE);
+
+    if (Math.abs(targetX - currentX) < 0.5) {
+      currentX = targetX;
+
+      gsap.set(diagonalTrack, {
+        x: START_BACK_X - currentX,
+        y: -currentX * Math.tan(ANGLE)
+      });
+
+      rafId = null;
+      return;
+    }
+
+    gsap.set(diagonalTrack, {
+      x,
+      y
     });
+
+    rafId = requestAnimationFrame(animate);
   }
+
+  function startAnimate() {
+    if (!rafId) {
+      rafId = requestAnimationFrame(animate);
+    }
+  }
+
+  diagonalSection.addEventListener('mouseenter', () => {
+    isOverCarousel = true;
+  });
+
+  diagonalSection.addEventListener('mouseleave', () => {
+    isOverCarousel = false;
+  });
+
+  diagonalSection.addEventListener(
+    'wheel',
+    (e) => {
+      if (!isOverCarousel) return;
+
+      const maxScroll = getMaxScroll();
+
+      const atStart = targetX <= 0 && e.deltaY < 0;
+      const atEnd = targetX >= maxScroll && e.deltaY > 0;
+
+      if (atStart || atEnd) return;
+
+      e.preventDefault();
+
+      targetX += e.deltaY;
+      targetX = Math.max(0, Math.min(targetX, maxScroll));
+
+      startAnimate();
+    },
+    { passive: false }
+  );
+
+  window.addEventListener('resize', () => {
+    const maxScroll = getMaxScroll();
+
+    targetX = Math.min(targetX, maxScroll);
+    currentX = Math.min(currentX, maxScroll);
+
+    gsap.set(diagonalTrack, {
+      x: START_BACK_X - currentX,
+      y: -currentX * Math.tan(ANGLE)
+    });
+  });
+}
 //#endregion
 
 //Requesting animation frame for fitty to load
