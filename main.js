@@ -788,10 +788,10 @@ const diagonalSection = document.querySelector('.diagonal-carousel');
 
 if (diagonalSection) {
   const diagonalTrack = diagonalSection.querySelector('.carousel-track');
-
   const ANGLE_DEG = 8;
   const ANGLE = ANGLE_DEG * (Math.PI / 180);
   const START_BACK_X = 150;
+  const END_BEFORE_X = 1000;
 
   let isOverCarousel = false;
   let currentX = 0;
@@ -799,7 +799,6 @@ if (diagonalSection) {
   let rafId = null;
 
   const ease = 0.1;
-
   // Initial position
   gsap.set(diagonalTrack, {
     x: START_BACK_X,
@@ -807,14 +806,12 @@ if (diagonalSection) {
   });
 
   const getTrackWidth = () => diagonalTrack.scrollWidth;
-
   const getMaxScroll = () => {
     return getTrackWidth() - window.innerWidth + START_BACK_X;
   };
 
   function animate() {
     currentX += (targetX - currentX) * ease;
-
     const x = START_BACK_X - currentX;
     const y = -currentX * Math.tan(ANGLE);
 
@@ -825,16 +822,13 @@ if (diagonalSection) {
         x: START_BACK_X - currentX,
         y: -currentX * Math.tan(ANGLE)
       });
-
       rafId = null;
       return;
     }
-
     gsap.set(diagonalTrack, {
       x,
       y
     });
-
     rafId = requestAnimationFrame(animate);
   }
 
@@ -843,32 +837,33 @@ if (diagonalSection) {
       rafId = requestAnimationFrame(animate);
     }
   }
+  diagonalSection.addEventListener('mousemove', (e) => {
+    const trackRect = diagonalTrack.getBoundingClientRect();
 
-  diagonalSection.addEventListener('mouseenter', () => {
-    isOverCarousel = true;
+     isOverCarousel = 
+      e.clientX >= trackRect.left  &&
+      e.clientX <= trackRect.right &&
+      e.clientY >= trackRect.top  &&
+      e.clientY <= trackRect.bottom;
+      
+      diagonalSection.style.cursor = isOverCarousel ? 'grab' : 'default';
   });
 
   diagonalSection.addEventListener('mouseleave', () => {
     isOverCarousel = false;
   });
 
-  diagonalSection.addEventListener(
-    'wheel',
-    (e) => {
+  diagonalSection.addEventListener('wheel', (e) => {
       if (!isOverCarousel) return;
 
       const maxScroll = getMaxScroll();
-
       const atStart = targetX <= 0 && e.deltaY < 0;
       const atEnd = targetX >= maxScroll && e.deltaY > 0;
 
       if (atStart || atEnd) return;
-
       e.preventDefault();
-
       targetX += e.deltaY;
-      targetX = Math.max(0, Math.min(targetX, maxScroll));
-
+      targetX = Math.max(0, Math.min(targetX, maxScroll - END_BEFORE_X));
       startAnimate();
     },
     { passive: false }
@@ -879,7 +874,6 @@ if (diagonalSection) {
 
     targetX = Math.min(targetX, maxScroll);
     currentX = Math.min(currentX, maxScroll);
-
     gsap.set(diagonalTrack, {
       x: START_BACK_X - currentX,
       y: -currentX * Math.tan(ANGLE)
