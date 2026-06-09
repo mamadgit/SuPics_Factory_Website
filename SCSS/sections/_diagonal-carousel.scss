@@ -20,6 +20,17 @@
         transform-style: preserve-3d;
         perspective: 700px;
     }
+    /* Apply the tilt and manage width */
+    .carousel-track {
+        display: flex;
+        gap: 60px;
+        z-index: 1;
+        width: max-content;
+        transform-style: preserve-3d;
+        transform: rotate3d(1.95, 0, 1, 20deg) scale(0.8);
+        transform-origin: 25%;
+        will-change: transform;
+    }
     .intro-text {
         position: absolute;
         padding-left: 20px;
@@ -37,17 +48,6 @@
             top: 60%;
             left: 10%;
         }
-    }
-    /* Apply the tilt and manage width */
-    .carousel-track {
-        display: flex;
-        gap: 60px;
-        z-index: 1;
-        width: max-content;
-        transform-style: preserve-3d;
-        transform: rotate3d(1.95, 0, 1, 20deg) scale(0.8);
-        transform-origin: 25%;
-        will-change: transform;
     }
     /* Each card: same width, proper 3D flatness */
     .case-card {
