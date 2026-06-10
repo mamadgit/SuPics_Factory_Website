@@ -3,7 +3,7 @@ plyr-master
 .next
 GSAP
 Plyr
-# Media
+Media
 *.mp4
 *.mkv
 *.mov
@@ -17,3 +17,5 @@ Plyr
 *.MOV
 *.docx
 *.pdf
+*.json
+server.js
