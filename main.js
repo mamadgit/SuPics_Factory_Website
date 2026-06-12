@@ -733,6 +733,8 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    "OUR SERVICES" ANIMATION
   // ==========================================
+  let targetX = 0; 
+    const animationTimelines = []; // Store timelines for diagonal carousel to access
     document.querySelectorAll('.animated-text').forEach(container => {
       const parts = container.querySelectorAll('.reveal-text-diagonal');
       if (!parts.length) return;
@@ -754,6 +756,7 @@ function handleSnap(target, offset = headerH) {
           '-=0.65' // start immediately after previous segment ends
         );
       });
+      animationTimelines.push(tl); // Store for diagonal carousel access
       // Resume smoother when animation finishes
       tl.eventCallback("onComplete", () => toggleSmoother(false));
       // One ScrollTrigger controls the whole sequence
@@ -762,10 +765,7 @@ function handleSnap(target, offset = headerH) {
         start: 'top 10%',
         end: 'bottom',
         onEnter: () => {
-          toggleSmoother(true);
-          tl.restart();
-        },
-        onEnterBack: () => {
+          if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
           toggleSmoother(true);
           tl.restart();
         },
@@ -795,8 +795,8 @@ if (diagonalSection) {
 
   let isOverCarousel = false;
   let currentX = 0;
-  let targetX = 0;
   let rafId = null;
+  let hasScrolledFromStart = false; // Track if we've scrolled away from start
 
   const ease = 0.1;
   // Initial position
@@ -861,6 +861,28 @@ if (diagonalSection) {
       const atEnd = targetX >= maxScroll && e.deltaY > 0;
 
       if (atStart || atEnd) return;
+      
+      // Trigger reverse animation when diagonal carousel scrolling starts
+
+      if (!hasScrolledFromStart && targetX === 0 && e.deltaY > 0) {
+        hasScrolledFromStart = true;
+        // Reverse all active animation timelines
+        animationTimelines.forEach(tl => tl.reverse());
+      }
+      // Scrolling back to start — only restart when carousel actually hits 0
+      if (hasScrolledFromStart && e.deltaY < 0) {
+        const nextTargetX = Math.max(0, targetX + e.deltaY);
+
+        if (nextTargetX === 0) {
+          hasScrolledFromStart = false;
+          
+          animationTimelines.forEach(tl => {
+            toggleSmoother(true);
+            tl.restart();
+          });
+        }
+      }
+      
       e.preventDefault();
       targetX += e.deltaY;
       targetX = Math.max(0, Math.min(targetX, maxScroll - END_BEFORE_X));
