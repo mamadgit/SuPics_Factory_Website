@@ -184,24 +184,31 @@ window.addEventListener("load", () => {
     // 1) Prefer sessionStorage (your custom navigation)
     let targetId = sessionStorage.getItem("scrollTarget");
     // 2) If none, fall back to the URL hash (new tab / direct link)
+
     if (!targetId && window.location.hash) {
       targetId = window.location.hash; // includes the leading #
     }
+
     if (!targetId) return;
     // Clean sessionStorage (only if it came from there)
     sessionStorage.removeItem("scrollTarget"); //This allows refreshing from URL to land back on the hash
+
     const el = document.querySelector(targetId);
     if (!el) return;
     // Scroll (ScrollSmoother if available, otherwise native)
+
     if (typeof smoother !== "undefined" && smoother) {
       smoother.scrollTo(el, false, "top 80px");
-    } else {
+    } 
+    else 
+      {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     // Remove the hash from the URL (keeps the page position)
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
+    
   }
   //#endregion
 
@@ -252,7 +259,8 @@ window.addEventListener("load", () => {
   const navLinks = document.querySelectorAll ('.nav a');
   const AllHashLinks = document.querySelectorAll('a[href^="#"]');
   const ThemeToggle = document.getElementById('theme-toggle');
-
+  let isHashNavigation = false;
+  
   function ToggleMobileMenu(){
     navMenu.classList.toggle('active');
     //Prevent body from scrolling when menu is open
@@ -286,15 +294,25 @@ window.addEventListener("load", () => {
   }
     const TargetElement = document.querySelector(TargetID);
     if(TargetElement){
+      isHashNavigation = true;
+
       if(smoother){
         smoother.scrollTo(TargetElement, false, "top 80px");
       }else{
         const offset = 100;
-        const TargetPosition = TargetElement.getBoundingClientRect().top + window.scrollY - offset;
+        const TargetPosition =
+          TargetElement.getBoundingClientRect().top +
+          window.scrollY -
+          offset;
+
         window.scrollTo({
           top: TargetPosition,
         });
       }
+      
+      setTimeout(() => {
+        isHashNavigation = false;
+      }, 1000);
     }
   }
 
@@ -350,6 +368,7 @@ window.addEventListener("load", () => {
     ...(end
       ? {
           onLeave: () => {
+            if (isHashNavigation) return;
             if (snapped || !pageReady) return;
             snapped = true;
             handleSnap(target);
@@ -357,12 +376,12 @@ window.addEventListener("load", () => {
         }
       : {
           onEnter: () => {
+            if (isHashNavigation) return;
             if (snapped || !pageReady) return;
             snapped = true;
             handleSnap(target);
           }
         }),
-
     onEnterBack: () => {
       snapped = false;
     }
@@ -387,6 +406,7 @@ function handleSnap(target, offset = headerH) {
       }
     });
   }
+  
 }
   // range-based trigger → fires after scrolling through hero
   scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
