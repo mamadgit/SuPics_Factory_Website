@@ -34,8 +34,8 @@
 
     .case-card {
         position: relative;
-        min-width: clamp(300px, 80vw, 1400px);
-        height: clamp(300px, 70vh, 900px);
+        min-width: clamp(300px, 85vw, 1400px);
+        height: clamp(300px, 50vh, 70vh);
         border-radius: clamp(12px, 2vw, 24px);
         overflow: hidden;
         background: var(--card);
@@ -83,6 +83,7 @@
             .card-image img, .card-image video{
                 transform: scaleY(1);
             }
+
         }
         // Fix for your hover state (use & to reference the current parent)
         // &:hover .card-image img {
@@ -92,19 +93,14 @@
             position: relative;
             z-index: 1;
             color: #fff;
+            -webkit-backdrop-filter: blur(5px);
             backdrop-filter: blur(5px);
             background: rgba(0, 0, 0, 0.35);
             padding: clamp(10px, 2vw, 20px);
             margin: 0 0 clamp(16px, 3vw, 32px) clamp(16px, 3vw, 32px);
             max-width: clamp(200px, 45vw, 400px);
             border-radius: clamp(20px, 1.5vw, 16px);
-            // .h3-wrapper {
-            //     // width: 100%;
-            //     white-space: nowrap;
-            //     overflow: hidden;
-            //     text-overflow: ellipsis;
-                
-            // }
+
             h3 {
                 white-space: nowrap;
                 overflow: hidden;
@@ -116,11 +112,6 @@
             p {
                 font-size: clamp(1rem, 1.3vw, 1.5rem);
                 margin: clamp(10px, 1vw, 32px) 0;
-            }
-        }
-        @media (max-width: 768px){
-            .card-text{
-                backdrop-filter: blur(2.5px);
             }
         }
     }
@@ -158,6 +149,15 @@
     }
 }
 @media (max-width: 768px) {
+    .horizontal-carousel .case-card{
+        width: 80vw;
+        height: 70vh;
+    }
+    .card-text{
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
+    }
+
     .All-Projects-Link {
         position: absolute;
         bottom: 0px;
@@ -181,5 +181,11 @@
 
     .All-Projects-Link svg {
         display: none;
+    }
+}
+@media (min-width: 1024px) {
+        .horizontal-carousel .case-card{
+        width: 80vw;
+        height: 70vh;
     }
 }
