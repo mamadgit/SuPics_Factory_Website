@@ -815,7 +815,7 @@ if (diagonalSection) {
   const diagonalTrack = diagonalSection.querySelector('.carousel-track');
   const ANGLE_DEG = 8;
   const ANGLE = ANGLE_DEG * (Math.PI / 180);
-  const getStartBackX = () => window.innerWidth <= 768 ? -100 : 150;  //different values for start back and is function to update on resize
+  const getStartBackX = () => window.innerWidth <= 768 ? -150 : 150;  //different values for start back and is function to update on resize
 
   // const getStartBackX = 150;
   const END_BEFORE_X = 1000;
@@ -924,7 +924,7 @@ if (diagonalSection) {
     targetX = Math.min(targetX, maxScroll);
     currentX = Math.min(currentX, maxScroll);
     gsap.set(diagonalTrack, {
-      x: getStartBackX - currentX,
+      x: getStartBackX() - currentX,
       y: -currentX * Math.tan(ANGLE)
     });
   });
