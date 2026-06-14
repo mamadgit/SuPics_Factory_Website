@@ -2,6 +2,8 @@
 //#region   PRE-LOAD THEME INITIALIZATION
 // ===============================================
 
+// const { Touchscreen } = require("puppeteer");
+
 // const { ScrollToPlugin } = require("gsap/all");
 
 // Run ASAP so the correct preloader shows immediately
@@ -778,15 +780,18 @@ function handleSnap(target, offset = headerH) {
       });
       animationTimelines.push(tl); // Store for diagonal carousel access
       // Resume smoother when animation finishes
+
       tl.eventCallback("onComplete", () => toggleSmoother(false));
       // One ScrollTrigger controls the whole sequence
+
       ScrollTrigger.create({
         trigger: container,      // trigger when the block enters view
         start: 'top 10%',
         end: 'bottom',
         onEnter: () => {
           if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
-          toggleSmoother(true);
+
+          toggleSmoother(true);//Toggle smoother if it matches desktop screens
           tl.restart();
         },
         onLeave: () => {
@@ -921,6 +926,54 @@ if (diagonalSection) {
       y: -currentX * Math.tan(ANGLE)
     });
   });
+
+  //Touch support
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchLocked = null;
+
+  //With the "touchstart" listener remember where the finger first touched the screen
+      console.log("touch code loaded");
+      console.log("touch start");
+
+  diagonalSection.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchLocked = null;
+  }, {passive: true});
+
+  diagonalSection.addEventListener('touchmove', (e) => {
+    const dx = touchStartX - e.touches[0].clientX;
+    const dy = touchStartY - e.touches[0].clientY;
+
+    //Lock direction on first significant move
+    if(!touchLocked){
+      if(Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+      touchLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
+    }
+    //Vertical swipe - let the page scroll normally
+    if(touchLocked === 'vertical') return;
+    
+    //If at the beginning or end don't block vertical scrolling
+    const maxScroll = getMaxScroll();
+    const atStart = targetX <= 0 && dx < 0;
+    const atEnd = targetX >= maxScroll && dx > 0;
+    if (atStart || atEnd) return;
+
+    //Horizontal swipe -drive the carousel
+    e.preventDefault();
+    targetX +=dx;
+    targetX = Math.max(0 , Math.min(targetX, maxScroll));
+    startAnimate();
+
+    //Reset so next move is a delta, not cumulative
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive: false});
+  
+  diagonalSection.addEventListener('touchend', () =>{
+    touchLocked =null;
+  }, {passive: true});
 }
 //#endregion
 
