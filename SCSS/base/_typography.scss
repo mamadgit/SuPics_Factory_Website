@@ -145,7 +145,7 @@ body {
   @media (max-width: 768px) {
     .heading {
       /* Responsive sizing that fills screen on mobile */
-      font-size: clamp(2.5rem, 24vw, 6rem);
+      font-size: clamp(2.5rem, 25vw, 6rem);
       font-weight: 900;
 
       &--word-feelings {
