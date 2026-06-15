@@ -40,7 +40,7 @@
 /* Hero Scroll Button - Glassmorphism Style */
 .hero-scroll-btn {
     position: absolute;
-    bottom: 60px;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -83,6 +83,11 @@
 
     &:hover .btn-chevron {
         animation-duration: 0.8s;
+    }
+}
+@media(max-width:768px){
+    .hide-mobile{
+        display: none;
     }
 }
 
