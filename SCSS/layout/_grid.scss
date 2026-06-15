@@ -4,8 +4,8 @@
     align-items: center;
     grid-column-gap: var(--grid-gap, 25px);
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 250px), 1fr));
-    padding-left: var(--grid-gutter, 25px);
-    padding-right: var(--grid-gutter, 25px);
+    // padding-left: var(--grid-gutter, 25px);
+    // padding-right: var(--grid-gutter, 25px);
 }
 .grid-row-second{
     display: grid;

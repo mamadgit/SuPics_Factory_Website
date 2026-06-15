@@ -1,6 +1,6 @@
 @use '../abstracts/variables';
 .container {
-    width: 100%;
+    width: 85vw;
     max-width: variables.$max-content-width;
     margin: 0 auto;
     // padding: 0 20px;
@@ -9,6 +9,7 @@
 .container.narrow {
     justify-content: center;
     max-width: 1025px;
+    width: auto;
 }
 .max-content-width {
     max-width: variables.$maxContentWidth;
