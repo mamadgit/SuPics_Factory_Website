@@ -227,29 +227,31 @@ window.addEventListener("load", () => {
     // markers: true
   });
 
-  const button = document.querySelector('.hero-scroll-btn');
-  if (button){
-    button.addEventListener("click", () => {
-      if(smoother){
-        smoother.scrollTo(".site-header", true, "top top");
-      }
-      else{
-        //Mobile no smoother. Disable native mobile scroller by locking the body
-        document.body.style.overflow = "hidden";
-        gsap.to(window, {
-          duration: 0.6,
-          scrollTo:{
-            y: ".site-header",
-            autoKill: false
-          },
-          ease: "power1.out",
-          onComplete: () =>{
-            document.body.style.overflow = "";
-          }
-        });
-      }
-    });
-  }
+document.querySelectorAll('.hero-scroll-btn').forEach(button => {
+  button.addEventListener('click', () => {
+
+    const target = button.dataset.scrollTarget; //Avoid hard coding target element. Determine it in HTML repsectively for each target
+
+    if (smoother) {
+      smoother.scrollTo(target, true, "top top");
+    } 
+    else {
+      document.body.style.overflow = "hidden";
+
+      gsap.to(window, {
+        duration: 0.6,
+        scrollTo: {
+          y: target,
+          autoKill: false
+        },
+        ease: "power1.out",
+        onComplete: () => {
+          document.body.style.overflow = "";
+        }
+      });
+    }
+  });
+});
   //#endregion
 
   // ==================================================
@@ -815,7 +817,7 @@ if (diagonalSection) {
   const diagonalTrack = diagonalSection.querySelector('.carousel-track');
   const ANGLE_DEG = 8;
   const ANGLE = ANGLE_DEG * (Math.PI / 180);
-  const getStartBackX = () => window.innerWidth <= 768 ? -150 : 150;  //different values for start back and is function to update on resize
+  const getStartBackX = () => window.innerWidth <= 768 ? 50 : 400;  //different values for start back and is function to update on resize
 
   // const getStartBackX = 150;
   const END_BEFORE_X = 1000;
