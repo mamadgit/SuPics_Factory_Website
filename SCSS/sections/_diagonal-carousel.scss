@@ -33,7 +33,6 @@
     }
     .intro-text {
         position: absolute;
-        padding-left: 20px;
         transform: translateY(-50%);
         z-index: 0;
         font-size: 2rem;
@@ -116,7 +115,7 @@
 /* Responsive adjustments */
 @media (max-width: 720px) {
     .diagonal-carousel {
-        height: 100vh;
+        height: 95vh;
     }
     .diagonal-carousel .case-card{
         width: 125vw;
@@ -125,10 +124,11 @@
     .diagonal-carousel .intro-text{
         &--solid{
             top: 15%;
-            left: 25%
+            left: 18%
         }
         &--transparent{
-            top: 25%;
+            top: 22%;
+            left: 12%;
         }
     }
 }
