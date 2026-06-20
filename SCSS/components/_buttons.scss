@@ -52,7 +52,7 @@
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50px;
-    color: var(--text);
+    color: var(--button-text-color, var(--text));
     font-weight: 600;
     font-size: 0.95rem;
     letter-spacing: 0.5px;
@@ -84,7 +84,13 @@
     &:hover .btn-chevron {
         animation-duration: 0.8s;
     }
+
 }
+//Change button color if carousel overlaps it
+.track-overlap{
+    --button-text-color: black;
+}
+
 @media(max-width:768px){
     .continue-btn{
         display: none;
