@@ -815,6 +815,7 @@ const diagonalSection = document.querySelector('.diagonal-carousel');
 
 if (diagonalSection) {
   const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+  const cards = diagonalSection.querySelectorAll('.case-card'); //Define outside checkOverlap() to avoid multiple querying cards in function
   const ANGLE_DEG = 8;
   const ANGLE = ANGLE_DEG * (Math.PI / 180);
   const getStartBackX = () => window.innerWidth <= 768 ? 50 : 400;  //different values for start back and is function to update on resize
@@ -826,8 +827,38 @@ if (diagonalSection) {
   let currentX = 0;
   let rafId = null;
   let hasScrolledFromStart = false; // Track if we've scrolled away from start
-
   const ease = 0.1;
+
+//Function for checking WHEN the carousel overlaps the continue button
+function checkOverlap() {  
+  const button = diagonalSection.querySelector('.hero-scroll-btn');
+  if (!button || cards.length === 0) return;
+
+  const buttonRect = button.getBoundingClientRect();
+
+  // Sample a few points inside the button (center + corners for better accuracy)
+  const points = [
+    [buttonRect.left + buttonRect.width / 2, buttonRect.top + buttonRect.height / 2], // center
+    [buttonRect.left + 5, buttonRect.top + 5], // top-left
+    [buttonRect.right - 5, buttonRect.top + 5], // top-right
+    [buttonRect.left + 5, buttonRect.bottom - 5], // bottom-left
+    [buttonRect.right - 5, buttonRect.bottom - 5], // bottom-right
+  ];
+
+  let overlapping = false;
+
+  for (const [x, y] of points) {
+    const el = document.elementFromPoint(x, y);
+      button.style.pointerEvents = '';
+
+    if (el && [...cards].some(card => card.contains(el))) {
+      overlapping = true;
+      break;
+    }
+  }
+
+  button.classList.toggle('track-overlap', overlapping);
+}
   // Initial position
   gsap.set(diagonalTrack, {
     x: getStartBackX(),
@@ -841,9 +872,10 @@ if (diagonalSection) {
 
   function animate() {
     currentX += (targetX - currentX) * ease;
+    
     const x = getStartBackX() - currentX;
     const y = -currentX * Math.tan(ANGLE);
-
+    
     if (Math.abs(targetX - currentX) < 0.5) {
       currentX = targetX;
 
@@ -851,6 +883,9 @@ if (diagonalSection) {
         x: getStartBackX() - currentX,
         y: -currentX * Math.tan(ANGLE)
       });
+
+      checkOverlap();
+
       rafId = null;
       return;
     }
@@ -858,6 +893,7 @@ if (diagonalSection) {
       x,
       y
     });
+
     rafId = requestAnimationFrame(animate);
   }
 
@@ -937,9 +973,6 @@ if (diagonalSection) {
   let touchLocked = null;
 
   //With the "touchstart" listener remember where the finger first touched the screen
-      console.log("touch code loaded");
-      console.log("touch start");
-
   diagonalSection.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -980,6 +1013,7 @@ if (diagonalSection) {
   }, {passive: true});
 }
 //#endregion
+
 
 //Requesting animation frame for fitty to load
   // document.fonts.ready.then(function () {
