@@ -214,10 +214,12 @@ window.addEventListener("load", () => {
   }
   //#endregion
 
-  // ===============================================
+  // ==============================================
   //#region   HEADER PINNING & HERO SCROLL BUTTON
   // ===============================================
   // Pin the header at the top once it reaches there (replaces CSS sticky)
+
+  if(window.innerWidth > 786){//Pining only for desktop version, mobile version has sticky to keep it pinned
   ScrollTrigger.create({
     trigger: ".site-header",
     start: "top top",
@@ -226,10 +228,12 @@ window.addEventListener("load", () => {
     pinSpacing: false,
     // markers: true
   });
+  }
 
-document.querySelectorAll('.hero-scroll-btn').forEach(button => {
-  button.addEventListener('click', () => {
+  const continueBtn = document.querySelectorAll('.hero-scroll-btn'); //For the EXPLORE, CONTINUE, and any other similar buttons
 
+  continueBtn.forEach(button => {
+    button.addEventListener('click', () => {
     const target = button.dataset.scrollTarget; //Avoid hard coding target element. Determine it in HTML repsectively for each target
 
     if (smoother) {
@@ -254,7 +258,7 @@ document.querySelectorAll('.hero-scroll-btn').forEach(button => {
 });
   //#endregion
 
-  // ==================================================
+  // ==============================================
   //#region   HASH NAVIGATION FOR DESKTOP & MOBILE
   // ==================================================
   const MobileBreakPoint = 768; 
@@ -263,7 +267,11 @@ document.querySelectorAll('.hero-scroll-btn').forEach(button => {
   const navLinks = document.querySelectorAll ('.nav a');
   const AllHashLinks = document.querySelectorAll('a[href^="#"]');
   const ThemeToggle = document.getElementById('theme-toggle');
+  const siteHeader = document.querySelector('.site-header');
+  
   let isHashNavigation = false;
+  let lastScroll = 0;
+  let headerPinned = false; // Guard variable to active header pin/unpin after inital pin
   
   function ToggleMobileMenu(){
     navMenu.classList.toggle('active');
@@ -303,7 +311,7 @@ document.querySelectorAll('.hero-scroll-btn').forEach(button => {
       if(smoother){
         smoother.scrollTo(TargetElement, false, "top 80px");
       }else{
-        const offset = 100;
+        const offset = window.innerWidth <= 786 ? 10 : 100; //Offset should be 10 for mobile screens (10 for some breathing room), so after nav hash, the section appears top of the screen
         const TargetPosition =
           TargetElement.getBoundingClientRect().top +
           window.scrollY -
@@ -349,9 +357,83 @@ document.querySelectorAll('.hero-scroll-btn').forEach(button => {
       SmoothScrollTo(TargetID);
     });
   });
+
+  const mm = gsap.matchMedia();
+  mm.add("(max-width: 786px)", () => {
+
+    ScrollTrigger.create({
+      trigger: siteHeader,
+      start: "top top",
+
+      onEnter: () =>{
+        headerPinned = true;
+        lastScroll = window.scrollY; //Update lastScroll when trigger activates, to avoid large delta
+      },
+      onLeaveBack: () =>{
+        headerPinned = false;
+        siteHeader.classList.remove("is-invisible");
+      }
+    });
+
+    if (siteHeader) {
+      let ignoreNextUpdate = false; // <-- flag
+      const threshold = 10;
+
+      document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
+        anchor.addEventListener('click', () => {
+          ignoreNextUpdate = true; // <-- ignore the next scroll update after any hash click
+          siteHeader.classList.add('is-invisible');
+          lastScroll = window.scrollY; // <-- reset reference point, to avoid large delta
+        });
+      });
+      // Header visibilty upon direction of scroll
+      ScrollTrigger.create({
+
+        onUpdate: (self) => {
+          if(!headerPinned) return;
+
+          const current = self.scroll();
+          const delta = current - lastScroll;
+          const JmpThrsh = window.innerHeight * 0.5;
+          // <-- skip the update right after a hash click
+          if(ignoreNextUpdate){
+            ignoreNextUpdate = false;
+            lastScroll = current;
+            return;
+          }
+          
+          if(Math.abs(delta) > JmpThrsh){
+
+            //isAccordionAnimating: variable that determines button closing.
+            if (window.isAccordionAnimating) {
+              siteHeader.classList.add('is-invisible');//Make it invisible
+            } else {
+              siteHeader.classList.remove('is-invisible'); //Make it visible
+            }
+            lastScroll = current;
+            return;
+          }
+
+          if(Math.abs(delta) < threshold){
+            return;
+          }
+
+          if (delta > 0){
+            siteHeader.classList.add('is-invisible'); // Scrolling down, hide it
+          } else {
+            // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
+            // if (!window.isAccordionAnimating && !window.isAccordionOpen) {
+               siteHeader.classList.remove('is-invisible');//Make it visible
+            }
+          // }
+          lastScroll = current;
+        }
+      });
+    }
+  });
   //#endregion
 
-  // ===============================================
+  // ========================================
   //#region   HERO AUTO-SNAP
   // ===============================================
   let heroSnapped = false;
@@ -537,7 +619,7 @@ function handleSnap(target, offset = headerH) {
     
   //#endregion
 
-  // ==========================================
+  // ===============================================
   //#region   CHRACTER SPLIT ANIMATION
   // ==========================================
     // Function to split text content of an element into spans for each character
@@ -603,11 +685,13 @@ function handleSnap(target, offset = headerH) {
     let currentX = 0;
     let targetX = 0;
     let rafId = null;
+
     //Function for determining the extra scroll width for screen
     const getMaxScroll = () => {
       const trackWidth = horizontalTrack.scrollWidth;
       const viewWidth = window.innerWidth;
       let extra = Offset;
+
       if (viewWidth < 768) extra = 100;
       else if (viewWidth < 1024) extra = 300;
       return trackWidth - viewWidth + extra;
@@ -793,7 +877,14 @@ function handleSnap(target, offset = headerH) {
         onEnter: () => {
           if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
 
-          toggleSmoother(true);//Toggle smoother if it matches desktop screens
+        // Only lock the scroll if we arrived by normal scrolling
+          toggleSmoother(true);
+          tl.restart();
+        },
+        // --- ADD THIS MISSING BLOCK ---
+        onEnterBack: () => {
+          if (targetX > 0) return;
+          if (!isHashNavigation) toggleSmoother(true);
           tl.restart();
         },
         onLeave: () => {
