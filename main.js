@@ -270,8 +270,7 @@ window.addEventListener("load", () => {
   const siteHeader = document.querySelector('.site-header');
   
   let isHashNavigation = false;
-  let lastScroll = 0;
-  let headerPinned = false; // Guard variable to active header pin/unpin after inital pin
+  let lastScroll = window.scrollY || 0;
   
   function ToggleMobileMenu(){
     navMenu.classList.toggle('active');
@@ -358,26 +357,17 @@ window.addEventListener("load", () => {
     });
   });
 
+/************ MOBILE MENU DYNAMIC APPEARENCE************/
   const mm = gsap.matchMedia();
   mm.add("(max-width: 786px)", () => {
-
-    ScrollTrigger.create({
-      trigger: siteHeader,
-      start: "top top",
-
-      onEnter: () =>{
-        headerPinned = true;
-        lastScroll = window.scrollY; //Update lastScroll when trigger activates, to avoid large delta
-      },
-      onLeaveBack: () =>{
-        headerPinned = false;
-        siteHeader.classList.remove("is-invisible");
-      }
-    });
-
     if (siteHeader) {
       let ignoreNextUpdate = false; // <-- flag
       const threshold = 10;
+      let headerStart = siteHeader.offsetTop || 0;
+
+      const refreshHeaderStart = () => {
+        headerStart = siteHeader.offsetTop || 0;
+      };
 
       document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
         anchor.addEventListener('click', () => {
@@ -386,15 +376,21 @@ window.addEventListener("load", () => {
           lastScroll = window.scrollY; // <-- reset reference point, to avoid large delta
         });
       });
-      // Header visibilty upon direction of scroll
-      ScrollTrigger.create({
+      // Header visibility upon direction of scroll. Use native scroll on mobile so this
+      // keeps working after pinned/animated sections and horizontal carousel gestures.
+      const updateHeaderVisibility = () => {
+          const current = window.scrollY || window.pageYOffset || 0;
+          const headerPinned = current >= headerStart - 1;
 
-        onUpdate: (self) => {
-          if(!headerPinned) return;
+          if(!headerPinned) {
+            siteHeader.classList.remove("is-invisible");
+            lastScroll = current;
+            return;
+          }
 
-          const current = self.scroll();
-          const delta = current - lastScroll;
+          const delta = current - lastScroll;          
           const JmpThrsh = window.innerHeight * 0.5;
+
           // <-- skip the update right after a hash click
           if(ignoreNextUpdate){
             ignoreNextUpdate = false;
@@ -418,7 +414,7 @@ window.addEventListener("load", () => {
             return;
           }
 
-          if (delta > 0){
+          if (delta >= 0){
             siteHeader.classList.add('is-invisible'); // Scrolling down, hide it
           } else {
             // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
@@ -427,8 +423,19 @@ window.addEventListener("load", () => {
             }
           // }
           lastScroll = current;
-        }
-      });
+      };
+
+      refreshHeaderStart();
+      updateHeaderVisibility();
+      window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
+      window.addEventListener('resize', refreshHeaderStart);
+      ScrollTrigger.addEventListener('refreshInit', refreshHeaderStart);
+
+      return () => {
+        window.removeEventListener('scroll', updateHeaderVisibility);
+        window.removeEventListener('resize', refreshHeaderStart);
+        ScrollTrigger.removeEventListener('refreshInit', refreshHeaderStart);
+      };
     }
   });
   //#endregion
@@ -841,6 +848,7 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    "OUR SERVICES" ANIMATION
   // ==========================================
+  
   let targetX = 0; 
     const animationTimelines = []; // Store timelines for diagonal carousel to access
     document.querySelectorAll('.animated-text').forEach(container => {
@@ -902,219 +910,207 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    DIAGONAL CAROUSEL SCROLL
 // ==========================================
-const diagonalSection = document.querySelector('.diagonal-carousel');
+  const diagonalSection = document.querySelector('.diagonal-carousel');
 
-if (diagonalSection) {
-  const diagonalTrack = diagonalSection.querySelector('.carousel-track');
-  const cards = diagonalSection.querySelectorAll('.case-card'); //Define outside checkOverlap() to avoid multiple querying cards in function
-  const ANGLE_DEG = 8;
-  const ANGLE = ANGLE_DEG * (Math.PI / 180);
-  const getStartBackX = () => window.innerWidth <= 768 ? 50 : 400;  //different values for start back and is function to update on resize
+  if (diagonalSection) {
+    const diagonalTrack = diagonalSection.querySelector('.carousel-track');
+    const cards = diagonalSection.querySelectorAll('.case-card'); //Define outside checkOverlap() to avoid multiple querying cards in function
+    const ANGLE_DEG = 8;
+    const ANGLE = ANGLE_DEG * (Math.PI / 180);
+    const getStartBackX = () => window.innerWidth <= 768 ? 50 : 400;  //different values for start back and is function to update on resize
 
-  // const getStartBackX = 150;
-  const END_BEFORE_X = 1000;
+    // const getStartBackX = 150;
+    const END_BEFORE_X = 1000;
 
-  let isOverCarousel = false;
-  let currentX = 0;
-  let rafId = null;
-  let hasScrolledFromStart = false; // Track if we've scrolled away from start
-  const ease = 0.1;
+    let isOverCarousel = false;
+    let currentX = 0;
+    let rafId = null;
+    let hasScrolledFromStart = false; // Track if we've scrolled away from start
+    const ease = 0.1;
 
-//Function for checking WHEN the carousel overlaps the continue button
-function checkOverlap() {  
-  const button = diagonalSection.querySelector('.hero-scroll-btn');
-  if (!button || cards.length === 0) return;
+  //Function for checking WHEN the carousel overlaps the continue button
+  function checkOverlap() {  
+    const button = diagonalSection.querySelector('.hero-scroll-btn');
+    if (!button || cards.length === 0) return;
 
-  const buttonRect = button.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
 
-  // Sample a few points inside the button (center + corners for better accuracy)
-  const points = [
-    [buttonRect.left + buttonRect.width / 2, buttonRect.top + buttonRect.height / 2], // center
-    [buttonRect.left + 5, buttonRect.top + 5], // top-left
-    [buttonRect.right - 5, buttonRect.top + 5], // top-right
-    [buttonRect.left + 5, buttonRect.bottom - 5], // bottom-left
-    [buttonRect.right - 5, buttonRect.bottom - 5], // bottom-right
-  ];
+    // Sample a few points inside the button (center + corners for better accuracy)
+    const points = [
+      [buttonRect.left + buttonRect.width / 2, buttonRect.top + buttonRect.height / 2], // center
+      [buttonRect.left + 5, buttonRect.top + 5], // top-left
+      [buttonRect.right - 5, buttonRect.top + 5], // top-right
+      [buttonRect.left + 5, buttonRect.bottom - 5], // bottom-left
+      [buttonRect.right - 5, buttonRect.bottom - 5], // bottom-right
+    ];
 
-  let overlapping = false;
+    let overlapping = false;
 
-  for (const [x, y] of points) {
-    const el = document.elementFromPoint(x, y);
-      button.style.pointerEvents = '';
+    for (const [x, y] of points) {
+      const el = document.elementFromPoint(x, y);
+        button.style.pointerEvents = '';
 
-    if (el && [...cards].some(card => card.contains(el))) {
-      overlapping = true;
-      break;
+      if (el && [...cards].some(card => card.contains(el))) {
+        overlapping = true;
+        break;
+      }
     }
+
+    button.classList.toggle('track-overlap', overlapping);
   }
+    // Initial position
+    gsap.set(diagonalTrack, {
+      x: getStartBackX(),
+      y: 0
+    });
 
-  button.classList.toggle('track-overlap', overlapping);
-}
-  // Initial position
-  gsap.set(diagonalTrack, {
-    x: getStartBackX(),
-    y: 0
-  });
+    const getTrackWidth = () => diagonalTrack.scrollWidth;
+    const getMaxScroll = () => {
+      return getTrackWidth() - window.innerWidth + getStartBackX();
+    };
 
-  const getTrackWidth = () => diagonalTrack.scrollWidth;
-  const getMaxScroll = () => {
-    return getTrackWidth() - window.innerWidth + getStartBackX();
-  };
+    function animate() {
+      currentX += (targetX - currentX) * ease;
+      
+      const x = getStartBackX() - currentX;
+      const y = -currentX * Math.tan(ANGLE);
+      
+      if (Math.abs(targetX - currentX) < 0.5) {
+        currentX = targetX;
 
-  function animate() {
-    currentX += (targetX - currentX) * ease;
-    
-    const x = getStartBackX() - currentX;
-    const y = -currentX * Math.tan(ANGLE);
-    
-    if (Math.abs(targetX - currentX) < 0.5) {
-      currentX = targetX;
+        gsap.set(diagonalTrack, {
+          x: getStartBackX() - currentX,
+          y: -currentX * Math.tan(ANGLE)
+        });
 
+        checkOverlap();
+
+        rafId = null;
+        return;
+      }
+      gsap.set(diagonalTrack, {
+        x,
+        y
+      });
+
+      rafId = requestAnimationFrame(animate);
+    }
+
+    function startAnimate() {
+      if (!rafId) {
+        rafId = requestAnimationFrame(animate);
+      }
+    }
+    diagonalSection.addEventListener('mousemove', (e) => {
+      const trackRect = diagonalTrack.getBoundingClientRect();
+
+      isOverCarousel = 
+        e.clientX >= trackRect.left  &&
+        e.clientX <= trackRect.right &&
+        e.clientY >= trackRect.top  &&
+        e.clientY <= trackRect.bottom;
+        
+        diagonalSection.style.cursor = isOverCarousel ? 'grab' : 'default';
+    });
+
+    diagonalSection.addEventListener('mouseleave', () => {
+      isOverCarousel = false;
+    });
+
+    diagonalSection.addEventListener('wheel', (e) => {
+        if (!isOverCarousel) return;
+
+        const maxScroll = getMaxScroll();
+        const atStart = targetX <= 0 && e.deltaY < 0;
+        const atEnd = targetX >= maxScroll && e.deltaY > 0;
+
+        if (atStart || atEnd) return;
+        
+        // Trigger reverse animation when diagonal carousel scrolling starts
+
+        if (!hasScrolledFromStart && targetX === 0 && e.deltaY > 0) {
+          hasScrolledFromStart = true;
+          // Reverse all active animation timelines
+          animationTimelines.forEach(tl => tl.reverse());
+        }
+        // Scrolling back to start — only restart when carousel actually hits 0
+        if (hasScrolledFromStart && e.deltaY < 0) {
+          const nextTargetX = Math.max(0, targetX + e.deltaY);
+
+          if (nextTargetX === 0) {
+            hasScrolledFromStart = false;
+            
+            animationTimelines.forEach(tl => {
+              toggleSmoother(true);
+              tl.restart();
+            });
+          }
+        }
+        
+        e.preventDefault();
+        targetX += e.deltaY;
+        targetX = Math.max(0, Math.min(targetX, maxScroll - END_BEFORE_X));
+        startAnimate();
+      },
+      { passive: false }
+    );
+
+    window.addEventListener('resize', () => {
+      const maxScroll = getMaxScroll();
+
+      targetX = Math.min(targetX, maxScroll);
+      currentX = Math.min(currentX, maxScroll);
       gsap.set(diagonalTrack, {
         x: getStartBackX() - currentX,
         y: -currentX * Math.tan(ANGLE)
       });
-
-      checkOverlap();
-
-      rafId = null;
-      return;
-    }
-    gsap.set(diagonalTrack, {
-      x,
-      y
     });
 
-    rafId = requestAnimationFrame(animate);
-  }
+    //Touch support
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLocked = null;
 
-  function startAnimate() {
-    if (!rafId) {
-      rafId = requestAnimationFrame(animate);
-    }
-  }
-  diagonalSection.addEventListener('mousemove', (e) => {
-    const trackRect = diagonalTrack.getBoundingClientRect();
+    //With the "touchstart" listener remember where the finger first touched the screen
+    diagonalSection.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchLocked = null;
+    }, {passive: true});
 
-     isOverCarousel = 
-      e.clientX >= trackRect.left  &&
-      e.clientX <= trackRect.right &&
-      e.clientY >= trackRect.top  &&
-      e.clientY <= trackRect.bottom;
+    diagonalSection.addEventListener('touchmove', (e) => {
+      const dx = touchStartX - e.touches[0].clientX;
+      const dy = touchStartY - e.touches[0].clientY;
+
+      //Lock direction on first significant move
+      if(!touchLocked){
+        if(Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        touchLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
+      }
+      //Vertical swipe - let the page scroll normally
+      if(touchLocked === 'vertical') return;
       
-      diagonalSection.style.cursor = isOverCarousel ? 'grab' : 'default';
-  });
-
-  diagonalSection.addEventListener('mouseleave', () => {
-    isOverCarousel = false;
-  });
-
-  diagonalSection.addEventListener('wheel', (e) => {
-      if (!isOverCarousel) return;
-
+      //If at the beginning or end don't block vertical scrolling
       const maxScroll = getMaxScroll();
-      const atStart = targetX <= 0 && e.deltaY < 0;
-      const atEnd = targetX >= maxScroll && e.deltaY > 0;
-
+      const atStart = targetX <= 0 && dx < 0;
+      const atEnd = targetX >= maxScroll && dx > 0;
       if (atStart || atEnd) return;
-      
-      // Trigger reverse animation when diagonal carousel scrolling starts
 
-      if (!hasScrolledFromStart && targetX === 0 && e.deltaY > 0) {
-        hasScrolledFromStart = true;
-        // Reverse all active animation timelines
-        animationTimelines.forEach(tl => tl.reverse());
-      }
-      // Scrolling back to start — only restart when carousel actually hits 0
-      if (hasScrolledFromStart && e.deltaY < 0) {
-        const nextTargetX = Math.max(0, targetX + e.deltaY);
-
-        if (nextTargetX === 0) {
-          hasScrolledFromStart = false;
-          
-          animationTimelines.forEach(tl => {
-            toggleSmoother(true);
-            tl.restart();
-          });
-        }
-      }
-      
+      //Horizontal swipe -drive the carousel
       e.preventDefault();
-      targetX += e.deltaY;
-      targetX = Math.max(0, Math.min(targetX, maxScroll - END_BEFORE_X));
+      targetX +=dx;
+      targetX = Math.max(0 , Math.min(targetX, maxScroll));
       startAnimate();
-    },
-    { passive: false }
-  );
 
-  window.addEventListener('resize', () => {
-    const maxScroll = getMaxScroll();
-
-    targetX = Math.min(targetX, maxScroll);
-    currentX = Math.min(currentX, maxScroll);
-    gsap.set(diagonalTrack, {
-      x: getStartBackX() - currentX,
-      y: -currentX * Math.tan(ANGLE)
-    });
-  });
-
-  //Touch support
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchLocked = null;
-
-  //With the "touchstart" listener remember where the finger first touched the screen
-  diagonalSection.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchLocked = null;
-  }, {passive: true});
-
-  diagonalSection.addEventListener('touchmove', (e) => {
-    const dx = touchStartX - e.touches[0].clientX;
-    const dy = touchStartY - e.touches[0].clientY;
-
-    //Lock direction on first significant move
-    if(!touchLocked){
-      if(Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
-      touchLocked = Math.abs(dx) >= Math.abs(dy) ? 'horizontal' : 'vertical';
-    }
-    //Vertical swipe - let the page scroll normally
-    if(touchLocked === 'vertical') return;
+      //Reset so next move is a delta, not cumulative
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, {passive: false});
     
-    //If at the beginning or end don't block vertical scrolling
-    const maxScroll = getMaxScroll();
-    const atStart = targetX <= 0 && dx < 0;
-    const atEnd = targetX >= maxScroll && dx > 0;
-    if (atStart || atEnd) return;
-
-    //Horizontal swipe -drive the carousel
-    e.preventDefault();
-    targetX +=dx;
-    targetX = Math.max(0 , Math.min(targetX, maxScroll));
-    startAnimate();
-
-    //Reset so next move is a delta, not cumulative
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, {passive: false});
-  
-  diagonalSection.addEventListener('touchend', () =>{
-    touchLocked =null;
-  }, {passive: true});
-}
+    diagonalSection.addEventListener('touchend', () =>{
+      touchLocked =null;
+    }, {passive: true});
+  }
 //#endregion
 
-
-//Requesting animation frame for fitty to load
-  // document.fonts.ready.then(function () {
-  //     // Give the browser a frame to finish layout
-  //     requestAnimationFrame(function() {
-  //         fitty('.case-card .card-text .h3-wrapper h3', {
-  //             minSize: 10,
-  //             maxSize: 29,
-  //             multiLine: false
-  //         });
-  //     });
-  // });
 });
