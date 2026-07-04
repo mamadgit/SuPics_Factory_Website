@@ -34,6 +34,7 @@ window.addEventListener("load", () => {
   const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
 
   gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
+  
   const tl = gsap.timeline();
   tl.to("#loader-logo", {
     opacity: 1,
@@ -449,9 +450,11 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     pageReady = true;
   }, 1500);
+
   
   function scrollAutoSnap(trigger, target, start, end = null) {
   let snapped = false; // local flag per trigger instance
+
 
   ScrollTrigger.create({
     trigger: trigger,
@@ -475,7 +478,7 @@ window.addEventListener("load", () => {
             handleSnap(target);
           }
         }),
-    onEnterBack: () => {
+    onEnterBack: () =>{
       snapped = false;
     }
   });
@@ -485,24 +488,33 @@ function handleSnap(target, offset = headerH) {
   if (smoother) {
     smoother.paused(true);
     smoother.scrollTo(target, true, `top ${offset}px`);
-    gsap.delayedCall(0.2, () => smoother.paused(false));
+    gsap.delayedCall(0.2, () => {
+      smoother.paused(false);
+    });
   } 
   else 
     {
     document.body.style.overflow = "hidden";
+    
     gsap.to(window, {
+      
       duration: 0.6,
-      scrollTo: { y: target, autoKill: false, offsetY: offset},
+      scrollTo: { y: target, autoKill: false},
       ease: "power1.out",
       onComplete: () => {
         document.body.style.overflow = "";
       }
     });
   }
-  
 }
+  if (window.innerWidth > 786){
+      scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
+  }
+  else {
+      scrollAutoSnap(".hero-fullscreen", ".site-header", "bottom 90%");
+
+  }
   // range-based trigger → fires after scrolling through hero
-  scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
 
   // point trigger → fires exactly when hero exits
   scrollAutoSnap(".hero", ".carousel-track", "top top", "bottom 45%");
