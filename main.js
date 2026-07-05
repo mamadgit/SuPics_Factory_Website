@@ -299,7 +299,8 @@ window.addEventListener("load", () => {
   if(TargetID === '#'){
     if(smoother){
       smoother.scrollTo(0, false)
-    } else{
+    } 
+    else{
       window.scrollTo({top: 0, behavior: "auto"})
     }
     return
@@ -338,6 +339,10 @@ window.addEventListener("load", () => {
     }
     else{
       //On Desktop it scrolls to the top
+      if(revealAnimating){
+        e.preventDefault();
+        return;
+      }
       SmoothScrollTo('#');
     }
   });
@@ -349,6 +354,10 @@ window.addEventListener("load", () => {
       return;
     }
     anchor.addEventListener('click', function(e){
+      if(revealAnimating){
+        e.preventDefault();
+        return;
+      }
       e.preventDefault();
       const TargetID = this.getAttribute('href');
       //Close the mobile menu if a link is clicked
@@ -641,6 +650,7 @@ function handleSnap(target, offset = headerH) {
   // ===============================================
   //#region   CHRACTER SPLIT ANIMATION
   // ==========================================
+  let revealAnimating = false;
     // Function to split text content of an element into spans for each character
     function splitTextToSpans(el) {
       const text = el.textContent;//Only take the text content (no HTML)
@@ -659,7 +669,11 @@ function handleSnap(target, offset = headerH) {
     document.querySelectorAll('.reveal-text').forEach(el => {
       const chars = splitTextToSpans(el);
       // GSAP animation with ScrollTrigger - animates when scrolling to the element
-      const t2 = gsap.timeline({ paused: true });
+      const t2 = gsap.timeline({ 
+        paused: true,
+        onStart: () => revealAnimating = true,
+        onComplete: () => revealAnimating = false
+      });
 
       t2.fromTo(
         chars,
@@ -860,63 +874,72 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    "OUR SERVICES" ANIMATION
   // ==========================================
-  
   let targetX = 0; 
-    const animationTimelines = []; // Store timelines for diagonal carousel to access
-    document.querySelectorAll('.animated-text').forEach(container => {
-      const parts = container.querySelectorAll('.reveal-text-diagonal');
-      if (!parts.length) return;
-      // Build one timeline for the whole block
-      const tl = gsap.timeline({ paused: true });
-      parts.forEach((el) => {
-        const chars = splitTextToSpans(el);
-        // each word animates, then the next word starts right after
-        tl.fromTo(
-          chars,
-          { y: '1em', opacity: 0 },
-          {
-            y: '0em',
-            opacity: 1,
-            stagger: 0.05,
-            duration: 0.75,
-            ease: 'power3.out'
-          },
-          '-=0.65' // start immediately after previous segment ends
-        );
-      });
-      animationTimelines.push(tl); // Store for diagonal carousel access
-      // Resume smoother when animation finishes
 
-      tl.eventCallback("onComplete", () => toggleSmoother(false));
-      // One ScrollTrigger controls the whole sequence
+  const animationTimelines = []; // Store timelines for diagonal carousel to access
+  document.querySelectorAll('.animated-text').forEach(container => {
+    const parts = container.querySelectorAll('.reveal-text-diagonal');
+    if (!parts.length) return;
+    // Build one timeline for the whole block
+    const tl = gsap.timeline({ 
+      paused: true,
+      onStart: () => revealAnimating = true,
 
-      ScrollTrigger.create({
-        trigger: container,      // trigger when the block enters view
-        start: 'top 10%',
-        end: 'bottom',
-        onEnter: () => {
-          if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
-
-        // Only lock the scroll if we arrived by normal scrolling
-          toggleSmoother(true);
-          tl.restart();
-        },
-        // --- ADD THIS MISSING BLOCK ---
-        onEnterBack: () => {
-          if (targetX > 0) return;
-          if (!isHashNavigation) toggleSmoother(true);
-          tl.restart();
-        },
-        onLeave: () => {
-          toggleSmoother(false);
-          tl.reverse(); // optional: reset so it never sits completed
-        },
-        onLeaveBack: () => {
-          toggleSmoother(false);
-          tl.reverse();
-        },
-      });
+      onComplete() {
+        revealAnimating = false;
+        toggleSmoother(false);
+      },
+      onReverseComplete() {
+        revealAnimating = false;
+        toggleSmoother(false);
+      }
     });
+    parts.forEach((el) => {
+      const chars = splitTextToSpans(el);
+      // each word animates, then the next word starts right after
+      tl.fromTo(
+        chars,
+        { y: '1em', opacity: 0 },
+        {
+          y: '0em',
+          opacity: 1,
+          stagger: 0.05,
+          duration: 0.75,
+          ease: 'power3.out'
+        },
+        '-=0.65' // start immediately after previous segment ends
+      );
+    });
+    animationTimelines.push(tl); // Store for diagonal carousel access
+
+    // One ScrollTrigger controls the whole sequence
+    ScrollTrigger.create({
+      trigger: container,      // trigger when the block enters view
+      start: 'top 10%',
+      end: 'bottom',
+      onEnter: () => {
+        if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
+
+      // Only lock the scroll if we arrived by normal scrolling
+        toggleSmoother(true);
+        tl.restart();
+      },
+      // --- ADD THIS MISSING BLOCK ---
+      onEnterBack: () => {
+        if (targetX > 0) return;
+        if (!isHashNavigation) toggleSmoother(true);
+        tl.restart();
+      },
+      onLeave: () => {
+        toggleSmoother(false);
+        tl.reverse(); // optional: reset so it never sits completed
+      },
+      onLeaveBack: () => {
+        toggleSmoother(false);
+        tl.reverse();
+      },
+    });
+  });
   //#endregion
 
   // ==========================================
@@ -1039,7 +1062,6 @@ function handleSnap(target, offset = headerH) {
         if (atStart || atEnd) return;
         
         // Trigger reverse animation when diagonal carousel scrolling starts
-
         if (!hasScrolledFromStart && targetX === 0 && e.deltaY > 0) {
           hasScrolledFromStart = true;
           // Reverse all active animation timelines
