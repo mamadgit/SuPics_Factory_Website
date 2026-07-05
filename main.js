@@ -921,7 +921,7 @@ function handleSnap(target, offset = headerH) {
         if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
 
       // Only lock the scroll if we arrived by normal scrolling
-        toggleSmoother(true);
+        if (!isHashNavigation) toggleSmoother(true);
         tl.restart();
       },
       // --- ADD THIS MISSING BLOCK ---
