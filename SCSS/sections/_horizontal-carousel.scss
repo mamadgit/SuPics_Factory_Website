@@ -26,7 +26,7 @@
         margin: 0 10vw;
         padding: 50px 0; 
         cursor: grab;
-    
+        //scroll-snap-type: x manditory
         &:active {
             cursor: grabbing;
         }
@@ -43,7 +43,9 @@
         display: flex;
         align-items: flex-end;
         justify-content: flex-start;
-
+        //scroll-snap-align: center;
+        //scroll-snap-type: always;
+        
         // ... inside .case-card
         
         .card-image {
