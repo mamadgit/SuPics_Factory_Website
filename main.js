@@ -259,9 +259,9 @@ window.addEventListener("load", () => {
 });
   //#endregion
 
-  // ==============================================
-  //#region   HASH NAVIGATION FOR DESKTOP & MOBILE
-  // ==================================================
+  // ======================================================
+  //#region   MENU HASH NAVIGATION FOR DESKTOP & MOBILE
+  // ======================================================
   const MobileBreakPoint = 768; 
   const BrandLogo = document.querySelector('a.brand')
   const navMenu = document.querySelector('.nav');
@@ -339,7 +339,7 @@ window.addEventListener("load", () => {
     }
     else{
       //On Desktop it scrolls to the top
-      if(revealAnimating){
+      if(revealAnimating && window.innerWidth > MobileBreakPoint){//Include window.innerwidth to make sure revealAnimating clause only applies to desktop 
         e.preventDefault();
         return;
       }
@@ -354,7 +354,7 @@ window.addEventListener("load", () => {
       return;
     }
     anchor.addEventListener('click', function(e){
-      if(revealAnimating){
+      if(revealAnimating && window.innerWidth > MobileBreakPoint){//Include window.innerwidth to make sure revealAnimating clause only applies to desktop 
         e.preventDefault();
         return;
       }
@@ -367,7 +367,7 @@ window.addEventListener("load", () => {
     });
   });
 
-/************ MOBILE MENU DYNAMIC APPEARENCE************/
+/************ MOBILE HEADER DYNAMIC APPEARENCE************/
   const mm = gsap.matchMedia();
   mm.add("(max-width: 786px)", () => {
     if (siteHeader) {
@@ -438,12 +438,12 @@ window.addEventListener("load", () => {
       refreshHeaderStart();
       updateHeaderVisibility();
       window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
-      window.addEventListener('resize', refreshHeaderStart);
+      // window.addEventListener('resize', refreshHeaderStart);
       ScrollTrigger.addEventListener('refreshInit', refreshHeaderStart);
 
       return () => {
         window.removeEventListener('scroll', updateHeaderVisibility);
-        window.removeEventListener('resize', refreshHeaderStart);
+        // window.removeEventListener('resize', refreshHeaderStart);
         ScrollTrigger.removeEventListener('refreshInit', refreshHeaderStart);
       };
     }
