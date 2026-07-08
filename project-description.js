@@ -1,4 +1,7 @@
 // Run ASAP so the correct preloader shows immediately
+// ===============================================
+//#region   PRE-LOAD THEME INITIALIZATION
+// ===============================================
 (() => {
   let saved = null;
   try { saved = localStorage.getItem("siteTheme"); } catch (e) {}
@@ -9,16 +12,20 @@
   const isLight = saved ? saved === "light" : prefersLight;
   document.documentElement.classList.toggle("light-mode", isLight);
 })();
+//#endregion
+
 
 window.addEventListener("load", () => {
   if (typeof gsap === "undefined") return;
-
+  // ===============================================
+  //#region   PRELOADER & INTRO ANIMATIONS
+  // ===============================================
   const activePreloaderId = document.documentElement.classList.contains("light-mode")
     ? "preloader-light"
     : "preloader";
   const activePreloader = document.getElementById(activePreloaderId);
 
-  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother);
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
   const tl = gsap.timeline();
   tl.to("#loader-logo", {
     opacity: 1,
@@ -58,46 +65,195 @@ window.addEventListener("load", () => {
       }
     }
   );
-  // //Disable native browser scroll restoration
-  // if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  //#endregion
 
-  const smoother = ScrollSmoother.create({
-    wrapper: "#scroll-wrapper",
-    content: "#scroll-content",
-    smooth: 1.7,
-  });
+  // =========================================
+  //#region     SCROLLSMOOTHER SETUP
+  // =========================================
+  // Only create smoother if the screen is wider than a tablet (e.g., 1024px)
+  let smoother;
+  if (window.innerWidth > 1024) {
+    smoother = ScrollSmoother.create({
+      wrapper: "#scroll-wrapper",
+      content: "#scroll-content",
+      smooth: 1.7,
+      // normalizeScroll: true
+    });
+  }
+  //#endregion
 
-// Smooth scroll for ALL anchor links to work with ScrollSmoother
-document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
-  anchor.addEventListener('click', (e) => {
-    e.preventDefault();
-    const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
-    const hash = href.split('#')[1];          // "Projects"
+  // ======================================================
+  //#region   MENU HASH NAVIGATION FOR DESKTOP & MOBILE
+  // ======================================================
+  // Smooth scroll for ALL anchor links to work with ScrollSmoother
+  let hashNav = false;
+  const MobileBreakPoint = 768;
+  const BrandLogo = document.querySelector('a.brand');
+  const navMenu = document.querySelector('.nav');
+  const navLinks = document.querySelectorAll('.nav a');
+  const AllHashLinks = document.querySelectorAll('a[href^="#"]');
 
-    if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
-    // go to index without hash
-    window.location.assign('../index.html');
-  });
-});
-
-let heroSnapped = false;
-
-ScrollTrigger.create({
-  trigger: ".project-fullscreen",
-  start: "top+=15% top",
-  onEnter: () => {
-    // if (!userInteracted) return;   // <-- key line
-    if (heroSnapped) return;
-    heroSnapped = true;
-    smoother.paused(true);
-    smoother.scrollTo(".project-fullscreen", true, "bottom 99px");
-    gsap.delayedCall(0.2, () => smoother.paused(false));
-  },
-    onLeaveBack: () => {
-      heroSnapped = false;
+  function ToggleMobileMenu (){
+    navMenu.classList.toggle('active');
+    if(navMenu.classList.contains('active')){
+      document.body.style.overflow = 'hidden';
     }
-});
+    else{
+      document.body.style.overflow = '';
+    }
+  }
+  function CloseMobileMenu(){
+    if(navMenu.classList.contains('active')){
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+   /**
+   * Handles smooth scrolling to a target element.
+   * @param {string} TaregtID - The ID of the element to scroll to (e.g., "#Projects").
+   */
+  function SmoothScrollTo (TargetID) {
+    if(!TargetID) return;
 
+    if(TargetID === '#'){
+      if(smoother){
+        smoother.scrollTo(0, false);
+      }
+      else{
+        window.scrollTo({top: 0, behavior: "auto"});
+      }
+      return;
+    }
+    const targetElement = document.querySelector(TargetID);
+    if(targetElement){
+      hashNav = true;
+
+      if(smoother){
+        smoother.scrollTo(targetElement, false, "top 80px");
+      }
+      else{
+        const offset = window.innerWidth < MobileBreakPoint ? 10 : 100;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+
+        window.scrollTo({
+          top: targetPosition
+        });
+      }
+      setTimeout(() => {
+        hashNav = false;
+      }, 1000);
+    }
+  }
+  BrandLogo.addEventListener('click', (e) => {
+    e.preventDefault(); //Prevent default jump in both cases
+    if (window.innerWidth < MobileBreakPoint){
+      ToggleMobileMenu();
+    }
+    else{
+      SmoothScrollTo('#');
+    }
+  });
+
+  AllHashLinks.forEach(anchor => {
+    //We skip the BrandLogo because we gave it its own listener
+    if(anchor === BrandLogo){
+      return;
+    }
+    anchor.addEventListener('click', function(e){
+
+      e.preventDefault(); //Prevent default behviour of hash clicks
+      const TargetID = this.getAttribute('href');
+      //Close the mobile menu if a link is clicked
+      CloseMobileMenu();
+      //Scroll to the section
+      SmoothScrollTo(TargetID);
+    });
+  });
+
+    document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
+      const hash = href.split('#')[1];          // "Projects"
+
+      if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
+      // go to index without hash
+      window.location.assign('../index.html');
+    });
+  });
+  //#endregion
+
+// ========================================
+  //#region   HERO AUTO-SNAP
+  // ========================================
+  let pageReady = false;
+  setTimeout(() =>{
+    pageReady = true;
+  }, 1500);
+
+  function ScrollToSnap(trigger, target, start, end = null, snapOffset = 0){
+    let heroSnapped = false; // This handles our local snap lock
+
+    ScrollTrigger.create({
+      trigger: trigger,
+      start: start,
+      ...(end && { end: end }),
+
+      // Use the correct internal 'heroSnapped' variable state
+      ...(end
+        ? {
+            onLeave: () => {
+              if (heroSnapped || !pageReady) return;
+              heroSnapped = true;
+              handleSnap(target, snapOffset);
+            }
+          }
+        : {
+            onEnter: () => {
+              if (heroSnapped || !pageReady) return;
+              heroSnapped = true;
+              handleSnap(target, snapOffset);
+            }
+          }),
+      onEnterBack: () =>{
+        heroSnapped = false;
+      },
+      onLeaveBack: () =>{
+        heroSnapped = false;
+      }
+    });
+  }
+
+  function handleSnap(target, offset) {
+    if(smoother){
+      smoother.paused(true);
+      // Ensure we explicitly target the bottom positioning with standard syntax
+      smoother.scrollTo(target, true, `bottom ${offset}px`);
+      gsap.delayedCall(0.2, () =>{
+        smoother.paused(false);
+      });
+    }
+    else{
+      document.body.style.overflow = "hidden"; //The equivelant of smoother.paused
+      gsap.to(window, {
+        duration: 0.6,
+        scrollTo: {y: target, autoKill: false, offsetY: offset},
+        ease: "power1.out",
+        onComplete: () =>{
+          document.body.style.overflow = ""; //Unpausing scroller
+        }
+      });
+    }
+  }
+
+  // Pass '99' explicitly as your offset parameter to keep your original alignment!
+  if(window.innerWidth > MobileBreakPoint){
+    ScrollToSnap(".project-fullscreen", ".project-fullscreen", "top+=15% top", null, 99);
+  }
+  else{
+    ScrollToSnap(".typography", ".typography", "top 90%", null, 100);
+  }
+  //#endregion
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
@@ -240,3 +396,6 @@ ScrollTrigger.create({
 
   // ...existing code...
 });
+
+  // });//Window addEventListener load
+
