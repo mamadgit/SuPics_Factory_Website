@@ -91,21 +91,6 @@ window.addEventListener("load", () => {
       // normalizeScroll: true
     });
   }
-  //For desktop use smoother but for mobile use native scroll with GSAP animation
-  function SmoothScrollTo(targetElement, offset = 0){
-    if(smoother){
-      //Desktop version
-      smoother.scrollTo(targetElement, true, `top ${offset}px`);
-    }
-    else{
-      //MOBILE: Use native window scrolling via GSAP ScrollToPlugin
-      gsap.to(window, {
-        duration: 1,
-        scrollTo: {y:targetElement, offsetY: offset},
-        ease: "power2.inOut"
-      });
-    }
-  }
   //#endregion
 
   // ==============================================
@@ -211,7 +196,6 @@ window.addEventListener("load", () => {
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
-    
   }
   //#endregion
 
@@ -297,13 +281,13 @@ window.addEventListener("load", () => {
     if (!TargetID) return;
   
   if(TargetID === '#'){
-    if(smoother){
-      smoother.scrollTo(0, false)
+    if(smoother){ 
+      smoother.scrollTo(0, false);
     } 
-    else{
-      window.scrollTo({top: 0, behavior: "auto"})
+    else{ //Else doesn't always mean mobile screen. So we still need it even though we have determined logo click on mobile open menu
+      window.scrollTo({top: 0, behavior: "auto"});
     }
-    return
+    return;
   }
     const TargetElement = document.querySelector(TargetID);
     if(TargetElement){
@@ -313,10 +297,7 @@ window.addEventListener("load", () => {
         smoother.scrollTo(TargetElement, false, "top 80px");
       }else{
         const offset = window.innerWidth <= 786 ? 10 : 100; //Offset should be 10 for mobile screens (10 for some breathing room), so after nav hash, the section appears top of the screen
-        const TargetPosition =
-          TargetElement.getBoundingClientRect().top +
-          window.scrollY -
-          offset;
+        const TargetPosition = TargetElement.getBoundingClientRect().top +  window.scrollY - offset;
 
         window.scrollTo({
           top: TargetPosition,
@@ -329,7 +310,7 @@ window.addEventListener("load", () => {
     }
   }
 
-  //1. The single listener to decide what to do on logo/ click
+  //1. The single listener to decide what to do on logo/ click for Mobile vs desktop
   BrandLogo.addEventListener('click', (e) => {
     e.preventDefault(); //prevent default jump in both cases
 
@@ -340,7 +321,7 @@ window.addEventListener("load", () => {
     else{
       //On Desktop it scrolls to the top
       if(revealAnimating && window.innerWidth > MobileBreakPoint){//Include window.innerwidth to make sure revealAnimating clause only applies to desktop 
-        e.preventDefault();
+        e.preventDefault(); //Prevent default behaviour of animation
         return;
       }
       SmoothScrollTo('#');
@@ -358,7 +339,7 @@ window.addEventListener("load", () => {
         e.preventDefault();
         return;
       }
-      e.preventDefault();
+      e.preventDefault(); //Prevent default behviour of hash clicks
       const TargetID = this.getAttribute('href');
       //Close the mobile menu if a link is clicked
       CloseMobileMenu();
@@ -452,8 +433,7 @@ window.addEventListener("load", () => {
 
   // ========================================
   //#region   HERO AUTO-SNAP
-  // ===============================================
-  let heroSnapped = false;
+  // ========================================
   let pageReady = false; // Prevent snap on page load/refresh
   // Wait 1.5 seconds after page load before enabling snap
   setTimeout(() => {
@@ -473,7 +453,7 @@ window.addEventListener("load", () => {
     ...(end
       ? {
           onLeave: () => {
-            if (isHashNavigation) return;
+            if (isHashNavigation) return; //Don't let a hash navigation allow onLeave to fire
             if (snapped || !pageReady) return;
             snapped = true;
             handleSnap(target);
@@ -481,7 +461,7 @@ window.addEventListener("load", () => {
         }
       : {
           onEnter: () => {
-            if (isHashNavigation) return;
+            if (isHashNavigation) return; //Don't let a hash navigation allow onEnter to fire
             if (snapped || !pageReady) return;
             snapped = true;
             handleSnap(target);
@@ -503,7 +483,7 @@ function handleSnap(target, offset = headerH) {
   } 
   else 
     {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; //Command for pausing scrolling
     
     gsap.to(window, {
       
