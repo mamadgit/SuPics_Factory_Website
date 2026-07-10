@@ -3,31 +3,37 @@ window.addEventListener("load", () => {
   //   history.replaceState(null, null, window.location.pathname);
   // }
   if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
 
+  // ===============================================
+  //#region   PRELOADER & INTRO ANIMATIONS
+  // ===============================================
+  const isLight = document.documentElement.classList.contains("light-mode");
+  const p1 = document.getElementById("preloader");
+  const p2 = document.getElementById("preloader-light");
+
+  // Select the appropriate preloader, falling back to whichever is in the DOM
+  const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
+
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
+  
   const tl = gsap.timeline();
-  // logo fade in
   tl.to("#loader-logo", {
     opacity: 1,
     scale: 1,
     duration: 1.2,
     ease: "power2.out"
   });
-  // fade out preloader
-  tl.to("#preloader", {
+  tl.to(activePreloader, {
     opacity: 0,
     duration: 1,
     ease: "power1.out",
     onComplete: () => {
-      document.getElementById("preloader").style.display = "none";
-      document.getElementById("content").style.display = "block"; // Show the content after preloader
+      if (p1) p1.style.display = "none";
+      if (p2) p2.style.display = "none";
+      document.getElementById("content").style.display = "block";
     }
   }, "+=2.5");
-  requestAnimationFrame(() => {//Giving appropiate time for the content with animation (carousels) to be visible
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true); // Force a full refresh
-    });
-  });
+  
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -37,7 +43,7 @@ window.addEventListener("load", () => {
     {
       opacity: 1,
       // y: 0, // End at its original position
-      duration: 1,
+      duration: 3,
       ease: "power3.out",
       clearProps: "y,transform", // Only clear transform, keep opacity:1 (CSS has opacity:0)
       onComplete: () => {
@@ -46,29 +52,132 @@ window.addEventListener("load", () => {
       }
     }
   );
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-  let smoother = ScrollSmoother.create({
-    wrapper: '#scroll-wrapper',
-    content: '#scroll-content',
-    smooth: 1.7,
-    // effects: true
+  //#endregion
+ 
+  // =========================================
+  //#region     SCROLLSMOOTHER SETUP
+  // =========================================
+  // Only create smoother if the screen is wider than a tablet (e.g., 1024px)
+  let smoother;
+  if (window.innerWidth > 1024) {
+    smoother = ScrollSmoother.create({
+      wrapper: "#scroll-wrapper",
+      content: "#scroll-content",
+      smooth: 1.7,
+      // normalizeScroll: true
+    });
+  }
+  //#endregion
+
+  // ======================================================
+  //#region   MENU HASH NAVIGATION FOR DESKTOP & MOBILE
+  // ======================================================
+  // Smooth scroll for ALL anchor links to work with ScrollSmoother
+  let hashNav = false;
+  const MobileBreakPoint = 768;
+  const BrandLogo = document.querySelector('a.brand');
+  const navMenu = document.querySelector('.nav');
+  const navLinks = document.querySelectorAll('.nav a');
+  const AllHashLinks = document.querySelectorAll('a[href^="#"]');
+  const ThemeToggle = document.getElementById('.theme-toggle');
+
+  
+
+  function ToggleMobileMenu (){
+    navMenu.classList.toggle('active');
+    if(navMenu.classList.contains('active')){
+      document.body.style.overflow = 'hidden';
+    }
+    else{
+      document.body.style.overflow = '';
+    }
+  }
+  function CloseMobileMenu(){
+    if(navMenu.classList.contains('active')){
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+   /**
+   * Handles smooth scrolling to a target element.
+   * @param {string} TaregtID - The ID of the element to scroll to (e.g., "#Projects").
+   */
+  function SmoothScrollTo (TargetID) {
+    if(!TargetID) return;
+
+    if(TargetID === '#'){
+      if(smoother){
+        smoother.scrollTo(0, false);
+      }
+      else{
+        window.scrollTo({top: 0, behavior: "auto"});
+      }
+      return;
+    }
+    const targetElement = document.querySelector(TargetID);
+    if(targetElement){
+      hashNav = true;
+
+      if(smoother){
+        smoother.scrollTo(targetElement, false, "top 80px");
+      }
+      else{
+        const offset = window.innerWidth < MobileBreakPoint ? 10 : 100;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+
+        window.scrollTo({
+          top: targetPosition
+        });
+      }
+      setTimeout(() => {
+        hashNav = false;
+      }, 1000);
+    }
+  }
+  BrandLogo.addEventListener('click', (e) => {
+    e.preventDefault(); //Prevent default jump in both cases
+    if (window.innerWidth < MobileBreakPoint){
+      ToggleMobileMenu();
+    }
+    else{
+      SmoothScrollTo('#');
+    }
   });
 
-// Smooth scroll for ALL anchor links to work with ScrollSmoother
-// All_Projects.js (source page)
-document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
-  anchor.addEventListener('click', (e) => {
-    e.preventDefault();
-    const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
-    const hash = href.split('#')[1];          // "Projects"
+  AllHashLinks.forEach(anchor => {
+    //We skip the BrandLogo because we gave it its own listener
+    if(anchor === BrandLogo){
+      return;
+    }
+    anchor.addEventListener('click', function(e){
 
-    if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
-    // go to index without hash
-    window.location.assign('index.html');
+      e.preventDefault(); //Prevent default behviour of hash clicks
+      const TargetID = this.getAttribute('href');
+      //Close the mobile menu if a link is clicked
+      CloseMobileMenu();
+      //Scroll to the section
+      SmoothScrollTo(TargetID);
+    });
   });
-});
 
+    document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
+      const hash = href.split('#')[1];          // "Projects"
+
+      if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
+      // go to index without hash
+      window.location.assign('index.html');
+    });
+  });
+  //#endregion
+
+  // ==============================================
+  //#region   HEADER PINNING & HERO SCROLL BUTTON
+  // ===============================================
   // Pin the header at the top once it reaches there (replaces CSS sticky)
+  if(window.innerWidth > 786){//Pining only for desktop version, mobile version has sticky to keep it pinned
   ScrollTrigger.create({
     trigger: ".site-header",
     start: "top top",
@@ -77,7 +186,12 @@ document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
     pinSpacing: false,
     // markers: true
   });
-
+  }
+  //#endregion
+  
+  // ===============================================
+  //#region   THEME TOGGLE FOR LOGO AND MAIN IMAGE
+  // ===============================================
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
@@ -179,10 +293,19 @@ document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
       toggle.addEventListener('click', () => {
         const nowLight = !document.documentElement.classList.contains('light-mode');
         setTheme(nowLight, true); // animate on user click
+
+        //Mobile Navigation for toggle is written here (rather than mobile nav section)
+        if(window.innerWidth < MobileBreakPoint){
+          // Wait 40ms to allow the 400ms GSAP animations to finish before closing
+          setTimeout(() => {
+            CloseMobileMenu();
+          }, 40); 
+        }
       });
     }
   })();
-
+  //#endregion
+  
   // Mobile menu (placeholder)
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
