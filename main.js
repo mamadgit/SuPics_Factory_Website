@@ -296,7 +296,7 @@ window.addEventListener("load", () => {
       if(smoother){
         smoother.scrollTo(TargetElement, false, "top 80px");
       }else{
-        const offset = window.innerWidth <= 786 ? 10 : 100; //Offset should be 10 for mobile screens (10 for some breathing room), so after nav hash, the section appears top of the screen
+        const offset = window.innerWidth <= 786 ? 30 : 100; //Offset should be 25 for mobile screens (10 for some breathing room), so after nav hash, the section appears top of the screen
         const TargetPosition = TargetElement.getBoundingClientRect().top +  window.scrollY - offset;
 
         window.scrollTo({
@@ -441,7 +441,7 @@ window.addEventListener("load", () => {
   }, 1500);
 
   
-  function scrollAutoSnap(trigger, target, start, end = null) {
+  function scrollAutoSnap(trigger, target, start, end = null, offset = undefined) {
   let snapped = false; // local flag per trigger instance
 
 
@@ -456,7 +456,7 @@ window.addEventListener("load", () => {
             if (isHashNavigation) return; //Don't let a hash navigation allow onLeave to fire
             if (snapped || !pageReady) return;
             snapped = true;
-            handleSnap(target);
+            handleSnap(target, offset);
           }
         }
       : {
@@ -464,7 +464,7 @@ window.addEventListener("load", () => {
             if (isHashNavigation) return; //Don't let a hash navigation allow onEnter to fire
             if (snapped || !pageReady) return;
             snapped = true;
-            handleSnap(target);
+            handleSnap(target, offset);
           }
         }),
     onEnterBack: () =>{
@@ -473,7 +473,7 @@ window.addEventListener("load", () => {
   });
 }
 
-function handleSnap(target, offset = headerH) {
+function handleSnap(target, offset = headerH) {// If offset undefined, set it to headerH
   if (smoother) {
     smoother.paused(true);
     smoother.scrollTo(target, true, `top ${offset}px`);
@@ -488,7 +488,7 @@ function handleSnap(target, offset = headerH) {
     gsap.to(window, {
       
       duration: 0.6,
-      scrollTo: { y: target, autoKill: false},
+      scrollTo: { y: target, autoKill: false, offset},
       ease: "power1.out",
       onComplete: () => {
         document.body.style.overflow = "";
@@ -496,17 +496,16 @@ function handleSnap(target, offset = headerH) {
     });
   }
 }
-  if (window.innerWidth > 786){
+  if (window.innerWidth > MobileBreakPoint){
       scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
+      scrollAutoSnap(".hero", ".carousel-track", "top top", "bottom 45%", 70);
   }
   else {
-      scrollAutoSnap(".hero-fullscreen", ".site-header", "bottom 90%");
+      scrollAutoSnap(".hero-fullscreen", ".site-header", "bottom 90%", 0);
 
   }
   // range-based trigger → fires after scrolling through hero
 
-  // point trigger → fires exactly when hero exits
-  scrollAutoSnap(".hero", ".carousel-track", "top top", "bottom 45%");
   //#endregion
 
   // ===============================================
@@ -854,7 +853,7 @@ function handleSnap(target, offset = headerH) {
   // ==========================================
   //#region    "OUR SERVICES" ANIMATION
   // ==========================================
-  let targetX = 0; 
+  let targetX = 0;        
 
   const animationTimelines = []; // Store timelines for diagonal carousel to access
   document.querySelectorAll('.animated-text').forEach(container => {
@@ -911,8 +910,8 @@ function handleSnap(target, offset = headerH) {
         const Jump = Math.abs(velocity) > 2500;
 
         if (isHashNavigation || isJumping) {
-        if (!isHashNavigation) toggleSmoother(true);
-        tl.restart();
+          if (!isHashNavigation) toggleSmoother(true);
+          tl.restart();
         }
       },
       onLeave: () => {
