@@ -22,7 +22,9 @@
 
 window.addEventListener("load", () => {
   if (typeof gsap === "undefined") return;
-
+// setTimeout(() => {
+//     ScrollTrigger.refresh();
+//   }, 100);
   // ===============================================
   //#region   PRELOADER & INTRO ANIMATIONS
   // ===============================================
@@ -183,15 +185,8 @@ window.addEventListener("load", () => {
 
     const el = document.querySelector(targetId);
     if (!el) return;
-    // Scroll (ScrollSmoother if available, otherwise native)
 
-    if (typeof smoother !== "undefined" && smoother) {
-      smoother.scrollTo(el, false, "top 80px");
-    } 
-    else 
-      {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    SmoothScrollTo(targetId);
     // Remove the hash from the URL (keeps the page position)
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -896,6 +891,14 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       trigger: container,      // trigger when the block enters view
       start: 'top 10%',
       end: 'bottom',
+    //   onRefresh: (self) => {
+    // // self.isActive is true if the current scroll position is between start and end
+    // // self.progress === 0 ensures we are right at the beginning of the container
+    //   if (self.isActive && targetX === 0) {
+    //       if (!isHashNavigation) toggleSmoother(true);
+    //       tl.play(); // Use .play() or .restart() depending on your setup
+    //     }
+    //   },
       onEnter: () => {
         if (targetX > 0) return; //Guard variable to have onEnter only fire at the beginning of the carousel (and not mid entry)
 
@@ -909,7 +912,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
         const velocity = self.getVelocity(); //Check if we arrived via a fast jump/hash click
         const Jump = Math.abs(velocity) > 2500;
 
-        if (isHashNavigation || isJumping) {
+        if (isHashNavigation || Jump) {
           if (!isHashNavigation) toggleSmoother(true);
           tl.restart();
         }
