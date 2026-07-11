@@ -20,12 +20,15 @@ window.addEventListener("load", () => {
   // ===============================================
   //#region   PRELOADER & INTRO ANIMATIONS
   // ===============================================
-  const activePreloaderId = document.documentElement.classList.contains("light-mode")
-    ? "preloader-light"
-    : "preloader";
-  const activePreloader = document.getElementById(activePreloaderId);
+  const isLight = document.documentElement.classList.contains("light-mode");
+  const p1 = document.getElementById("preloader");
+  const p2 = document.getElementById("preloader-light");
+
+  // Select the appropriate preloader, falling back to whichever is in the DOM
+  const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
 
   gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
+  
   const tl = gsap.timeline();
   tl.to("#loader-logo", {
     opacity: 1,
@@ -38,15 +41,12 @@ window.addEventListener("load", () => {
     duration: 1,
     ease: "power1.out",
     onComplete: () => {
-      // hide BOTH (in case)
-      const p1 = document.getElementById("preloader");
-      const p2 = document.getElementById("preloader-light");
       if (p1) p1.style.display = "none";
       if (p2) p2.style.display = "none";
-
       document.getElementById("content").style.display = "block";
     }
   }, "+=2.5");
+  
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -56,7 +56,7 @@ window.addEventListener("load", () => {
     {
       opacity: 1,
       // y: 0, // End at its original position
-      duration: 1,
+      duration: 3,
       ease: "power3.out",
       clearProps: "y,transform", // Only clear transform, keep opacity:1 (CSS has opacity:0)
       onComplete: () => {
@@ -92,6 +92,7 @@ window.addEventListener("load", () => {
   const navMenu = document.querySelector('.nav');
   const navLinks = document.querySelectorAll('.nav a');
   const AllHashLinks = document.querySelectorAll('a[href^="#"]');
+  const ThemeToggle = document.getElementById('.theme-toggle');
 
   function ToggleMobileMenu (){
     navMenu.classList.toggle('active');
@@ -183,9 +184,11 @@ window.addEventListener("load", () => {
   });
   //#endregion
 
-// ========================================
+// ==========================================
   //#region   HERO AUTO-SNAP
   // ========================================
+  const ProjDesHeader = document.querySelector(".offcanvas-header");
+
   let pageReady = false;
   setTimeout(() =>{
     pageReady = true;
@@ -253,7 +256,23 @@ window.addEventListener("load", () => {
   else{
     ScrollToSnap(".typography", ".typography", "top 90%", null, 100);
   }
+
+  if(ProjDesHeader){
+    //header starts hidden
+    ProjDesHeader.classList.remove("is-visible");
+    ScrollTrigger.create({
+    trigger: ".project-fullscreen",
+    start: "bottom 35%",
+    scroller: smoother?.wrapper() || window,
+    onEnter: ()=> ProjDesHeader.classList.add("is-visible"),
+    onLeaveBack: () => ProjDesHeader.classList.remove("is-visible"),
+    });
+  }
   //#endregion
+
+  // ===============================================
+  //#region   THEME TOGGLE FOR LOGO AND MAIN IMAGE
+  // ===============================================
   // Theme toggle for Logo and site
   (function () {
     const toggle = document.getElementById('theme-toggle');
@@ -263,23 +282,12 @@ window.addEventListener("load", () => {
     const TransparentHeadings = Array.from(document.querySelectorAll('.animated-text .heading--transparent'));
     const header = document.querySelector('.site-header');
     const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
-    const headerEL = document.querySelector(".offcanvas-header");
     const PiP = document.getElementById('pipTarget');
     const playerEl = document.getElementById("Plyr");
     const DARK_HEADER_LOGO = 'SU-LOGO-web.svg';
     const LIGHT_HEADER_LOGO = 'SU-LOGO-web-W.svg';
 
-    if(headerEL){
-      //header starts hidden
-      headerEL.classList.remove("is-visible");
-      ScrollTrigger.create({
-      trigger: ".project-fullscreen",
-      start: "bottom 35%",
-      scroller: smoother?.wrapper() || window,
-      onEnter: ()=> headerEL.classList.add("is-visible"),
-      onLeaveBack: () => headerEL.classList.remove("is-visible"),
-      });
-    }
+
     function setTheme(isLight, animate = false) {
       // Only toggle 'light-mode' - dark is the default via :root
       document.documentElement.classList.toggle('light-mode', isLight);
@@ -309,12 +317,10 @@ window.addEventListener("load", () => {
       if (logoHeaderImg) {
         const newSrc = isLight ? DARK_HEADER_LOGO : LIGHT_HEADER_LOGO;
         const newAlt = isLight ? 'Dark-Image-header-Logo' : 'Light-Image-header-Logo';
+        
         // Toggle header light mode
-        if (header) {
-          header.classList.toggle('white', isLight);
-        }
-        if (headerEL) {
-          headerEL.classList.toggle('white', isLight);
+        if (ProjDesHeader) {
+          ProjDesHeader.classList.toggle('white', isLight);
         }
         if (animate && typeof gsap !== 'undefined') {
           // Fade out, swap image, fade in
@@ -349,6 +355,14 @@ window.addEventListener("load", () => {
       toggle.addEventListener('click', () => {
         const nowLight = !document.documentElement.classList.contains('light-mode');
         setTheme(nowLight, true); // animate on user click
+
+        //Mobile Navigation for toggle is written here (rather than mobile nav section)
+        if(window.innerWidth < MobileBreakPoint){
+          // Wait 40ms to allow the 400ms GSAP animations to finish before closing
+          setTimeout(() => {
+            CloseMobileMenu();
+          }, 40); 
+        }
       });
     }
     // Safety checks
@@ -393,9 +407,7 @@ window.addEventListener("load", () => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
+  //#endregion
 
-  // ...existing code...
 });
-
-  // });//Window addEventListener load
 
