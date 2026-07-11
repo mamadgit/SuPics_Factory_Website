@@ -905,10 +905,15 @@ function handleSnap(target, offset = headerH) {
         tl.restart();
       },
       // --- ADD THIS MISSING BLOCK ---
-      onEnterBack: () => {
+      onEnterBack: (self) => {
         if (targetX > 0) return;
+        const velocity = self.getVelocity(); //Check if we arrived via a fast jump/hash click
+        const Jump = Math.abs(velocity) > 2500;
+
+        if (isHashNavigation || isJumping) {
         if (!isHashNavigation) toggleSmoother(true);
         tl.restart();
+        }
       },
       onLeave: () => {
         toggleSmoother(false);
