@@ -204,6 +204,13 @@ body {
 
 /* Mobile-specific adjustments for slogan section */
 @media (max-width: 768px) {
+  .animated-text{
+    &--project-detials-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0em;
+    }
+  }
   .animated-text--slogan {
     display: flex;
     flex-direction: column;

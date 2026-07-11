@@ -10,20 +10,26 @@
 .grid-row-second{
     display: grid;
     column-gap: 150px;
-    row-gap: 40px;
-    padding: 40px 100px;
-    margin: 0 0 130px;
+    row-gap: 20px;
+    padding: 0 20px;
+    margin: 0 0 7vh; //Necessary to give page enough height so header can fully cover video
     justify-content: center;
     // align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 340px), 1fr));
 }
 .grid-all-projects{
     display: grid;
     row-gap: 40px;
     column-gap: 40px;
-    padding: 40px;
+    padding: 20px;
+    // margin: 1px;
     justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 400px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 350px), 1fr));
+}
+@media (max-width:480px) {
+    .grid-all-projects{
+        padding: 0;
+    }
 }
 .grid-gutter {
     padding-left: var(--grid-gutter, 16px);

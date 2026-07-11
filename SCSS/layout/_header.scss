@@ -10,7 +10,7 @@ $menu-transition: 0.4s;
     z-index: 2;
     background: #0b0c10;
     color: #e9eef3;
-    border-bottom: 1px solid var(--border);
+    // border-bottom: 1px solid var(--border);
     transition: background variables.$transition-slow, color variables.$transition-slow, border-bottom variables.$transition-slow;
 
     &.white {
@@ -39,7 +39,7 @@ $menu-transition: 0.4s;
   background: #0b0c10;
   color: #e9eef3;
   z-index: 2;        // higher than .site-header (yours is 1)
-  border-bottom: 1px solid var(--border);
+//   border-bottom: 1px solid var(--border);
   transition: background variables.$transition-slow, color variables.$transition-slow, border-bottom variables.$transition-slow, transform 0.35s ease;
   will-change: transform;
   transform: translateY(-100%);

@@ -19,10 +19,9 @@
         @include mixins.btn-variant(solid);
     }
 
-    &.ghost {
+    &.ghost {// This is for buttons we want to change with theme color change, hence the name ghost
         @include mixins.btn-variant(ghost);
-        
-        color: white;
+        // color: 
     }
 
     &.xl {
