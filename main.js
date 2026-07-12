@@ -20,8 +20,35 @@
 //#endregion
 
 
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === "undefined") return;
+  const frontPageVideo = document.querySelector('video[src*="Front-Page.mp4"]');
+  
+  // Function to run your actual GSAP intro & hide the loader
+  function startIntro() {
+    // Put your preloader & intro animation code right here!
+    // e.g., gsap.to("#preloader", { opacity: 0 });
+  }
+
+  if (frontPageVideo) {
+    // If the video is already cached/buffered enough by the time JS runs
+    if (frontPageVideo.readyState >= 4) {
+      startIntro();
+    } else {
+      // Wait until the browser knows it can play the video smoothly
+      frontPageVideo.addEventListener("canplaythrough", startIntro, { once: true });
+    }
+
+    // FAIL-SAFE: If a user has a horribly slow connection, don't trap them forever.
+    // Force the website to open after 5 seconds no matter what.
+    setTimeout(() => {
+      startIntro();
+    }, 5000);
+
+  } else {
+    // Fallback if the video element isn't found on the page
+    startIntro();
+  }
 // setTimeout(() => {
 //     ScrollTrigger.refresh();
 //   }, 100);
