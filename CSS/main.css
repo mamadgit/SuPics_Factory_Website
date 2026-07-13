@@ -928,6 +928,13 @@ html.disable-scroll-padding {
   justify-content: center;
 }
 
+.case-card .card-text-allprojects {
+  padding: 0 20px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
 /* === Horizontal Carousel === */
 .horizontal-carousel {
   overflow: hidden;
