@@ -342,6 +342,9 @@ body {
   --accent-2: #7aa7ff;
   --border: #1e2230;
   --card: #161923;
+  --btn-projects-text: #ffffff;
+  --btn-projects-bg: rgba(255, 255, 255, 0.1);
+  --btn-projects-border: rgba(255, 255, 255, 0.1);
 }
 
 .light-mode {
@@ -353,6 +356,9 @@ body {
   --accent-2: #0055cc;
   --border: #101418;
   --card: #f1f3f7;
+  --btn-projects-text: #101418;
+  --btn-projects-bg: rgba(0, 0, 0, 0.05);
+  --btn-projects-border: rgba(0, 0, 0, 0.08);
 }
 
 #scroll-content {
@@ -694,6 +700,7 @@ html.disable-scroll-padding {
   border: 1px solid var(--border);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
 .btn:hover {
@@ -1042,6 +1049,7 @@ html.disable-scroll-padding {
   text-transform: uppercase;
   transition: color 0.3s ease;
   z-index: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 .All-Projects-Link svg {
   transition: transform 0.3s ease;
@@ -1067,10 +1075,11 @@ html.disable-scroll-padding {
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.5rem;
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
+    color: var(--btn-projects-text);
+    background: var(--btn-projects-bg);
+    border: 1px solid var(--btn-projects-border);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     border-radius: 50px;
     width: -moz-fit-content;
     width: fit-content;

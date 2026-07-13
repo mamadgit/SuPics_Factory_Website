@@ -137,6 +137,7 @@
     text-transform: uppercase;
     transition: color 0.3s ease;
     z-index: 0;
+    -webkit-tap-highlight-color: transparent;
 
     svg {
         transition: transform 0.3s ease;
@@ -167,11 +168,14 @@
         transform: translateX(-50%);
         
         font-size: 1.5rem;
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.1);
         -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
+        // Dynamic styles hooked into your theme maps
+        color: var(--btn-projects-text);
+        background: var(--btn-projects-bg);
+        border: 1px solid var(--btn-projects-border);
+        // Transition for a premium feel when swapping themes
+        transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         border-radius: 50px;
         width: fit-content;
         padding: 15px 25px;

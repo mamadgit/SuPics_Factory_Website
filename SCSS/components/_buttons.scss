@@ -8,6 +8,7 @@
     border: 1px solid var(--border);
     transition: transform variables.$transition-base, box-shadow variables.$transition-base;
     font-weight: 600;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
 
     &:hover {

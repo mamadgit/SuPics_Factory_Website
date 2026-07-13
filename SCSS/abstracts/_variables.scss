@@ -37,9 +37,12 @@ $theme-dark: (
     accent: #6cf5d2,
     accent-2: #7aa7ff,
     border: #1e2230,
-    card: #161923
+    card: #161923,
+    // Add your button tokens here
+    btn-projects-text: #ffffff,
+    btn-projects-bg: rgba(255, 255, 255, 0.1),
+    btn-projects-border: rgba(255, 255, 255, 0.1)
 );
-
 
 $theme-light: (
     bg: #e9e9e9,
@@ -49,7 +52,11 @@ $theme-light: (
     accent: #008e6f,
     accent-2: #0055cc,
     border: #101418,
-    card: #f1f3f7
+    card: #f1f3f7,
+    // Corresponding light mode values
+    btn-projects-text: #101418,          // Matching your deep dark text
+    btn-projects-bg: rgba(0, 0, 0, 0.05),
+    btn-projects-border: rgba(0, 0, 0, 0.08)
 );
 
 // Animation & Transitions

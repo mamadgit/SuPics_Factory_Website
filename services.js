@@ -302,6 +302,13 @@ document.addEventListener("DOMContentLoaded", () => {
       toggle.addEventListener('click', () => {
         const nowLight = !document.documentElement.classList.contains('light-mode');
         setTheme(nowLight, true); // animate on user click
+        //Mobile Navigation for toggle is written here (rather than mobile nav section)
+        if(window.innerWidth < MobileBreakPoint){
+          // Wait 40ms to allow the 400ms GSAP animations to finish before closing
+          setTimeout(() => {
+            CloseMobileMenu();
+          }, 40); 
+        }
       });
     }
   })();
@@ -315,21 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   // Function to split text content of an element into spans for each character
-  function splitTextToSpans(el) {
-    const text = el.textContent;//Only take the text content (no HTML)
-    el.textContent = '';//Remove text nodes making them splittable
 
-    const chars = [];
-
-    [...text].forEach(char => {
-      const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
-      span.textContent = char === ' ' ? '\u00A0' : char;
-      span.style.display = 'inline-block';//To allow transform animations
-      el.appendChild(span);//Insert spans back into the element in the DOM
-      chars.push(span);//Keep track of all spans in an array
-    });
-    return chars;
-  }
   
   // ...existing code...
 });
