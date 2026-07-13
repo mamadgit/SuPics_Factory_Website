@@ -1,6 +1,6 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
   const tl = gsap.timeline();
   // logo fade in
@@ -43,35 +43,130 @@ window.addEventListener("load", () => {
       }
     }
   );
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-  let smoother = ScrollSmoother.create({
-    wrapper: '#scroll-wrapper',
-    content: '#scroll-content',
-    smooth: 1.7,
-    // effects: true
+  let smoother;
+  if (window.innerWidth > 1024) {
+    smoother = ScrollSmoother.create({
+      wrapper: "#scroll-wrapper",
+      content: "#scroll-content",
+      smooth: 1.7,
+      // normalizeScroll: true
+    });
+  }
+
+  // ======================================================
+  //#region   MENU HASH NAVIGATION FOR DESKTOP & MOBILE
+  // ======================================================
+  // Smooth scroll for ALL anchor links to work with ScrollSmoother
+  let hashNav = false;
+  const MobileBreakPoint = 768;
+  const BrandLogo = document.querySelector('a.brand');
+  const navMenu = document.querySelector('.nav');
+  const navLinks = document.querySelectorAll('.nav a');
+  const AllHashLinks = document.querySelectorAll('a[href^="#"]');
+  const ThemeToggle = document.getElementById('.theme-toggle');
+
+  
+
+  function ToggleMobileMenu (){
+    navMenu.classList.toggle('active');
+    if(navMenu.classList.contains('active')){
+      document.body.style.overflow = 'hidden';
+    }
+    else{
+      document.body.style.overflow = '';
+    }
+  }
+  function CloseMobileMenu(){
+    if(navMenu.classList.contains('active')){
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+   /**
+   * Handles smooth scrolling to a target element.
+   * @param {string} TaregtID - The ID of the element to scroll to (e.g., "#Projects").
+   */
+  function SmoothScrollTo (TargetID) {
+    if(!TargetID) return;
+
+    if(TargetID === '#'){
+      if(smoother){
+        smoother.scrollTo(0, false);
+      }
+      else{
+        window.scrollTo({top: 0, behavior: "auto"});
+      }
+      return;
+    }
+    const targetElement = document.querySelector(TargetID);
+    if(targetElement){
+      hashNav = true;
+
+      if(smoother){
+        smoother.scrollTo(targetElement, false, "top 80px");
+      }
+      else{
+        const offset = window.innerWidth < MobileBreakPoint ? 10 : 100;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset;
+
+        window.scrollTo({
+          top: targetPosition
+        });
+      }
+      setTimeout(() => {
+        hashNav = false;
+      }, 1000);
+    }
+  }
+  BrandLogo.addEventListener('click', (e) => {
+    e.preventDefault(); //Prevent default jump in both cases
+    if (window.innerWidth < MobileBreakPoint){
+      ToggleMobileMenu();
+    }
+    else{
+      SmoothScrollTo('#');
+    }
   });
 
-// Smooth scroll for ALL anchor links to work with ScrollSmoother
-document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
-  anchor.addEventListener('click', (e) => {
-    e.preventDefault();
-    const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
-    const hash = href.split('#')[1];          // "Projects"
+  AllHashLinks.forEach(anchor => {
+    //We skip the BrandLogo because we gave it its own listener
+    if(anchor === BrandLogo){
+      return;
+    }
+    anchor.addEventListener('click', function(e){
 
-    if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
-    // go to index without hash
-    window.location.assign('../index.html');
+      e.preventDefault(); //Prevent default behviour of hash clicks
+      const TargetID = this.getAttribute('href');
+      //Close the mobile menu if a link is clicked
+      CloseMobileMenu();
+      //Scroll to the section
+      SmoothScrollTo(TargetID);
+    });
   });
-});
+
+    document.querySelectorAll('a[href^="../index.html#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = anchor.getAttribute('href'); // e.g. "index.html#Projects"
+      const hash = href.split('#')[1];          // "Projects"
+
+      if (hash) sessionStorage.setItem('scrollTarget', `#${hash}`);
+      // go to index without hash
+      window.location.assign('../index.html');
+    });
+  });
+  //#endregion
   // Pin the header at the top once it reaches there (replaces CSS sticky)
+  if(window.innerWidth > 786){//Pining only for desktop version, mobile version has sticky to keep it pinned
   ScrollTrigger.create({
-    trigger: ".site-header", 
+    trigger: ".site-header",
     start: "top top",
     end: "max",
     pin: true,
     pinSpacing: false,
     // markers: true
   });
+  }
 
   // Theme toggle for Logo and site
   (function () {
