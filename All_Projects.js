@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
     // if (window.location.hash) {
   //   history.replaceState(null, null, window.location.pathname);
   // }

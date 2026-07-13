@@ -15,8 +15,28 @@
 //#endregion
 
 
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === "undefined") return;
+
+  // Dynamically grabs whichever video has the class on the current page
+  const mainVideo = document.querySelector('.main-video');
+  
+  function startIntro() {
+    // Your GSAP preloader animations go here
+  }
+
+  if (mainVideo) {
+    if (mainVideo.readyState >= 4) {
+      startIntro();
+    } else {
+      mainVideo.addEventListener("canplaythrough", startIntro, { once: true });
+    }
+    // Fail-safe timeout
+    setTimeout(startIntro, 5000);
+  } else {
+    // If a specific HTML page doesn't have a hero video at all, load instantly
+    startIntro();
+  }
   // ===============================================
   //#region   PRELOADER & INTRO ANIMATIONS
   // ===============================================
