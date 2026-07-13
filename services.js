@@ -1,30 +1,36 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === 'undefined') return;
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
+  // ===============================================
+  //#region   PRELOADER & INTRO ANIMATIONS
+  // ===============================================
+  const isLight = document.documentElement.classList.contains("light-mode");
+  const p1 = document.getElementById("preloader");
+  const p2 = document.getElementById("preloader-light");
+
+  // Select the appropriate preloader, falling back to whichever is in the DOM
+  const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
+  
   const tl = gsap.timeline();
-  // logo fade in
   tl.to("#loader-logo", {
     opacity: 1,
     scale: 1,
     duration: 1.2,
     ease: "power2.out"
   });
-  // fade out preloader
-  tl.to("#preloader", {
+  tl.to(activePreloader, {
     opacity: 0,
     duration: 1,
     ease: "power1.out",
     onComplete: () => {
-      document.getElementById("preloader").style.display = "none";
-      document.getElementById("content").style.display = "block"; // Show the content after preloader
+      if (p1) p1.style.display = "none";
+      if (p2) p2.style.display = "none";
+      document.getElementById("content").style.display = "block";
     }
   }, "+=2.5");
-  requestAnimationFrame(() => {//Giving appropiate time for the content with animation (carousels) to be visible
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh(true); // Force a full refresh
-    });
-  });
+  
   // ROLL UP CONTENT
   tl.fromTo("#content",
     {
@@ -34,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       opacity: 1,
       // y: 0, // End at its original position
-      duration: 1,
+      duration: 3,
       ease: "power3.out",
       clearProps: "y,transform", // Only clear transform, keep opacity:1 (CSS has opacity:0)
       onComplete: () => {
@@ -43,6 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   );
+  //#endregion
+
+  // =========================================
+  //#region     SCROLLSMOOTHER SETUP
+  // =========================================
+  // Only create smoother if the screen is wider than a tablet (e.g., 1024px)
   let smoother;
   if (window.innerWidth > 1024) {
     smoother = ScrollSmoother.create({
@@ -52,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // normalizeScroll: true
     });
   }
+  //#endregion
 
   // ======================================================
   //#region   MENU HASH NAVIGATION FOR DESKTOP & MOBILE

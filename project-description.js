@@ -14,9 +14,9 @@
 })();
 //#endregion
 
-
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === "undefined") return;
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
 
   // Dynamically grabs whichever video has the class on the current page
   const mainVideo = document.querySelector('.main-video');
@@ -46,8 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Select the appropriate preloader, falling back to whichever is in the DOM
   const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
-
-  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
   
   const tl = gsap.timeline();
   tl.to("#loader-logo", {

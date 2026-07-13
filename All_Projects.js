@@ -1,8 +1,26 @@
+// Run ASAP so the correct preloader shows immediately
+// ===============================================
+//#region   PRE-LOAD THEME INITIALIZATION
+// ===============================================
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem("siteTheme"); } catch (e) {}
+  const prefersLight =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  const isLight = saved ? saved === "light" : prefersLight;
+  document.documentElement.classList.toggle("light-mode", isLight);
+})();
+//#endregion
+
+
 document.addEventListener("DOMContentLoaded", () => {
     // if (window.location.hash) {
   //   history.replaceState(null, null, window.location.pathname);
   // }
   if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
 
   // ===============================================
   //#region   PRELOADER & INTRO ANIMATIONS
@@ -13,8 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Select the appropriate preloader, falling back to whichever is in the DOM
   const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
-
-  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
   
   const tl = gsap.timeline();
   tl.to("#loader-logo", {

@@ -2,10 +2,6 @@
 //#region   PRE-LOAD THEME INITIALIZATION
 // ===============================================
 
-// const { Touchscreen } = require("puppeteer");
-
-// const { ScrollToPlugin } = require("gsap/all");
-
 // Run ASAP so the correct preloader shows immediately
 (() => {
   let saved = null;
@@ -19,9 +15,10 @@
 })();
 //#endregion
 
-
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap === "undefined") return;
+  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
+  
   const frontPageVideo = document.querySelector('video[src*="Front-Page.mp4"]');
   
   // Function to run your actual GSAP intro & hide the loader
@@ -61,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Select the appropriate preloader, falling back to whichever is in the DOM
   const activePreloader = isLight ? (p2 || p1) : (p1 || p2);
-
-  gsap.registerPlugin(ScrollTrigger, Observer, ScrollSmoother, ScrollToPlugin);
   
   const tl = gsap.timeline();
   tl.to("#loader-logo", {
