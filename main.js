@@ -208,6 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const el = document.querySelector(targetId);
     if (!el) return;
 
+    window.isInitialHashScrolling = true;//Tell the header listener to ignore scroll updates during this initial jump
+
     SmoothScrollTo(targetId);
     // Remove the hash from the URL (keeps the page position)
     if (window.location.hash) {
@@ -364,17 +366,20 @@ document.addEventListener("DOMContentLoaded", () => {
       SmoothScrollTo(TargetID);
     });
   });
+//#endregion
 
-/************ MOBILE HEADER DYNAMIC APPEARENCE************/
+//============================================== 
+//#region  MOBILE HEADER DYNAMIC APPEARENCE
+//==============================================
   const mm = gsap.matchMedia();
   mm.add("(max-width: 786px)", () => {
     if (siteHeader) {
       let ignoreNextUpdate = false; // <-- flag
       const threshold = 10;
-      let headerStart = siteHeader.offsetTop || 0;
+      // let headerStart = siteHeader.offsetTop || 0;
 
       const refreshHeaderStart = () => {
-        headerStart = siteHeader.offsetTop || 0;
+        headerStart = siteHeader.offsetTop || 100;
       };
 
       document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
@@ -389,13 +394,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const updateHeaderVisibility = () => {
           const current = window.scrollY || window.pageYOffset || 0;
           const headerPinned = current >= headerStart - 1;
+          // console.log("current", current);
+          // console.log("headerStart", headerStart);
 
           if(!headerPinned) {
-            siteHeader.classList.remove("is-invisible");
+            siteHeader.classList.remove("is-invisible"); //Make it visible
             lastScroll = current;
             return;
           }
-
+          //Catch both the local link click AND the cross-page initial load scroll
+          if (ignoreNextUpdate || window.isInitialHashScrolling) {
+            ignoreNextUpdate = false;
+            window.isInitialHashScrolling = false; // reset the global flag
+            siteHeader.classList.add('is-invisible'); // Hide it during the fast slide down
+            lastScroll = current; // update baseline to current scroll position
+            return;
+          }
+          
           const delta = current - lastScroll;          
           const JmpThrsh = window.innerHeight * 0.5;
 
@@ -405,18 +420,17 @@ document.addEventListener("DOMContentLoaded", () => {
             lastScroll = current;
             return;
           }
-          
-          if(Math.abs(delta) > JmpThrsh){
+          // if(Math.abs(delta) > JmpThrsh){
 
-            //isAccordionAnimating: variable that determines button closing.
-            if (window.isAccordionAnimating) {
-              siteHeader.classList.add('is-invisible');//Make it invisible
-            } else {
-              siteHeader.classList.remove('is-invisible'); //Make it visible
-            }
-            lastScroll = current;
-            return;
-          }
+          //   //isAccordionAnimating: variable that determines button closing.
+          //   if (window.isAccordionAnimating) {
+          //     siteHeader.classList.add('is-invisible');//Make it invisible
+          //   } else {
+          //     siteHeader.classList.remove('is-invisible'); //Make it visible
+          //   }
+          //   lastScroll = current;
+          //   return;
+          // }
 
           if(Math.abs(delta) < threshold){
             return;
@@ -426,23 +440,19 @@ document.addEventListener("DOMContentLoaded", () => {
             siteHeader.classList.add('is-invisible'); // Scrolling down, hide it
           } else {
             // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
-            // if (!window.isAccordionAnimating && !window.isAccordionOpen) {
                siteHeader.classList.remove('is-invisible');//Make it visible
             }
-          // }
           lastScroll = current;
       };
 
       refreshHeaderStart();
       updateHeaderVisibility();
       window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
-      // window.addEventListener('resize', refreshHeaderStart);
-      ScrollTrigger.addEventListener('refreshInit', refreshHeaderStart);
+      // ScrollTrigger.addEventListener('refreshInit', refreshHeaderStart);
 
       return () => {
         window.removeEventListener('scroll', updateHeaderVisibility);
-        // window.removeEventListener('resize', refreshHeaderStart);
-        ScrollTrigger.removeEventListener('refreshInit', refreshHeaderStart);
+        // ScrollTrigger.removeEventListener('refreshInit', refreshHeaderStart);
       };
     }
   });
