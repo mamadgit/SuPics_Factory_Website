@@ -308,7 +308,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     return;
   }
-    const TargetElement = document.querySelector(TargetID);
+    let TargetElement = document.querySelector(TargetID);
+
+    // Mobile: #Projects points at the whole section (shows the title/header),
+    // not the absolutely-positioned .carousel-track. Desktop unchanged.
+    if (TargetID === '#Projects' && window.innerWidth <= 786) {
+      TargetElement = document.querySelector('.carousel-track') || TargetElement;
+    }
+
     if(TargetElement){
       isHashNavigation = true;
 
@@ -525,7 +532,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 }
   if (window.innerWidth > MobileBreakPoint){
       scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
-      scrollAutoSnap(".hero", ".carousel-track", "top top", "bottom 45%", 70);
+      scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
   }
   else {
       scrollAutoSnap(".hero-fullscreen", ".site-header", "bottom 90%", 0);
@@ -657,18 +664,70 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
   //#region   CHRACTER SPLIT ANIMATION
   // ==========================================
   let revealAnimating = false;
-    // Function to split text content of an element into spans for each character
+    // Matches Arabic-script text (Persian, Arabic, Urdu, ...)
+    const RTL_SCRIPT_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+    const RTL_NON_JOINING = new Set(['\u0621', '\u0622', '\u0623', '\u0624', '\u0625', '\u0627', '\u062F', '\u0630', '\u0631', '\u0632', '\u0648', '\u0698']);// Persian/Arabic letters that never connect to the letter after them (they only ever take isolated or final forms). A word can be split right after one of these without breaking any cursive ligature.
+    const ZWNJ = '\u200C'; // Persian half-space: already marks a non-joined break
+
+    // Break a word into runs of letters that are actually cursively joined
+    // together, so each run can animate separately without ever splitting
+    // a ligature (e.g. "\u06A9\u0627\u0631\u062E\u0627\u0646\u0647" -> "\u06A9\u0627", "\u0631", "\u062E\u0627", "\u0646\u0647").
+    function splitIntoJoinClusters(word) {
+      const clusters = [];
+      let current = '';
+      for (const ch of word) {
+        if (ch === ZWNJ) {
+          if (current) clusters.push(current); //Save the current cluster
+          current = ''; //Clear current
+          continue; //Move on to the next character
+        }
+        current += ch; //Each character gets added to the current cluster
+        if (RTL_NON_JOINING.has(ch)) {
+          clusters.push(current);
+          current = '';
+        }
+      }
+      if (current) clusters.push(current); //Add whatever character remains
+      return clusters;
+    }
+
+    // Function to split text content of an element into spans for animation.
+    // Latin/etc. text splits per character; Farsi/Arabic text splits per
+    // joined letter-cluster, because wrapping individually-ligatured letters
+    // in separate spans breaks the cursive joining between them (each span
+    // becomes its own shaping run).
     function splitTextToSpans(el) {
-      const text = el.textContent;//Only take the text content (no HTML)
+      const text = el.textContent; //Only take the text content (no HTML)
+
+      const isRTLScript = RTL_SCRIPT_RE.test(text);
       el.textContent = '';//Remove text nodes making them splittable
       const chars = [];
-      [...text].forEach(char => {
-        const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
-        span.textContent = char === ' ' ? '\u00A0' : char;
-        span.style.display = 'inline-block';//To allow transform animations
-        el.appendChild(span);//Insert spans back into the element in the DOM
-        chars.push(span);//Keep track of all spans in an array
-      });
+
+      if (isRTLScript) {
+        el.dir = 'rtl'; //This element should use a right-to-left direction
+        const words = text.split(/\s+/).filter(Boolean); //Slipt the text into words and filter empty strings
+        
+        words.forEach((word, wi) => {
+          const clusters = splitIntoJoinClusters(word);
+          clusters.forEach(cluster => {
+            const span = document.createElement('span');//A run of letters that stay visually joined together
+            span.textContent = cluster;
+            span.style.display = 'inline-block';//To allow transform animations
+            el.appendChild(span);
+            chars.push(span);//Keep track of all spans in an array
+          });
+          if (wi < words.length - 1) el.appendChild(document.createTextNode('\u00A0'));
+        });
+      } else {
+        [...text].forEach(char => {
+          const span = document.createElement('span');//Turn the characters into spans (elements) for individual animation
+          span.textContent = char === ' ' ? '\u00A0' : char;
+          span.style.display = 'inline-block';//To allow transform animations
+          el.appendChild(span);//Insert spans back into the element in the DOM
+          chars.push(span);//Keep track of all spans in an array
+        });
+      }
       return chars;
     }
     //Text reveal animation - applies to ALL .reveal-text elements
@@ -687,7 +746,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
         {
           y: '0em',
           opacity: 1,
-          stagger: 0.05,
+          stagger: el.dir === 'rtl' ? 0.12 : 0.05,
           duration: 0.6,
           ease: 'power3.out'
         }
