@@ -14,8 +14,13 @@
 }
 
 .about-image {
+    justify-self: end;
+    &.align-start{
+        justify-self: start;
+    }
+    
     img {
-        width: 100%;
+        width: auto;
         height: auto;
         max-height: 550px;    // Add this - cap the height
         object-fit: contain;  // or 'cover' if you want cropping

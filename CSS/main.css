@@ -1498,8 +1498,14 @@ html.disable-scroll-padding {
   min-height: 60vh;
 }
 
+.about-image {
+  justify-self: end;
+}
+.about-image.align-start {
+  justify-self: start;
+}
 .about-image img {
-  width: 100%;
+  width: auto;
   height: auto;
   max-height: 550px;
   -o-object-fit: contain;

@@ -746,7 +746,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
         {
           y: '0em',
           opacity: 1,
-          stagger: el.dir === 'rtl' ? 0.12 : 0.05,
+          stagger: el.dir === 'rtl' ? 0.16 : 0.05,
           duration: 0.6,
           ease: 'power3.out'
         }
