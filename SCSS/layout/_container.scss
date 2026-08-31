@@ -1,20 +1,12 @@
 @use '../abstracts/variables';
 .container {
     width: 85vw;
-    max-width: variables.$max-content-width;
+    max-width: variables.$maxContentWidth;
     margin: 0 auto;
-    // padding: 0 20px;
     padding: 0;
 }
 .container.narrow {
     justify-content: center;
     max-width: 1025px;
     width: auto;
-}
-.max-content-width {
-    max-width: variables.$maxContentWidth;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 20px;
 }

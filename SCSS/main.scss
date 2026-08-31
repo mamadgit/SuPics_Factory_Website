@@ -29,6 +29,7 @@
 
 // 5. Sections (Specific page sections)
 @use 'sections/hero' as section-hero; // Aliased to avoid conflict with component
+@use 'sections/logo-carousel';
 @use 'sections/features';
 // @use 'sections/rotator';
 @use 'sections/ai-demo';

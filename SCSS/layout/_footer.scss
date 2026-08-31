@@ -1,9 +1,11 @@
 @use '../abstracts/mixins';
-
+.contact-title{
+    display: none;
+}
 .site-footer {
     // border-top: 1px solid var(--border);
     padding: 40px 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(32, 32, 32);
 }
 
 .footer-inner {
@@ -16,6 +18,27 @@
 
 .footer-brand {
     font-weight: 800;
+}
+
+// Brand logo above the "SuPics Factory" text - swaps with theme
+.footer-logo {
+    display: block;
+    margin-bottom: 12px;
+
+    img {
+        width: 120px;
+        height: auto;
+    }
+}
+
+// Dark mode (default): white logo
+.footer-logo--light { display: none; }
+.footer-logo--dark  { display: block; }
+
+// Light mode: dark logo
+html.light-mode {
+    .footer-logo--dark  { display: none; }
+    .footer-logo--light { display: block; }
 }
 
 .footer-brand .muted {
@@ -41,6 +64,13 @@
 
 
 @include mixins.respond(sm) {
+    .contact-title{
+        display: inline;
+    }
+    .footer-brand{
+        display: none;
+    }
+
     .footer-inner {
         flex-direction: column;
     }

@@ -2,13 +2,14 @@
 @use '../abstracts/variables';
 
 .btn {
-    @include mixins.flex-center();
+    // @include mixins.flex-center();
     padding: 10px 16px;
     border-radius: 10px;
     border: 1px solid var(--border);
     transition: transform variables.$transition-base, box-shadow variables.$transition-base;
     font-weight: 600;
     -webkit-tap-highlight-color: transparent;
+    background: var(--bg);
     cursor: pointer;
 
     &:hover {

@@ -31,12 +31,16 @@
 }
 
 .hero-image {
+    justify-self: end; // horizontal centering
+
+    &.align-start{
+        justify-self: start;
+    }
     img {
         width: auto;
         height: auto;
         max-height: 450px;    // Add this - cap the height
         object-fit: contain;  // or 'cover' if you want cropping
-        justify-content: center; // horizontal centering
         border-radius: 4px;
     }
 }
