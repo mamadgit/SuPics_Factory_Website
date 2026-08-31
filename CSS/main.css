@@ -669,23 +669,8 @@ html.disable-scroll-padding {
   height: auto;
 }
 
-.footer-logo--light {
-  display: none;
-}
-
-.footer-logo--dark {
-  display: block;
-}
-
-html.light-mode .footer-logo--dark {
-  display: none;
-}
-html.light-mode .footer-logo--light {
-  display: block;
-}
-
 .footer-brand .muted {
-  color: var(--muted);
+  color: white;
   font-weight: 500;
   margin-top: 6px;
 }
@@ -731,11 +716,11 @@ html.light-mode .footer-logo--light {
   font-size: 1.2rem;
 }
 .contact-item svg {
-  color: var(--muted);
+  color: white;
   flex-shrink: 0;
 }
 .contact-item a {
-  color: var(--text);
+  color: white;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -756,6 +741,10 @@ html.light-mode .footer-logo--light {
 }
 .social-link:hover svg {
   color: #E1306C;
+}
+
+.constant-color {
+  color: white;
 }
 
 .btn {

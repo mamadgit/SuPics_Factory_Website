@@ -32,17 +32,17 @@
 }
 
 // Dark mode (default): white logo
-.footer-logo--light { display: none; }
-.footer-logo--dark  { display: block; }
+// .footer-logo--light { display: none; }
+// .footer-logo--dark  { display: block; }
 
-// Light mode: dark logo
-html.light-mode {
-    .footer-logo--dark  { display: none; }
-    .footer-logo--light { display: block; }
-}
+// // Light mode: dark logo
+// html.light-mode {
+//     .footer-logo--dark  { display: none; }
+//     .footer-logo--light { display: block; }
+// }
 
 .footer-brand .muted {
-    color: var(--muted);
+    color: white;
     font-weight: 500;
     margin-top: 6px;
 }
@@ -92,12 +92,12 @@ html.light-mode {
     font-size: 1.2rem;
 
     svg {
-        color: var(--muted);
+        color: white;
         flex-shrink: 0;
     }
 
     a {
-        color: var(--text);
+        color: white;
         text-decoration: none;
         transition: color 0.2s ease;
 
@@ -122,4 +122,7 @@ html.light-mode {
             color: #E1306C;
         }
     }
+}
+.constant-color{
+    color: white;
 }
