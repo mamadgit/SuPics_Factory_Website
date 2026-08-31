@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SuPics Website</title>
+  <meta name="description"
+    content="A discovery engine for creative teams. Organize, search, and resurface your best work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="CSS/main.css" />
+</head>
+
+<body>
+  <div id="preloader">
+    <video src="logo.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
+  </div>
+  <div id="preloader-light">
+    <video src="logo-light.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
+  </div>
+  <div id="content">
+    <div id="scroll-wrapper">
+      <div id="scroll-content">
+        <section class="hero-fullscreen">
+          <video autoplay loop muted playsinline>
+            <source src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Front-Page.mp4" type="video/mp4">
+          </video>
+          <!-- Stylish transparent scroll button -->
+          <div class="hero-scroll-btn" data-scroll-target=".site-header">
+            <span class="btn-text">Explore</span>
+            <svg class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </section>
+        <!-- Header -->
+        <header class="site-header">
+          <div class="container header-inner">
+            <nav class="nav fa">
+              <a href="index.html" class="language"> EN </a>
+              <div class="absolute top-4 right-4">
+                <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
+                  bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <span class="icon-wrap">
+                    <!-- Sun Icon -->
+                    <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-sun">
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <path d="M12 2v2"></path>
+                      <path d="M12 20v2"></path>
+                      <path d="m4.93 4.93 1.41 1.41"></path>
+                      <path d="m17.66 17.66 1.41 1.41"></path>
+                      <path d="M2 12h2"></path>
+                      <path d="M20 12h2"></path>
+                      <path d="m6.34 17.66-1.41 1.41"></path>
+                      <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-moon">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <a href="#Contact">ارتباط با ما</a>
+              <a href="#About">درباره ما</a>
+              <a href="#Services">خدمات</a>
+              <a href="#Projects">پروژه‌ها</a>
+              <a href="#Home">خانه</a>
+
+            </nav>
+            <a class="brand" href="#">
+              <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
+            </a>
+          </div>
+        </header>
+        <!-- Hero -->
+        <section id="Home" class="hero">
+          <div class="container hero-inner">
+            <div class="grid-row">
+              <div class="hero-image align-start">
+                <img src="SU-EN-LOGO-typo.png" alt="Inspiration 1" />
+              </div>
+              <div class="animated-text">
+                <p>سینما در تاریخ نظریه هنر نه‌تنها به عنوان هفتمین هنر، که همچون کارخانه‌ای از تصاویر شناخته می‌شود؛ عنوانی که ماهیت دوگانه آن را عیان می‌سازد: هنری برآمده از تخیل که در نظام صنعتی ریشه دارد و استودیوی (سو) درست از دل همین دیدگاه زاده شده است. واژه «سو» در زبان فارسی، واژه‌ای است لبریز از ابهام؛ چرا که نور را به معنای قدرت آشکارسازی، آب را به مثابه ریتم جاری حیات و مسیر را به مفهوم گذری به سوی نادیده‌ها در خود گرد می‌آورد. این سه‌گانه، سنگ‌بنای فلسفه ماست که می‌کوشد هر تصویر را نه تنها به نوری تازه و جان تازه مجهز کند، که به راهی برای تأمل بدل سازد؛ چرا که ما بر این باوریم خلاقیت بی‌ساختار، هدف‌رفتی بیش نیست و ساختار تهی از خلاقیت، چیزی جز تکرار ملال‌آور نخواهد بود.
+                </p>
+
+                <h2 class="reveal-text">کارخانه تصویر سوء</h2>
+              </div>
+            </div>
+            <!-- <div class="scroll-indicator">Scroll</div> -->
+          </div>
+          <div class="bg-gradient"></div>
+        </section>
+        <!-- Logo Carousel -->
+        <section class="logo-carousel" aria-label="Featured brands">
+          <svg class="logo-sprite" aria-hidden="true" focusable="false">
+            <defs>
+              <symbol id="logo-northpeak" viewBox="0 0 170 32">
+                <path d="M4 26 L12 8 L16 15 L20 5 L26 26 Z" fill="currentColor" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">NORTHPEAK</text>
+              </symbol>
+              <symbol id="logo-vesta" viewBox="0 0 170 32">
+                <circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="16" cy="16" r="3" fill="currentColor" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">VESTA</text>
+              </symbol>
+              <symbol id="logo-orbit" viewBox="0 0 170 32">
+                <ellipse cx="16" cy="16" rx="11" ry="5" fill="none" stroke="currentColor" stroke-width="1.6"
+                  transform="rotate(-20 16 16)" />
+                <circle cx="16" cy="16" r="2.5" fill="currentColor" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">ORBIT &amp; CO</text>
+              </symbol>
+              <symbol id="logo-lumena" viewBox="0 0 170 32">
+                <path d="M16 4 L19 13 L28 16 L19 19 L16 28 L13 19 L4 16 L13 13 Z" fill="currentColor" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">LUMENA</text>
+              </symbol>
+              <symbol id="logo-kai" viewBox="0 0 170 32">
+                <polygon points="16,5 25,10.5 25,21.5 16,27 7,21.5 7,10.5" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linejoin="round" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">KAI STUDIO</text>
+              </symbol>
+              <symbol id="logo-atlas" viewBox="0 0 170 32">
+                <rect x="5" y="6" width="22" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="5" y1="12" x2="27" y2="12" stroke="currentColor" stroke-width="1.4" />
+                <line x1="5" y1="20" x2="27" y2="20" stroke="currentColor" stroke-width="1.4" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">ATLAS FILMS</text>
+              </symbol>
+              <symbol id="logo-prisma" viewBox="0 0 170 32">
+                <polygon points="16,5 27,26 5,26" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linejoin="round" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">PRISMA</text>
+              </symbol>
+              <symbol id="logo-halo" viewBox="0 0 170 32">
+                <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="3"
+                  stroke-dasharray="47 15" />
+                <text x="34" y="22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700"
+                  letter-spacing="1" fill="currentColor">HALO MEDIA</text>
+              </symbol>
+            </defs>
+          </svg>
+          <div class="logo-track">
+            <div class="logo-track__group">
+              <div class="logo-item"><svg><use href="#logo-northpeak"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-vesta"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-orbit"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-lumena"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-kai"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-atlas"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-prisma"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-halo"></use></svg></div>
+            </div>
+            <div class="logo-track__group" aria-hidden="true">
+              <div class="logo-item"><svg><use href="#logo-northpeak"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-vesta"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-orbit"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-lumena"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-kai"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-atlas"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-prisma"></use></svg></div>
+              <div class="logo-item"><svg><use href="#logo-halo"></use></svg></div>
+            </div>
+          </div>
+        </section>
+        <!-- Horizontal Case Carousel -->
+        <section id="Projects" class="horizontal-carousel">
+          <!-- <div class="pin-spacer"> -->
+          <!-- <div class="horizontal-carousel"> -->
+          <div class="container carousel-header" dir="rtl">
+            <a href="All_Projects.html" class="All-Projects-Link">
+              همه پروژه‌ها
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <h2>پروژه‌های انجام شده</h2>
+          </div>
+            <div class="carousel-inner">
+              <div  class="carousel-track">
+                <!-- Card 1 -->
+                <div class="case-card" dir="rtl">
+                  <div class="card-text">
+                    <div class="h3-wrapper">
+                      <h3>لاوان</h3>
+                    </div>
+                    <div class="card-description">
+                      <p>A nostalgic voyage through cereal seas-reviving childhood joy for adults.</p>
+                      <a href="Project-Descriptions/Project-Description1.html" class="btn sm">مشاهده پروژه</a>
+                    </div>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-10.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="case-card" dir="rtl">
+                  <div class="card-text">
+                    <div class="h3-wrapper">
+                      <h3>FAMILY IS ALL</h3>
+                    </div>
+                    <div class="card-description">
+                      <p>Iranians are hardworking people but at the end of the day, its all about family.</p>
+                      <a href="Project-Descriptions/Project-Description2.html" class="btn sm">مشاهده پروژه</a>
+                    </div>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-1.PNG" alt="">
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="case-card" dir="rtl">
+                    <div class="card-text">
+                      <div class="h3-wrapper">
+                        <h3>LAVAN</h3>
+                      </div>
+                      <div class="card-description">
+                        <p>Brining Energy and work to even the most remote parts of Iran.</p>
+                        <a href="Project-Descriptions/Project-Description3.html" class="btn sm">مشاهده پروژه</a>
+                      </div>
+                    </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-2.jpg" alt="">
+                  </div> 
+                </div> 
+                <!-- Card 4 -->
+                <div class="case-card" dir="rtl">
+                  <div class="card-text">
+                      <div class="h3-wrapper">
+                        <h3>SYMBIOSIS IN WORK</h3>
+                      </div>
+                    <div class="card-description">
+                      <p>Take this short tutorial to gain new perspectives how to hire the most suitable candidates.</p>
+                      <a href="Project-Descriptions/Project-Description4.html" class="btn sm">مشاهده پروژه</a>
+                    </div>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-3.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="case-card" dir="rtl">
+                  <div class="card-text">
+                    <div class="h3-wrapper">
+                      <h3>FOOTBAL IN IRAQ</h3>
+                    </div>
+                    <div class="card-description">
+                      <p>Take a look at the new programs we have created for our junior football team.</p>
+                      <a href="Project-Descriptions/Project-Description5.html" class="btn sm">مشاهده پروژه</a>
+                    </div>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-4.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Add more cards if needed -->
+              </div>
+            </div>
+          <!-- </div> -->
+          <!-- All Projects Link -->
+
+        </section>
+
+        <section class="hero-fullscreen slogan">
+          <div class="typography">
+            <div class="container narrow animated-text animated-text--slogan">
+              <div class="line-1">
+                <span class="heading heading--transparent word-our">WE</span>
+                <span class="heading heading--solid word-services">EVOKE</span>
+              </div>
+              <span class="heading heading--transparent heading--word-feelings word-feelings">FEELINGS</span>
+            </div>
+          </div>
+        </section>
+        <!-- Diagonal Animated Text -->
+
+        <!-- Diagonal Case Carousel -->
+        <section id="Services" class="diagonal-carousel">
+          <div class="animated-text">
+            <div class="intro-text intro-text--solid">
+              <span class="reveal-text-diagonal heading heading--solid"> Our </span>
+            </div>
+            <div class="intro-text intro-text--transparent">
+              <span class="reveal-text-diagonal heading heading--transparent">Services</span>
+            </div>
+          </div>
+          <div class="hero-scroll-btn continue-btn" data-scroll-target=".about-section">
+            <span class="btn-text">Continue</span>
+              <svg class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+            <div class="carousel-inner">
+              <div class="carousel-track">
+                <!-- Card 1 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>"2D MOTION GRAPHICS"</h3>
+                    <a href="Services/2DMotionGraphics.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img id="heroFull" src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/2D%20Motion%20Graphics.jpg"
+                      data-light="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/2D%20Motion%20Graphics.jpg"
+                      data-dark="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/2D%20Motion%20Graphics-black.jpg" alt="Full Img Black">
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>3D MOTION GRAPHICS</h3>
+                    <a href="Services/3DMotionGraphics.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/3D%20Motion%20Graphics.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>ADVERTISING CAMPAIGNS</h3>
+                    <a href="Services/AdvertisingCampaigns.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/advertising.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>AI DRIVEN SOLUTIONS</h3>
+                    <a href="Services/AIDrivenSolutions.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/Ai.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>INDUSTRIAL & DOCUMENTARY FILMS</h3>
+                    <a href="Services/Industrial&Documentary.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/documentary.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>EVEN & COVERAGE PROJECT</h3>
+                    <a href="Services/Event&ProjectCoverage.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/Event%20%26%20Project%20Coverage.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 7 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>FILMING & VIRTUAL REALITY EXPERIENCES 360°</h3>
+                    <a href="Services/360Filming&VRExperiences.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/filming.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Card 8 -->
+                <div class="case-card">
+                  <div class="card-text">
+                    <h3>INDEPENDANT PRODUCTIONS</h3>
+                    <a href="Services/IndependantProductions.html" class="btn sm">View case</a>
+                  </div>
+                  <div class="card-image">
+                    <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Services/Images/Independent%20Productions.jpg" alt="">
+                  </div>
+                </div>
+                <!-- Add more cards if needed -->
+              </div>
+            </div>
+        </section>
+        <!-- About Us -->
+        <section id="About" class="about-section">
+          <div class="container">
+            <div class="container narrow">
+              <h2>About Us</h2>
+            </div>
+            <div class="grid-row">
+              <div class="about-image">
+                <div class="container narrow">
+                </div>
+                <img src="About-us.jpg" alt="About Us Image" />
+              </div>
+              <div class="about-content">
+                <div class="animated-text">
+                  <p>
+                    SU is a creative and multidisciplinary studio specializing in filmmaking,
+                    advertising, and visual content production. With a young and skilled team,
+                    SU delivers a wide range of professional services, including:
+                  </p>
+                  <ul>
+                    <li>Production of industrial and documentary films</li>
+                    <li>Design and execution of advertising teasers and campaigns</li>
+                    <li>Motion graphics and animation production</li>
+                    <li>Visual coverage of events and projects</li>
+                  </ul>
+                  <p>
+                    Our approach is founded on combining artistic vision with the commercial needs
+                    of each client, integrating creativity with innovative problem-solving to craft
+                    works that are lasting, influential, and aligned with international standards.
+                  </p>
+                  <p>
+                    In addition, SU harnesses artificial intelligence and in-depth organizational
+                    analysis to offer intelligent solutions that optimize processes, enhance
+                    efficiency, and accelerate workflow.
+                  </p>
+                  <p>
+                    This unique combination of art, technology, and organizational intelligence
+                    enables us to create projects that are not only visually compelling and
+                    impactful, but also capable of improving performance and productivity within
+                    our clients' organizations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Footer -->
+         <div class="container" dir="rtl">
+           <div class="contact-title">
+             <h1>ارتباط با ما</h1>
+           </div>
+         </div>
+        <footer id="Contact" class="site-footer">
+          <div class="container footer-inner">
+            <div class="footer-brand">
+              <span class="footer-logo">
+                <img class="footer-logo--dark" src="SU-LOGO-web-W.svg" alt="SuPics Factory logo" />
+                <img class="footer-logo--light" src="SU-LOGO-web.svg" alt="SuPics Factory logo" />
+              </span>
+              <span class="logo-dot"></span> SuPics Factory
+              <div class="muted">© 2026 SuPics Factory</div>
+            </div>
+            <div class="footer-contact" dir="rtl">
+              <!-- Address -->
+              <div class="contact-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <a href="https://maps.app.goo.gl/KDmsPnNeRyFCXXXV9" target="_blank" rel="noopener noreferrer">
+                  تهران، خیابان سهرودی، کوچه ابن‌یمین، پلاک ۸۳، واحد ۴
+                </a>
+              </div>
+              <!-- Phone -->
+              <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                  </path>
+                </svg>
+                <a href="tel:+989123456789">021-88757807</a>
+              </div>
+              <!-- Instagram -->
+              <div class="contact-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                <a href="https://www.instagram.com/su.pic.factory/" target="_blank" rel="noopener noreferrer"
+                  class="social-link">
+                  <span>@supicsfactory</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <!-- <script src="./GSAP/minified/gsap.min.js"></script>
+        <script src="./GSAP/minified/ScrollTrigger.min.js"></script>
+        <script src="./GSAP/minified/ScrollSmoother.min.js"></script>
+        <script src="./GSAP/minified/Observer.min.js"></script>
+        <script src="./GSAP/minified/ScrollToPlugin.min.js"></script> -->
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollSmoother.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/Observer.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollToPlugin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fitty/2.3.6/fitty.min.js"></script>
+        <script src="main.js" defer></script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

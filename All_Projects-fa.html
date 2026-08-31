@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SuPics Website</title>
+  <meta name="description"
+    content="A discovery engine for creative teams. Organize, search, and resurface your best work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="CSS/main.css" />
+</head>
+
+<body>
+  <div id="preloader">
+    <video src="logo.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
+  </div>
+  <div id="preloader-light">
+    <video src="logo-light.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
+  </div>
+  <div id="content">
+    <div id="scroll-wrapper">
+      <div id="scroll-content">
+        <!-- Header -->
+        <header class="site-header">
+          <div class="container header-inner">
+            <nav class="nav fa">
+              <a href="All_Projects.html" class="language"> EN </a>
+              <div class="absolute top-4 right-4">
+                <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
+                  bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <span class="icon-wrap">
+                    <!-- Sun Icon -->
+                    <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-sun">
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <path d="M12 2v2"></path>
+                      <path d="M12 20v2"></path>
+                      <path d="m4.93 4.93 1.41 1.41"></path>
+                      <path d="m17.66 17.66 1.41 1.41"></path>
+                      <path d="M2 12h2"></path>
+                      <path d="M20 12h2"></path>
+                      <path d="m6.34 17.66-1.41 1.41"></path>
+                      <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-moon">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <a href="fa.html#Contact">ارتباط با ما</a>
+              <a href="fa.html#About">درباره ما</a>
+              <a href="fa.html#Services">خدمات</a>
+              <a href="fa.html#Projects">پروژه‌ها</a>
+              <a href="fa.html#Home">خانه</a>
+            </nav>
+            <a class="brand" href="#">
+              <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
+            </a>
+          </div>
+        </header>
+        <!--Category Nav-->
+        <header class="category-site-header">
+          <div class="category-site-header__inner">
+            <div class="container header-inner">
+              <nav class="nav category fa">
+                <a href="">برندسازی</a>
+                <a href="">ویدیوی درخواستی</a>
+                <a href="">تیزر</a>
+                <a href="">فیلم‌برداری</a>
+                <a href="">تولید</a>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <!-- Hero -->
+        <section class="project-cards">
+            <div class="grid-all-projects">
+              <!-- Project 1 -->
+              <a href="Project-Descriptions/Project-Description1-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-10.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--production">تولید</span>
+                    <span class="card-tag card-tag--branding">برندسازی</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>سفری نوستالژیک در دریای خاطرات؛ زنده‌کردن شادی کودکی برای بزرگ‌سالان.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description1-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 2 -->
+              <a href="Project-Descriptions/Project-Description2-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-1.PNG" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                    <span class="card-tag card-tag--vod">ویدیوی درخواستی</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>ایرانیان مردمانی سخت‌کوش‌اند، اما در پایان روز همه‌چیز به خانواده ختم می‌شود.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description2-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 3 -->
+              <a href="Project-Descriptions/Project-Description3-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-2.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--production">تولید</span>
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>رساندن انرژی و کار به دورافتاده‌ترین نقاط ایران.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description3-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 4 -->
+              <a href="Project-Descriptions/Project-Description4-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-3.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--vod">ویدیوی درخواستی</span>
+                    <span class="card-tag card-tag--teasing">تیزر</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>در این آموزش کوتاه همراه ما باشید تا نگاهی تازه به انتخاب مناسب‌ترین نیروها پیدا کنید.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description4-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 5 -->
+              <a href="Project-Descriptions/Project-Description5-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-4.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--production">تولید</span>
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>نگاهی به برنامه‌های تازه‌ای که برای تیم فوتبال نوجوانان‌مان طراحی کرده‌ایم.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description5-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 6 -->
+              <a href="Project-Descriptions/Project-Description6-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-6.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                    <span class="card-tag card-tag--branding">برندسازی</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>باغ کتاب تهران: مکانی شگفت‌انگیز برای همهٔ گروه‌های مردم.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description6-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 7 -->
+              <a href="Project-Descriptions/Project-Description7-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-7.jpg" alt="" >
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--production">تولید</span>
+                    <span class="card-tag card-tag--teasing">تیزر</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>در مسابقهٔ سپهر شرکت کنید و پیشرفت‌های فناورانهٔ جوانان ایرانی را از نزدیک ببینید.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description7-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 8 -->
+              <a href="Project-Descriptions/Project-Description8-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-14.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                    <span class="card-tag card-tag--vod">ویدیوی درخواستی</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>با پروژهٔ پنل‌های خورشیدی ایران، آیندهٔ انرژی را تماشا کنید.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description8-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 9 -->
+              <a href="Project-Descriptions/Project-Description9-fa.html" class="case-card">
+                <div class="card-image">
+                  <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-9.jpg" alt="">
+                  <div class="card-tags" dir="rtl">
+                    <span class="card-tag card-tag--cinematography">فیلم‌برداری</span>
+                    <span class="card-tag card-tag--branding">برندسازی</span>
+                  </div>
+                </div>
+                <div class="card-text-allprojects" dir="rtl">
+                  <p>نگاهی به موزهٔ تاریخی نجف.</p>
+                  <!-- <a href="Project-Descriptions/Project-Description9-fa.html" class="btn ghost sm">مشاهده پروژه</a> -->
+                </div>
+              </a>
+              <!-- Project 10 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-5.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 10.</p>
+                  <a href="Project-Descriptions/Project-Description10-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 11 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-11.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 11.</p>
+                  <a href="Project-Descriptions/Project-Description11-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 12 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-12.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 12.</p>
+                  <a href="Project-Descriptions/Project-Description12-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 13 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-13.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 13.</p>
+                  <a href="Project-Descriptions/Project-Description13-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 14 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-14.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 14.</p>
+                  <a href="Project-Descriptions/Project-Description14-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 15 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="Card-Content/Cover-Images/Project-15.jpg" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 15.</p>
+                  <a href="Project-Descriptions/Project-Description15-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 16 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 16.</p>
+                  <a href="Project-Descriptions/Project-Description16-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+              <!-- Project 17 -->
+              <!-- <div class="case-card">
+                <div class="card-image">
+                  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600" alt="">
+                </div>
+                <div class="card-text">
+                  <p>Brief description of Project 17.</p>
+                  <a href="Project-Descriptions/Project-Description17-fa.html" class="btn ghost sm">مشاهده پروژه</a>
+                </div>
+              </div> -->
+            </div>
+        </section>
+        <!-- Footer -->
+        <div class="container" dir="rtl">
+           <div class="contact-title">
+             <h1>ارتباط با ما</h1>
+           </div>
+         </div>
+        <footer id="Contact" class="site-footer">
+          <div class="container footer-inner">
+            <div class="footer-brand">
+              <span class="footer-logo">
+                <img class="footer-logo--dark" src="SU-LOGO-web-W.svg" alt="SuPics Factory logo" />
+                <img class="footer-logo--light" src="SU-LOGO-web.svg" alt="SuPics Factory logo" />
+              </span>
+              <span class="logo-dot"></span> SuPics Factory
+              <div class="muted">© 2026 SuPics Factory</div>
+            </div>
+            <div class="footer-contact" dir="rtl">
+              <!-- Address -->
+              <div class="contact-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <a href="https://maps.app.goo.gl/KDmsPnNeRyFCXXXV9" target="_blank" rel="noopener noreferrer">
+                  تهران، خیابان سهروردی، کوچه ابن‌یمین، پلاک ۸۳، واحد ۴
+                </a>
+              </div>
+              <!-- Phone -->
+              <div class="contact-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                  </path>
+                </svg>
+                <a href="tel:+989123456789">021-88757807</a>
+              </div>
+              <!-- Instagram -->
+              <div class="contact-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <a href="https://www.instagram.com/su.pic.factory/" target="_blank" rel="noopener noreferrer"
+                  class="social-link">
+                  <span>@supicsfactory</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollSmoother.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/Observer.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollToPlugin.min.js"></script>
+
+        <script src="All_Projects.js" defer></script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
