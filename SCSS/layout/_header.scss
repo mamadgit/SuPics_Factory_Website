@@ -18,6 +18,29 @@ $menu-transition: 0.4s;
         color: #101418;
     }
 }
+// GSAP pins this element (pinType: "transform" under ScrollSmoother), so it owns
+// the transform on the outer <header> - never put transform/transition here.
+.category-site-header{
+    position: sticky;
+    top: -1px;
+    z-index: 1;
+    overflow: hidden; // clip the inner wrapper when it slides up out of view
+}
+// The inner wrapper is what we animate - GSAP never touches it.
+.category-site-header__inner{
+    background: var(--bg);
+    color: #e9eef3;
+    will-change: transform;
+    transition: transform 0.3s ease, background variables.$transition-slow, color variables.$transition-slow;
+}
+.category-site-header.white .category-site-header__inner{
+    background: #e9e9e9;
+    color: #101418;
+}
+// Slide the inner wrapper up (clipped by the outer's overflow:hidden) on scroll-down
+.category-site-header.is-invisible .category-site-header__inner{
+    transform: translateY(-100%);
+}
 
 .site-header.is-invisible.display-none {
   display: none;
@@ -85,14 +108,21 @@ $menu-transition: 0.4s;
     display: flex;
     align-items: center;
     transition: background variables.$transition-slow, color variables.$transition-slow;
-    
+    // margin-left: 9.5vw;
 }
 
 .nav {
     display: flex;
-    gap: 18px;
+    gap: 2vw;
     flex: 1; // Take up available space
-    justify-content: center; // Center the nav items
+    justify-content: end; // Center the nav items
+    font-size: larger;
+}
+.nav.fa{
+    justify-content: flex-start;
+}
+.nav.category{
+    justify-content: center;
 }
 
 .nav a {
@@ -175,6 +205,13 @@ $menu-transition: 0.4s;
             }
         }
     }
+    // fa.html orders the nav for desktop RTL reading (most important item last in
+    // the DOM). A plain column would stack that order top-to-bottom, putting the
+    // EN/theme controls on top and خانه at the bottom - so flip it back here.
+    .nav.fa {
+        flex-direction: column-reverse;
+        justify-content: center;
+    }
 }
 html {
   scroll-padding-top: var(--header-height); //Defining a variable header-height upon height change
@@ -185,6 +222,9 @@ html.disable-scroll-padding{
 @media (max-width:786px) {
     html.disable-scroll-padding{
         scroll-padding-top: 0px !important;
+    }
+    .header-inner{
+        justify-content: center;
     }    
 }
   

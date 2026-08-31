@@ -95,8 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const navMenu = document.querySelector('.nav');
   const navLinks = document.querySelectorAll('.nav a');
   const AllHashLinks = document.querySelectorAll('a[href^="#"]');
+  const SiteHeader = document.querySelector('.site-header');
   const ThemeToggle = document.getElementById('.theme-toggle');
-
+  const CategorySiteHeader = document.querySelector(".category-site-header");
   
 
   function ToggleMobileMenu (){
@@ -190,18 +191,51 @@ document.addEventListener("DOMContentLoaded", () => {
   //#endregion
 
   // ==============================================
-  //#region   HEADER PINNING & HERO SCROLL BUTTON
+  //#region   HEADER PINNING
   // ===============================================
   // Pin the header at the top once it reaches there (replaces CSS sticky)
   if(window.innerWidth > 786){//Pining only for desktop version, mobile version has sticky to keep it pinned
-  ScrollTrigger.create({
-    trigger: ".site-header",
-    start: "top top",
-    end: "max",
-    pin: true,
-    pinSpacing: false,
-    // markers: true
-  });
+    // Main header: always pinned at the very top
+    ScrollTrigger.create({
+      trigger: SiteHeader,
+      start: "top top",
+      end: "max",
+      pin: true,
+      pinSpacing: false,
+      // markers: true
+    });
+
+    if(CategorySiteHeader){
+      // Category header: pinned flush beneath the main header. Function form so the
+      // offset is recalculated on every ScrollTrigger.refresh() (resize/layout shifts).
+      ScrollTrigger.create({
+        trigger: CategorySiteHeader,
+        start: () => "top top+=" + SiteHeader.offsetHeight,
+        end: "max",
+        pin: true,
+        pinSpacing: false,
+      });
+
+      // Slide the category header out of view while scrolling down, bring it back while
+      // scrolling up, so it doesn't permanently eat vertical space. self.direction is
+      // 1 (down) / -1 (up). Using a ScrollTrigger (not a native scroll listener) so it
+      // works with ScrollSmoother. Small buffer keeps both headers visible at the top.
+      // The slide itself lives on .category-site-header__inner (see _header.scss) -
+      // GSAP owns the transform on the outer <header> for pinning.
+      const hideThreshold = SiteHeader.offsetHeight;
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        onUpdate: (self) => {
+          if(self.direction === 1 && self.scroll() > hideThreshold){
+            CategorySiteHeader.classList.add('is-invisible');
+          }
+          else if(self.direction === -1){
+            CategorySiteHeader.classList.remove('is-invisible');
+          }
+        },
+      });
+    }
   }
   //#endregion
   
