@@ -1,0 +1,85 @@
+/* === Logo Carousel === */
+.logo-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: clamp(28px, 5vw, 50px) 0;
+    // background: var(--surface);
+    // border-top: 1px solid var(--border);
+    // border-bottom: 1px solid var(--border);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+
+    .logo-sprite {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    &:hover .logo-track {
+        animation-play-state: paused;
+    }
+}
+
+.logo-track {
+    display: flex;
+    width: max-content;
+    animation: logo-scroll 28s linear infinite;
+}
+
+.logo-track__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: clamp(48px, 6vw, 96px);
+    padding-right: clamp(48px, 6vw, 96px);
+}
+
+.logo-item {
+    width: clamp(130px, 12vw, 180px);
+    height: 32px;
+    color: var(--muted);
+    opacity: 0.6;
+    flex-shrink: 0;
+    transition: color 0.3s ease, opacity 0.3s ease;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    &:hover {
+        color: var(--text);
+        opacity: 1;
+    }
+}
+
+@keyframes logo-scroll {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-track {
+        animation: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-item {
+        width: clamp(110px, 32vw, 150px);
+    }
+
+    .logo-track__group {
+        gap: 40px;
+        padding-right: 40px;
+    }
+}
