@@ -46,9 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fallback if the video element isn't found on the page
     startIntro();
   }
-// setTimeout(() => {
-//     ScrollTrigger.refresh();
-//   }, 100);
+
   // ===============================================
   //#region   PRELOADER & INTRO ANIMATIONS
   // ===============================================
@@ -771,6 +769,133 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     });
   //#endregion
 
+  //==========================================
+  //#region   LOGO CAROUSEL SCROLL
+  //==========================================
+const LogoCarousel = document.querySelector('.logo-carousel');
+const LogoTrack = document.querySelector('.logo-track');
+const LogoGroup = document.querySelector('.logo-track__group');
+
+if (LogoCarousel && LogoTrack && LogoGroup) {
+
+    let currentX = 0;
+    let targetX = 0;
+    let isOverCarousel = false;
+    let rafID = null;
+
+    const ease = 0.1;
+    const autoSpeed = 1.1;
+
+    // Get the width of ONE logo group
+    const getGroupWidth = () => {
+        return LogoGroup.getBoundingClientRect().width;
+    };
+
+    // Keep the position inside only ONE group's range to stop repetitive counting for currentX and targetX
+    function wrapPosition() {
+        // Get the width of one complete logo group
+        const groupWidth = getGroupWidth();
+
+        // Wrap forward after one complete group
+        if (currentX >= groupWidth) {
+
+            currentX -= groupWidth;//Subtract groupWidth from currentX to keep position inside only one group
+
+            targetX -= groupWidth;//Subtract groupWidth from targetX to preserve the intended distance from currentX
+        }
+
+        // The user may scroll backwards, which is outside the scrop of the groupWidth.
+        if (currentX < 0) {
+            currentX += groupWidth; //Add groupWidth value to currentX to be in scrop of the logo group
+            targetX += groupWidth;
+        }
+    }
+
+    function animate() {
+        // Allow the Automatic movement
+        if(!isOverCarousel){
+          targetX += autoSpeed;
+        }
+        // Smoothly move current position toward target
+        currentX += (targetX - currentX) * ease;
+
+        // Infinite loop
+        wrapPosition();
+
+        // Move the track
+        gsap.set(LogoTrack, {
+            x: -currentX
+        });
+
+        rafID = requestAnimationFrame(animate);
+    }
+
+    function startAnimate() {
+        if (!rafID) {
+            rafID = requestAnimationFrame(animate);
+        }
+    }
+    // Mouse enters carousel
+    LogoCarousel.addEventListener('mouseenter', () => {
+        isOverCarousel = true;
+    });
+    // Mouse leaves carousel
+    LogoCarousel.addEventListener('mouseleave', () => {
+        isOverCarousel = false;
+    });
+    // Trackpad / mouse wheel
+    LogoCarousel.addEventListener('wheel', (e) => {
+
+        if (!isOverCarousel) return;
+        e.preventDefault();
+        targetX += e.deltaY;
+
+        startAnimate();
+    }, { passive: false });
+
+    // Start automatic animation
+    startAnimate();
+
+    // TOUCH SUPPORT
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLocked = null;
+
+    LogoCarousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchLocked = null;
+    }, { passive: true });
+
+    LogoCarousel.addEventListener('touchmove', (e) => {
+        const dx = touchStartX - e.touches[0].clientX;
+        const dy = touchStartY - e.touches[0].clientY;
+
+        if (!touchLocked) {
+            if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+
+            touchLocked = Math.abs(dx) > Math.abs(dy)
+                ? 'horizontal'
+                : 'vertical';
+        }
+
+        if (touchLocked === 'vertical') return;
+
+        e.preventDefault();
+
+        targetX += dx;
+        startAnimate();
+
+        // Reset so the next move is a delta, not cumulative
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+
+    }, { passive: false });
+
+    LogoCarousel.addEventListener('touchend', () => {
+        touchLocked = null;
+    }, { passive: true });
+}
   // ==========================================
   //#region   HORIZONTAL CAROUSEL SCROLL
   // ==========================================
