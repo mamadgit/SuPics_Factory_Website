@@ -369,7 +369,7 @@ body {
 .container {
   width: 85vw;
   max-width: 2560px;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 0;
 }
 
