@@ -369,7 +369,7 @@ body {
 .container {
   width: 85vw;
   max-width: 2560px;
-  margin: 10px auto;
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -1266,7 +1266,7 @@ html.light-mode .SVG-logo-light {
 }
 .carousel-header h2 {
   position: absolute;
-  top: clamp(48px, 8vh, 130px);
+  top: clamp(100px, 8vh, 130px);
   margin: 0;
   font-size: clamp(48px, 6.4vw, 60px);
   pointer-events: auto;
@@ -1274,7 +1274,7 @@ html.light-mode .SVG-logo-light {
 
 .All-Projects-Link {
   position: absolute;
-  top: clamp(48px, 11vh, 130px);
+  top: clamp(120px, 11vh, 130px);
   inset-inline-end: 0;
   display: flex;
   align-items: center;

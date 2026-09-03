@@ -318,7 +318,13 @@ document.addEventListener("DOMContentLoaded", () => {
       isHashNavigation = true;
 
       if(smoother){
-        smoother.scrollTo(TargetElement, false, "top 80px");
+        // #Projects is a full 100vh pinned section whose own layout (carousel-inner's
+        // 20vh top margin) already clears the header - pushing it down by headerH as
+        // well just shoves that extra height off the bottom of the viewport, cropping
+        // the card images. Every other (taller-than-viewport) section still needs the
+        // headerH offset so its top content isn't hidden under the pinned header.
+        const scrollOffset = TargetID === '#Projects' ? 0 : headerH;
+        smoother.scrollTo(TargetElement, false, `top ${scrollOffset}px`);
       }else{
         const offset = window.innerWidth <= 786 ? 30 : 100; //Offset should be 25 for mobile screens (10 for some breathing room), so after nav hash, the section appears top of the screen
         const TargetPosition = TargetElement.getBoundingClientRect().top +  window.scrollY - offset;

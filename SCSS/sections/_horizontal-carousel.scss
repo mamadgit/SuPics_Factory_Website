@@ -150,7 +150,10 @@
 
     h2 {
         position: absolute;
-        top: clamp(48px, 8vh, 130px);
+        // Min bound raised to clear the pinned .site-header (100px tall - see
+        // _header.scss), which sits on top of this section's content regardless
+        // of scroll offset. 8vh alone drops below 100px on most desktop heights.
+        top: clamp(100px, 8vh, 130px);
         // left: 10vw;
         margin: 0;
         font-size: clamp(48px, 6.4vw, 60px);
@@ -160,7 +163,7 @@
 // All Projects Link - top right of horizontal carousel, aligned with the title
 .All-Projects-Link {
     position: absolute;
-    top: clamp(48px, 11vh, 130px);
+    top: clamp(120px, 11vh, 130px);
     inset-inline-end: 0;
     display: flex;
     align-items: center;
