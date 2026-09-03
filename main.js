@@ -949,9 +949,16 @@ if (LogoCarousel && LogoTrack && LogoGroup) {
       if (!rafId) rafId = requestAnimationFrame(animate);
     }
 
-    // Pin the section manually when cursor enters
-    horizontalSection.addEventListener('mouseenter', () => {
-      isOverCarousel = true;
+    // Only treat the cursor as "over the carousel" when it's actually within the
+    // track's box — the section has empty margin space to the left of where the
+    // track begins, and hovering there should scroll the page vertically.
+    horizontalSection.addEventListener('mousemove', (e) => {
+      const trackRect = horizontalTrack.getBoundingClientRect();
+      isOverCarousel =
+        e.clientX >= trackRect.left &&
+        e.clientX <= trackRect.right &&
+        e.clientY >= trackRect.top &&
+        e.clientY <= trackRect.bottom;
     });
 
     horizontalSection.addEventListener('mouseleave', () => {
