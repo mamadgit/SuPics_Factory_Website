@@ -27,6 +27,7 @@
         padding: 50px 0; 
         cursor: grab;
         //scroll-snap-type: x manditory
+        
         &:active {
             cursor: grabbing;
         }

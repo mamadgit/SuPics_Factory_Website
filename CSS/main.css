@@ -992,7 +992,7 @@ html.disable-scroll-padding {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: clamp(28px, 5vw, 50px) 0;
+  padding: 10px 0;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
@@ -1010,7 +1010,6 @@ html.disable-scroll-padding {
   display: flex;
   width: -moz-max-content;
   width: max-content;
-  animation: logo-scroll 28s linear infinite;
 }
 
 .logo-track__group {
@@ -1023,9 +1022,9 @@ html.disable-scroll-padding {
 
 .logo-item {
   width: clamp(130px, 12vw, 180px);
-  height: 32px;
+  height: auto;
   color: var(--muted);
-  opacity: 0.6;
+  opacity: 0.65;
   flex-shrink: 0;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
@@ -1040,14 +1039,21 @@ html.disable-scroll-padding {
   opacity: 1;
 }
 
-@keyframes logo-scroll {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0%);
-  }
+.SVG-logo-dark {
+  display: block;
 }
+
+.SVG-logo-light {
+  display: none;
+}
+
+html.light-mode .SVG-logo-dark {
+  display: none;
+}
+html.light-mode .SVG-logo-light {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .logo-track {
     animation: none;

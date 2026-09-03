@@ -3,7 +3,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    padding: clamp(28px, 5vw, 50px) 0;
+    padding: 10px 0;
     // background: var(--surface);
     // border-top: 1px solid var(--border);
     // border-bottom: 1px solid var(--border);
@@ -25,7 +25,7 @@
 .logo-track {
     display: flex;
     width: max-content;
-    animation: logo-scroll 28s linear infinite;
+    // animation: logo-scroll 28s linear infinite;
 }
 
 .logo-track__group {
@@ -38,9 +38,9 @@
 
 .logo-item {
     width: clamp(130px, 12vw, 180px);
-    height: 32px;
+    height: auto;
     color: var(--muted);
-    opacity: 0.6;
+    opacity: 0.65;
     flex-shrink: 0;
     transition: color 0.3s ease, opacity 0.3s ease;
 
@@ -56,16 +56,25 @@
         opacity: 1;
     }
 }
+//Dark mode (default): white logo
+.SVG-logo-dark {display: block;}
+.SVG-logo-light {display: none;}
 
-@keyframes logo-scroll {
-    from {
-        transform: translateX(-50%);
-    }
-
-    to {
-        transform: translateX(0%);
-    }
+//Light mode: dark logo
+html.light-mode{
+    .SVG-logo-dark {display: none;}
+    .SVG-logo-light {display: block;}
 }
+
+// @keyframes logo-scroll {
+//     from {
+//         transform: translateX(-50%);
+//     }
+
+//     to {
+//         transform: translateX(0%);
+//     }
+// }
 
 @media (prefers-reduced-motion: reduce) {
     .logo-track {
