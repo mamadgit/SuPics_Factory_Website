@@ -13,9 +13,9 @@ Media
 *.jpeg
 *.webp
 *.svg
-*.ttf
+# *.ttf
 *.MOV
 *.docx
 *.pdf
-*.json
+# *.json
 server.js
