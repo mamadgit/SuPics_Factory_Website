@@ -377,6 +377,10 @@ document.addEventListener("DOMContentLoaded", () => {
       SmoothScrollTo(TargetID);
     });
   });
+  //Close the mobile menu by cliking anywhere on the menu screen
+  navMenu.addEventListener('click', (e) =>{
+    CloseMobileMenu();
+  });
 //#endregion
 
 //============================================== 
@@ -778,130 +782,132 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
   //==========================================
   //#region   LOGO CAROUSEL SCROLL
   //==========================================
-const LogoCarousel = document.querySelector('.logo-carousel');
-const LogoTrack = document.querySelector('.logo-track');
-const LogoGroup = document.querySelector('.logo-track__group');
+  const LogoCarousel = document.querySelector('.logo-carousel');
+  const LogoTrack = document.querySelector('.logo-track');
+  const LogoGroup = document.querySelector('.logo-track__group');
 
-if (LogoCarousel && LogoTrack && LogoGroup) {
+  if (LogoCarousel && LogoTrack && LogoGroup) {
 
-    let currentX = 0;
-    let targetX = 0;
-    let isOverCarousel = false;
-    let rafID = null;
+      let currentX = 0;
+      let targetX = 0;
+      let isOverCarousel = false;
+      let rafID = null;
 
-    const ease = 0.1;
-    const autoSpeed = 1.1;
+      const ease = 0.1;
+      const autoSpeed = 1.1;
 
-    // Get the width of ONE logo group
-    const getGroupWidth = () => {
-        return LogoGroup.getBoundingClientRect().width;
-    };
+      // Get the width of ONE logo group
+      const getGroupWidth = () => {
+          return LogoGroup.getBoundingClientRect().width;
+      };
 
-    // Keep the position inside only ONE group's range to stop repetitive counting for currentX and targetX
-    function wrapPosition() {
-        // Get the width of one complete logo group
-        const groupWidth = getGroupWidth();
+      // Keep the position inside only ONE group's range to stop repetitive counting for currentX and targetX
+      function wrapPosition() {
+          // Get the width of one complete logo group
+          const groupWidth = getGroupWidth();
 
-        // Wrap forward after one complete group
-        if (currentX >= groupWidth) {
+          // Wrap forward after one complete group
+          if (currentX >= groupWidth) {
 
-            currentX -= groupWidth;//Subtract groupWidth from currentX to keep position inside only one group
+              currentX -= groupWidth;//Subtract groupWidth from currentX to keep position inside only one group
 
-            targetX -= groupWidth;//Subtract groupWidth from targetX to preserve the intended distance from currentX
-        }
+              targetX -= groupWidth;//Subtract groupWidth from targetX to preserve the intended distance from currentX
+          }
 
-        // The user may scroll backwards, which is outside the scrop of the groupWidth.
-        if (currentX < 0) {
-            currentX += groupWidth; //Add groupWidth value to currentX to be in scrop of the logo group
-            targetX += groupWidth;
-        }
-    }
+          // The user may scroll backwards, which is outside the scrop of the groupWidth.
+          if (currentX < 0) {
+              currentX += groupWidth; //Add groupWidth value to currentX to be in scrop of the logo group
+              targetX += groupWidth;
+          }
+      }
 
-    function animate() {
-        // Allow the Automatic movement
-        if(!isOverCarousel){
-          targetX += autoSpeed;
-        }
-        // Smoothly move current position toward target
-        currentX += (targetX - currentX) * ease;
+      function animate() {
+          // Allow the Automatic movement
+          if(!isOverCarousel){
+            targetX += autoSpeed;
+          }
+          // Smoothly move current position toward target
+          currentX += (targetX - currentX) * ease;
 
-        // Infinite loop
-        wrapPosition();
+          // Infinite loop
+          wrapPosition();
 
-        // Move the track
-        gsap.set(LogoTrack, {
-            x: -currentX
-        });
+          // Move the track
+          gsap.set(LogoTrack, {
+              x: -currentX
+          });
 
-        rafID = requestAnimationFrame(animate);
-    }
+          rafID = requestAnimationFrame(animate);
+      }
 
-    function startAnimate() {
-        if (!rafID) {
-            rafID = requestAnimationFrame(animate);
-        }
-    }
-    // Mouse enters carousel
-    LogoCarousel.addEventListener('mouseenter', () => {
-        isOverCarousel = true;
-    });
-    // Mouse leaves carousel
-    LogoCarousel.addEventListener('mouseleave', () => {
-        isOverCarousel = false;
-    });
-    // Trackpad / mouse wheel
-    LogoCarousel.addEventListener('wheel', (e) => {
+      function startAnimate() {
+          if (!rafID) {
+              rafID = requestAnimationFrame(animate);
+          }
+      }
+      // Mouse enters carousel
+      LogoCarousel.addEventListener('mouseenter', () => {
+          isOverCarousel = true;
+      });
+      // Mouse leaves carousel
+      LogoCarousel.addEventListener('mouseleave', () => {
+          isOverCarousel = false;
+      });
+      // Trackpad / mouse wheel
+      LogoCarousel.addEventListener('wheel', (e) => {
 
-        if (!isOverCarousel) return;
-        e.preventDefault();
-        targetX += e.deltaY;
+          if (!isOverCarousel) return;
+          e.preventDefault();
+          targetX += e.deltaY;
 
-        startAnimate();
-    }, { passive: false });
+          startAnimate();
+      }, { passive: false });
 
-    // Start automatic animation
-    startAnimate();
+      // Start automatic animation
+      startAnimate();
 
-    // TOUCH SUPPORT
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchLocked = null;
+      // TOUCH SUPPORT
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchLocked = null;
 
-    LogoCarousel.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        touchLocked = null;
-    }, { passive: true });
+      LogoCarousel.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          touchLocked = null;
+      }, { passive: true });
 
-    LogoCarousel.addEventListener('touchmove', (e) => {
-        const dx = touchStartX - e.touches[0].clientX;
-        const dy = touchStartY - e.touches[0].clientY;
+      LogoCarousel.addEventListener('touchmove', (e) => {
+          const dx = touchStartX - e.touches[0].clientX;
+          const dy = touchStartY - e.touches[0].clientY;
 
-        if (!touchLocked) {
-            if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+          if (!touchLocked) {
+              if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
 
-            touchLocked = Math.abs(dx) > Math.abs(dy)
-                ? 'horizontal'
-                : 'vertical';
-        }
+              touchLocked = Math.abs(dx) > Math.abs(dy)
+                  ? 'horizontal'
+                  : 'vertical';
+          }
 
-        if (touchLocked === 'vertical') return;
+          if (touchLocked === 'vertical') return;
 
-        e.preventDefault();
+          e.preventDefault();
 
-        targetX += dx;
-        startAnimate();
+          targetX += dx;
+          startAnimate();
 
-        // Reset so the next move is a delta, not cumulative
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
+          // Reset so the next move is a delta, not cumulative
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
 
-    }, { passive: false });
+      }, { passive: false });
 
-    LogoCarousel.addEventListener('touchend', () => {
-        touchLocked = null;
-    }, { passive: true });
-}
+      LogoCarousel.addEventListener('touchend', () => {
+          touchLocked = null;
+      }, { passive: true });
+  }
+//#endregion
+
   // ==========================================
   //#region   HORIZONTAL CAROUSEL SCROLL
   // ==========================================
@@ -909,7 +915,7 @@ if (LogoCarousel && LogoTrack && LogoGroup) {
   const horizontalTrack = document.querySelector('.carousel-track');
 
   if (horizontalSection && horizontalTrack) {
-    const Offset = 500;
+    const Offset = 1000;
     let isOverCarousel = false;
     let currentX = 0;
     let targetX = 0;
