@@ -1160,7 +1160,7 @@ html.light-mode .SVG-logo-light {
   display: flex;
   gap: 60px;
   will-change: transform;
-  margin: 0 10vw;
+  margin: 0 13vw;
   padding: 50px 0;
   cursor: grab;
 }
