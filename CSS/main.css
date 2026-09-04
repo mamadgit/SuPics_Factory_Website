@@ -1061,7 +1061,7 @@ html.light-mode .SVG-logo-light {
 }
 @media (max-width: 768px) {
   .logo-item {
-    width: clamp(110px, 32vw, 150px);
+    width: clamp(110px, 35vw, 150px);
   }
   .logo-track__group {
     gap: 40px;
@@ -1160,7 +1160,7 @@ html.light-mode .SVG-logo-light {
   display: flex;
   gap: 60px;
   will-change: transform;
-  margin: 0 13vw;
+  margin: 0 0 0 25vw;
   padding: 50px 0;
   cursor: grab;
 }
