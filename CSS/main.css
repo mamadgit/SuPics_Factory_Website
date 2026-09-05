@@ -586,7 +586,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    height: 100dvh;
+    height: 101dvh;
     overflow-y: auto;
     background-color: rgba(11, 12, 16, 0.7);
     backdrop-filter: blur(10px);
@@ -1060,6 +1060,9 @@ html.light-mode .SVG-logo-light {
   }
 }
 @media (max-width: 768px) {
+  .logo-carousel {
+    margin: 10vh 0;
+  }
   .logo-item {
     width: clamp(110px, 35vw, 150px);
   }
@@ -1301,8 +1304,11 @@ html.light-mode .SVG-logo-light {
 }
 
 @media (max-width: 768px) {
+  .horizontal-carousel .carousel-inner {
+    margin-top: 5vh;
+  }
   .horizontal-carousel .carousel-track {
-    margin: 10vw;
+    margin: 0 10vw;
   }
   .horizontal-carousel .case-card {
     width: 80vw;
@@ -1324,7 +1330,7 @@ html.light-mode .SVG-logo-light {
     position: absolute;
     top: auto;
     inset-inline-end: auto;
-    bottom: 0px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.5rem;

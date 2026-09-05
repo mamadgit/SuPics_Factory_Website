@@ -192,8 +192,11 @@
     }
 }
 @media (max-width: 768px) {
+    .horizontal-carousel .carousel-inner{
+        margin-top: 5vh;
+    }
     .horizontal-carousel .carousel-track{
-        margin: 10vw;
+        margin: 0 10vw;
     }
     .horizontal-carousel .case-card{
         width: 80vw;
@@ -224,7 +227,7 @@
         position: absolute;
         top: auto;
         inset-inline-end: auto;
-        bottom: 0px;
+        bottom: 80px;
         left: 50%;
         transform: translateX(-50%);
 
