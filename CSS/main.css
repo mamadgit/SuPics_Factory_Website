@@ -1061,10 +1061,10 @@ html.light-mode .SVG-logo-light {
 }
 @media (max-width: 768px) {
   .logo-carousel {
-    margin: 10vh 0;
+    margin: 5vh 0;
   }
   .logo-item {
-    width: clamp(110px, 35vw, 150px);
+    width: clamp(110px, 40vw, 150px);
   }
   .logo-track__group {
     gap: 40px;
