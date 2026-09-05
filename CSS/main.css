@@ -1301,6 +1301,9 @@ html.light-mode .SVG-logo-light {
 }
 
 @media (max-width: 768px) {
+  .horizontal-carousel .carousel-track {
+    margin: 10vw;
+  }
   .horizontal-carousel .case-card {
     width: 80vw;
     height: 70vh;
