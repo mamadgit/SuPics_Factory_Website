@@ -7,7 +7,6 @@
     padding: 40px 0;
     background: rgba(32, 32, 32);
 }
-
 .footer-inner {
     display: flex;
     gap: 32px;
@@ -29,6 +28,7 @@
         width: 120px;
         height: auto;
     }
+
 }
 
 // Dark mode (default): white logo
@@ -45,6 +45,9 @@
     color: white;
     font-weight: 500;
     margin-top: 6px;
+}
+.footer-brand .logo-dot{
+    color: white;
 }
 
 .footer-cols {

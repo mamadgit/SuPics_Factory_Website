@@ -692,6 +692,10 @@ html.disable-scroll-padding {
   margin-top: 6px;
 }
 
+.footer-brand .logo-dot {
+  color: white;
+}
+
 .footer-cols {
   display: flex;
   gap: 40px;
