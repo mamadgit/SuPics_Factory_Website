@@ -176,6 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
       SmoothScrollTo(TargetID);
     });
   });
+  //Close the mobile menu by cliking anywhere on the menu screen
+  navMenu.addEventListener('click', (e) =>{
+    CloseMobileMenu();
+  });
 
     document.querySelectorAll('a[href^="index.html#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
@@ -363,21 +367,57 @@ document.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector('.all-projects-carousel');
     if (!carousel) return;
     const track = carousel.querySelector('.all-projects-carousel__track');
-    const slides = carousel.querySelectorAll('.all-projects-carousel__slide');
+    const slides = Array.from(carousel.querySelectorAll('.all-projects-carousel__slide'));
     const prevBtn = carousel.querySelector('.all-projects-carousel__arrow--prev');
     const nextBtn = carousel.querySelector('.all-projects-carousel__arrow--next');
-    
+
     if (!track || !slides.length) return;
 
     let index = 0;
 
+    // --- pagination dots (built here so the count always matches the markup) ---
+    let dotsWrap = null;
+    if (slides.length > 1) {
+      dotsWrap = document.createElement('div');
+      dotsWrap.className = 'all-projects-carousel__dots';
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Go to project ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+      });
+      carousel.appendChild(dotsWrap);
+    }
+
     function goTo(newIndex) {
       index = (newIndex + slides.length) % slides.length;
-      track.style.transform = `translateX(-${index * 100}%)`;
+      // Translate by the target slide's pixel offset from the first slide - works
+      // for any slide width (100% on desktop, 84% + gap on mobile).
+      const offset = slides[index].offsetLeft - slides[0].offsetLeft;
+      track.style.transform = `translateX(-${offset}px)`;
+      if (dotsWrap) {
+        dotsWrap.querySelectorAll('button').forEach((dot, i) => {
+          dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+      }
     }
 
     if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
+
+    // Slide width changes with the viewport - recompute the offset on resize.
+    let resizeRaf = null;
+    window.addEventListener('resize', () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        const prevTransition = track.style.transition;
+        track.style.transition = 'none';
+        goTo(index);
+        void track.offsetWidth; // flush the jump before re-enabling the transition
+        track.style.transition = prevTransition;
+      });
+    });
 
     // --- Touch / swipe navigation ---
     const SWIPE_THRESHOLD = 50;   // px of horizontal travel needed to change slide
@@ -385,12 +425,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let touchStartY = 0;
     let swipeHandled = false;      // one slide change per gesture
     let isHorizontalSwipe = null;  // null = undecided; true/false once axis is locked
+    let suppressClick = false;     // stop the click after a swipe from opening a project
+
+    // Capture-phase so we cancel the navigation before the <a> default fires.
+    track.addEventListener('click', (e) => {
+      if (suppressClick) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
 
     track.addEventListener('touchstart', (e) => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       swipeHandled = false;
       isHorizontalSwipe = null;
+      suppressClick = false;
     }, { passive: true });
 
     track.addEventListener('touchmove', (e) => {
@@ -407,7 +457,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Vertical gesture - let the page scroll normally
       if (!isHorizontalSwipe) return;
 
-      e.preventDefault(); // we own this horizontal gesture now
+      e.preventDefault();   // we own this horizontal gesture now
+      suppressClick = true; // a horizontal drag is a swipe, not a tap
 
       if (Math.abs(dx) >= SWIPE_THRESHOLD) {
         goTo(dx < 0 ? index + 1 : index - 1);
@@ -418,10 +469,55 @@ document.addEventListener("DOMContentLoaded", () => {
     track.addEventListener('touchend', () => {
       swipeHandled = false;
       isHorizontalSwipe = null;
+      if (suppressClick) setTimeout(() => { suppressClick = false; }, 300);
     }, { passive: true });
+
+    goTo(0);
   })();
 
 
+  //#endregion
+
+  // ===============================================
+  //#region   PROJECT DISCIPLINE FILTER
+  // ===============================================
+  // Chips in .category-site-header filter the .grid-all-projects cards by the
+  // discipline in their .card-tag--* classes. "All" clears the filter.
+  (function () {
+    const chips = Array.from(document.querySelectorAll('.project-filters .filter-chip'));
+    const cards = Array.from(document.querySelectorAll('.grid-all-projects .case-card'));
+    if (!chips.length || !cards.length) return;
+
+    // Cache each card's disciplines once.
+    const cardTags = cards.map((card) =>
+      Array.from(card.querySelectorAll('.card-tag'))
+        .map((tag) => {
+          const mod = Array.from(tag.classList).find((c) => c.startsWith('card-tag--'));
+          return mod ? mod.slice('card-tag--'.length) : null;
+        })
+        .filter(Boolean)
+    );
+
+    function applyFilter(filter) {
+      cards.forEach((card, i) => {
+        const match = filter === 'all' || cardTags[i].includes(filter);
+        card.classList.toggle('is-filtered-out', !match);
+      });
+      // Grid height changed - let pinned headers recalc their trigger points.
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => {
+          const active = c === chip;
+          c.classList.toggle('is-active', active);
+          c.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        applyFilter(chip.dataset.filter);
+      });
+    });
+  })();
   //#endregion
 
   // Mobile menu (placeholder)
