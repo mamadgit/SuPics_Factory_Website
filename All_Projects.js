@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const SiteHeader = document.querySelector('.site-header');
   const ThemeToggle = document.getElementById('.theme-toggle');
   const CategorySiteHeader = document.querySelector(".category-site-header");
-  
+  const AllProjectsCarousel = document.querySelector('.all-projects-carousel');
 
   function ToggleMobileMenu (){
     navMenu.classList.toggle('active');
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // works with ScrollSmoother. Small buffer keeps both headers visible at the top.
       // The slide itself lives on .category-site-header__inner (see _header.scss) -
       // GSAP owns the transform on the outer <header> for pinning.
-      const hideThreshold = SiteHeader.offsetHeight;
+      const hideThreshold = AllProjectsCarousel.offsetHeight;
       ScrollTrigger.create({
         start: 0,
         end: "max",
@@ -356,6 +356,74 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
   //#endregion
   
+  // ===============================================
+  //#region   ALL PROJECTS CAROUSEL
+  // ===============================================
+  (function () {
+    const carousel = document.querySelector('.all-projects-carousel');
+    if (!carousel) return;
+    const track = carousel.querySelector('.all-projects-carousel__track');
+    const slides = carousel.querySelectorAll('.all-projects-carousel__slide');
+    const prevBtn = carousel.querySelector('.all-projects-carousel__arrow--prev');
+    const nextBtn = carousel.querySelector('.all-projects-carousel__arrow--next');
+    
+    if (!track || !slides.length) return;
+
+    let index = 0;
+
+    function goTo(newIndex) {
+      index = (newIndex + slides.length) % slides.length;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
+
+    // --- Touch / swipe navigation ---
+    const SWIPE_THRESHOLD = 50;   // px of horizontal travel needed to change slide
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let swipeHandled = false;      // one slide change per gesture
+    let isHorizontalSwipe = null;  // null = undecided; true/false once axis is locked
+
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      swipeHandled = false;
+      isHorizontalSwipe = null;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+      if (swipeHandled) return;
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+
+      // Lock the axis on the first meaningful movement
+      if (isHorizontalSwipe === null) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        isHorizontalSwipe = Math.abs(dx) > Math.abs(dy);
+      }
+
+      // Vertical gesture - let the page scroll normally
+      if (!isHorizontalSwipe) return;
+
+      e.preventDefault(); // we own this horizontal gesture now
+
+      if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+        goTo(dx < 0 ? index + 1 : index - 1);
+        swipeHandled = true; // block further changes until touchend
+      }
+    }, { passive: false });
+
+    track.addEventListener('touchend', () => {
+      swipeHandled = false;
+      isHorizontalSwipe = null;
+    }, { passive: true });
+  })();
+
+
+  //#endregion
+
   // Mobile menu (placeholder)
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
