@@ -83,6 +83,15 @@ $menu-transition: 0.4s;
     height: 100px;
 }
 
+// The category header now holds the discipline filter strip - it needs less
+// height than the main nav and should center the chips rather than space them.
+.category-site-header .header-inner {
+    height: auto;
+    min-height: 64px;
+    padding-block: 12px;
+    justify-content: center;
+}
+
 .header-left {
   justify-content: flex-start;
   padding-left: 24px; // push logo inward as much as you want
@@ -164,6 +173,8 @@ $menu-transition: 0.4s;
     .menu-toggle {
         display: block;
     }
+    // .category variant stays a normal inline nav row on mobile (same as desktop);
+    // only the main site nav collapses into the fullscreen hamburger menu.
     .nav{
         position: fixed;
         top: 0;
@@ -208,9 +219,25 @@ $menu-transition: 0.4s;
     // fa.html orders the nav for desktop RTL reading (most important item last in
     // the DOM). A plain column would stack that order top-to-bottom, putting the
     // EN/theme controls on top and خانه at the bottom - so flip it back here.
+    // Excludes .category (the Persian category nav is `nav category fa`), which
+    // must keep its desktop inline-row layout on mobile.
     .nav.fa {
         flex-direction: column-reverse;
         justify-content: center;
+    }
+
+    // Category nav keeps its desktop text size, but is allowed to wrap onto
+    // multiple lines so the links never overflow the screen edge. The header row
+    // grows to fit the wrapped lines instead of clipping them (the parent
+    // .category-site-header has overflow:hidden).
+    .category-site-header .header-inner {
+        height: auto;
+        min-height: 60px;
+        padding-block: 14px;
+    }
+    .nav.category {
+        flex-wrap: wrap;
+        gap: 12px 18px; // row-gap column-gap
     }
 }
 html {

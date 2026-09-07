@@ -1,24 +1,48 @@
 @use 'sass:map';
 @use '../abstracts/variables';
 
+// =====================================================
+// Projects hero: intro heading + featured-work carousel
+// =====================================================
+.projects-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-block: clamp(24px, 5vw, 56px) clamp(14px, 3vw, 26px);
+
+    h1 {
+        margin: 0;
+    }
+
+    &__meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+}
+
 .all-projects-carousel {
     position: relative;
-    height: 85vh;
     overflow: hidden;
     background: var(--bg);
 
     &__track {
         display: flex;
-        width: 100%;
-        height: 100%;
         will-change: transform;
         transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
     }
 
     &__slide {
+        position: relative;
         flex: 0 0 100%;
-        width: 100%;
-        height: 100%;
+        height: 85vh;
+        overflow: hidden;
+        text-decoration: none;
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
 
         img {
             display: block;
@@ -26,60 +50,242 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+            transition: transform 0.7s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        &:hover img {
+            transform: scale(1.03);
         }
     }
 
+    // ---- caption / scrim ----
+    &__caption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: clamp(20px, 4vw, 56px);
+        padding-top: 140px;
+        pointer-events: none; // clicks fall through to the parent <a>
+        background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.8) 0%,
+            rgba(0, 0, 0, 0.45) 42%,
+            rgba(0, 0, 0, 0) 100%);
+    }
+
+    &__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    // Reuses .card-tag from _project-cards.scss - force the always-visible state
+    // (there they start hidden and slide in on card hover).
+    .card-tag {
+        opacity: 1;
+        transform: none;
+        font-size: 1.2rem;
+        border-radius: 20px;
+        padding: 5px 10px;
+    }
+
+    // Discipline colours - keep in sync with .project-cards .card-tag--*
+    .card-tag--production     { background: rgba(37, 99, 235, 0.85); }
+    .card-tag--cinematography { background: rgba(147, 51, 234, 0.85); }
+    .card-tag--teasing        { background: rgba(219, 39, 119, 0.85); }
+    .card-tag--vod            { background: rgba(13, 148, 136, 0.85); }
+    .card-tag--branding       { background: rgba(217, 119, 6, 0.88); }
+
+    &__blurb {
+        margin: 0;
+        max-width: 44ch;
+        font-size: clamp(1rem, 2vw, 2.5rem);
+        font-weight: 600;
+        line-height: 1.4;
+        text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    &__cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        transition: opacity variables.$transition-base;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            transition: transform variables.$transition-base;
+        }
+    }
+
+    &__slide:hover &__cta {
+        opacity: 1;
+    }
+
+    &__slide:hover &__cta svg {
+        transform: translateX(4px);
+    }
+
+    // ---- arrows ----
     &__arrow {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        // z-index: 3;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: none;
-        border: none;
+        width: 46px;
+        height: 46px;
         padding: 0;
-        margin: 0;
-        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.32);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        color: #fff;
         cursor: pointer;
-        // z-index: 2;
         -webkit-tap-highlight-color: transparent;
-        transition: opacity variables.$transition-base, transform variables.$transition-base;
+        transition: background variables.$transition-base, opacity variables.$transition-base, transform variables.$transition-base;
 
         svg {
-            width: clamp(28px, 3vw, 44px);
-            height: clamp(28px, 3vw, 44px);
+            width: 20px;
+            height: 20px;
         }
 
         &:hover {
-            opacity: 0.65;
+            background: rgba(0, 0, 0, 0.55);
         }
 
         &--prev {
-            left: clamp(16px, 4vw, 60px);
+            left: clamp(14px, 3vw, 44px);
 
             &:hover {
-                transform: translate(-4px, -50%);
+                transform: translate(-3px, -50%);
             }
         }
 
         &--next {
-            right: clamp(16px, 4vw, 60px);
+            right: clamp(14px, 3vw, 44px);
 
             &:hover {
-                transform: translate(4px, -50%);
+                transform: translate(3px, -50%);
             }
+        }
+    }
+
+    // ---- pagination dots (injected by All_Projects.js) ----
+    &__dots {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: clamp(14px, 2.4vw, 26px);
+        // z-index: 3;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        pointer-events: none;
+
+        button {
+            pointer-events: auto;
+            width: 7px;
+            height: 7px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+            transition: background variables.$transition-base, width variables.$transition-base, border-radius variables.$transition-base;
+        }
+
+        button[aria-current="true"] {
+            background: #fff;
+            width: 22px;
+            border-radius: 4px;
         }
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 786px) {
     .all-projects-carousel {
-        height: 55vh;
+        height: auto;
+        .card-tag{
+            font-size: 1rem;
+        }
 
-        &__arrow svg {
-            width: 22px;
-            height: 22px;
+        &__track {
+            gap: 25px;
+            padding-inline: 20px; // first slide is inset; JS offsets from slide[0]
+        }
+
+        // Stack per slide: image on top, caption in normal flow beneath it.
+        // Flex items still stretch to equal height, so the clamped caption keeps
+        // every slide the same size and swiping never shifts the layout.
+        &__slide {
+            flex: 0 0 84%; // leaves a sliver of the next slide peeking = swipe hint
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+            color: var(--text);
+
+            img {
+                height: auto;
+                aspect-ratio: 4 / 5;
+                object-fit: cover;
+                border-radius: 16px;
+            }
+
+            &:hover img {
+                transform: none; // no clip wrapper here, so skip the zoom
+            }
+        }
+
+        // Caption below the image: no scrim, theme-aware text.
+        &__caption {
+            position: static;
+            gap: 8px;
+            padding: 12px 2px 0;
+            background: none;
+            border-radius: 0;
+        }
+
+        &__blurb {
+            font-size: 1.1rem;
+            line-height: 1.35;
+            color: var(--text);
+            text-shadow: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        &__cta {
+            font-size: 1rem;
+            color: var(--text);
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+
+        // swipe + dots carry navigation on mobile
+        &__arrow {
+            display: none;
+        }
+
+        // dots flow beneath the whole carousel
+        &__dots {
+            margin-top: 16px;
+            bottom: 22vh;
         }
     }
 }

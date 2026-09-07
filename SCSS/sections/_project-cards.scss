@@ -82,3 +82,73 @@
             transform: translateX(0);
         }
     }
+
+    // =====================================================
+    // Discipline filter chips (All / Production / ...).
+    // Live in .category-site-header; toggle .is-filtered-out
+    // on .grid-all-projects .case-card via All_Projects.js.
+    // =====================================================
+    .project-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding-block: 6px;
+
+        .filter-chip {
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+
+            &:hover {
+                color: var(--text);
+                border-color: var(--text);
+            }
+
+            &.is-active {
+                color: var(--bg);
+                background: var(--text);
+                border-color: var(--text);
+            }
+
+            &.is-active[data-filter="production"]     { color: #fff; background: #2563eb; border-color: #2563eb; }
+            &.is-active[data-filter="cinematography"] { color: #fff; background: #9333ea; border-color: #9333ea; }
+            &.is-active[data-filter="teasing"]        { color: #fff; background: #db2777; border-color: #db2777; }
+            &.is-active[data-filter="vod"]            { color: #fff; background: #0d9488; border-color: #0d9488; }
+            &.is-active[data-filter="branding"]       { color: #fff; background: #d97706; border-color: #d97706; }
+        }
+    }
+
+    .case-card.is-filtered-out {
+        display: none;
+    }
+
+    @media (max-width: 786px) {
+        .project-filters {
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-inline: 4px;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
