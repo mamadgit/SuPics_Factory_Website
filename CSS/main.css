@@ -1833,7 +1833,7 @@ html.light-mode .SVG-logo-light {
   .all-projects-carousel__caption {
     position: static;
     gap: 8px;
-    padding: 12px 2px 0;
+    padding: 12px 12px 0;
     background: none;
     border-radius: 0;
   }
@@ -1846,6 +1846,7 @@ html.light-mode .SVG-logo-light {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-align: center;
   }
   .all-projects-carousel__cta {
     font-size: 1rem;
