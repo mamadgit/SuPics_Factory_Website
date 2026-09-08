@@ -545,5 +545,60 @@ document.addEventListener("DOMContentLoaded", () => {
     return chars;
   }
 
+  // ========================================
+  //#region   HERO AUTO-SNAP
+  // ========================================
+  let pageReady = false; // Prevent snap on page load/refresh
+  // Wait 1.5 seconds after page load before enabling snap
+  setTimeout(() => {
+    pageReady = true;
+  }, 1500);
+  const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
+  const allProjectsCarousel = document.querySelector(".all-projects-carousel");
+  const gridAllProjects = document.querySelector(".grid-all-projects");
+
+  function scrollAutoSnap(trigger, target, start, end = null, offset = undefined) {
+  let snapped = false; // local flag per trigger instance
+
+  ScrollTrigger.create({
+    trigger: trigger,
+    start: start,
+    ...(end && { end: end }),
+
+    ...(end
+      ? {
+          onLeave: () => {
+            if (snapped || !pageReady) return;
+            snapped = true;
+            handleSnap(target, offset);
+          }
+        }
+      : {
+          onEnter: () => {
+            if (snapped || !pageReady) return;
+            snapped = true;
+            handleSnap(target, offset);
+          }
+        }),
+    onEnterBack: () =>{
+      snapped = false;
+    }
+  });
+}
+
+function handleSnap(target, offset = headerH) {// If offset undefined, set it to headerH
+  if (smoother) {
+    smoother.paused(true);
+    smoother.scrollTo(target, true, `top ${offset}px`);
+    gsap.delayedCall(0.2, () => {
+      smoother.paused(false);
+    });
+  } 
+}
+  if (window.innerWidth > MobileBreakPoint){
+      scrollAutoSnap(allProjectsCarousel, gridAllProjects, "top top", "bottom 85%");
+      // scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
+  }
+
   // ...existing code...
 });
