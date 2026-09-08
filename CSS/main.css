@@ -404,13 +404,14 @@ body {
   -moz-column-gap: 40px;
        column-gap: 40px;
   padding: 20px;
+  margin-top: 50px;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 350px), 1fr));
 }
 
 @media (max-width: 786px) {
   .grid-all-projects {
-    padding: 0;
+    display: none;
   }
   .grid-row {
     display: block;
@@ -1137,7 +1138,6 @@ html.light-mode .SVG-logo-light {
 .project-cards .card-tag {
   display: inline-block;
   padding: 5px 11px;
-  border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 700;
   line-height: 1;
@@ -1688,7 +1688,6 @@ html.light-mode .SVG-logo-light {
   opacity: 1;
   transform: none;
   font-size: 1.2rem;
-  border-radius: 20px;
   padding: 5px 10px;
 }
 .all-projects-carousel .card-tag--production {
