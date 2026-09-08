@@ -239,6 +239,11 @@ $menu-transition: 0.4s;
         flex-wrap: wrap;
         gap: 12px 18px; // row-gap column-gap
     }
+    //Giving the logo-header click-pluse animation to indicate clickable
+    .logo-header-image{
+        animation: click-pulse 3s ease-in-out infinite;
+        transform-origin: center;
+    }
 }
 html {
   scroll-padding-top: var(--header-height); //Defining a variable header-height upon height change
@@ -253,5 +258,20 @@ html.disable-scroll-padding{
     .header-inner{
         justify-content: center;
     }    
+}
+//Scale down logo-header to make it appear as if its being pressed down
+@keyframes click-pulse {
+    //Stay still
+    0%, 75%, 100% {
+        transform: scale(1);
+    }
+    //Press
+    82% {
+        transform: scale(0.935);
+    }
+    //Release
+    89%{
+        transform: scale(1);
+    }
 }
   

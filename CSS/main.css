@@ -639,6 +639,10 @@ body {
     flex-wrap: wrap;
     gap: 12px 18px;
   }
+  .logo-header-image {
+    animation: click-pulse 3s ease-in-out infinite;
+    transform-origin: center;
+  }
 }
 html {
   scroll-padding-top: var(--header-height);
@@ -654,6 +658,17 @@ html.disable-scroll-padding {
   }
   .header-inner {
     justify-content: center;
+  }
+}
+@keyframes click-pulse {
+  0%, 75%, 100% {
+    transform: scale(1);
+  }
+  82% {
+    transform: scale(0.935);
+  }
+  89% {
+    transform: scale(1);
   }
 }
 .contact-title {
