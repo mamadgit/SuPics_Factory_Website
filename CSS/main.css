@@ -404,7 +404,6 @@ body {
   -moz-column-gap: 40px;
        column-gap: 40px;
   padding: 20px;
-  margin-top: 50px;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 350px), 1fr));
 }
@@ -445,6 +444,7 @@ body {
   position: sticky;
   top: -1px;
   z-index: 1;
+  margin-top: 50px;
   overflow: hidden;
 }
 
@@ -666,7 +666,7 @@ html.disable-scroll-padding {
     transform: scale(1);
   }
   82% {
-    transform: scale(0.935);
+    transform: scale(0.89);
   }
   89% {
     transform: scale(1);

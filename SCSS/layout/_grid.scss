@@ -23,7 +23,6 @@
     row-gap: 40px;
     column-gap: 40px;
     padding: 20px;
-    margin-top: 50px;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 350px), 1fr));
 }

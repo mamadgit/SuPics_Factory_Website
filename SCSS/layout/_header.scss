@@ -24,6 +24,7 @@ $menu-transition: 0.4s;
     position: sticky;
     top: -1px;
     z-index: 1;
+    margin-top: 50px;
     overflow: hidden; // clip the inner wrapper when it slides up out of view
 }
 // The inner wrapper is what we animate - GSAP never touches it.
@@ -267,7 +268,7 @@ html.disable-scroll-padding{
     }
     //Press
     82% {
-        transform: scale(0.935);
+        transform: scale(0.89);
     }
     //Release
     89%{
