@@ -209,37 +209,37 @@ document.addEventListener("DOMContentLoaded", () => {
       // markers: true
     });
 
-    if(CategorySiteHeader){
-      // Category header: pinned flush beneath the main header. Function form so the
-      // offset is recalculated on every ScrollTrigger.refresh() (resize/layout shifts).
-      ScrollTrigger.create({
-        trigger: CategorySiteHeader,
-        start: () => "top top+=" + SiteHeader.offsetHeight,
-        end: "max",
-        pin: true,
-        pinSpacing: false,
-      });
+    // if(CategorySiteHeader){
+    //   // Category header: pinned flush beneath the main header. Function form so the
+    //   // offset is recalculated on every ScrollTrigger.refresh() (resize/layout shifts).
+    //   ScrollTrigger.create({
+    //     trigger: CategorySiteHeader,
+    //     start: () => "top top+=" + SiteHeader.offsetHeight,
+    //     end: "max",
+    //     pin: true,
+    //     pinSpacing: false,
+    //   });
 
-      // Slide the category header out of view while scrolling down, bring it back while
-      // scrolling up, so it doesn't permanently eat vertical space. self.direction is
-      // 1 (down) / -1 (up). Using a ScrollTrigger (not a native scroll listener) so it
-      // works with ScrollSmoother. Small buffer keeps both headers visible at the top.
-      // The slide itself lives on .category-site-header__inner (see _header.scss) -
-      // GSAP owns the transform on the outer <header> for pinning.
-      const hideThreshold = AllProjectsCarousel.offsetHeight;
-      ScrollTrigger.create({
-        start: 0,
-        end: "max",
-        onUpdate: (self) => {
-          if(self.direction === 1 && self.scroll() > hideThreshold){
-            CategorySiteHeader.classList.add('is-invisible');
-          }
-          else if(self.direction === -1){
-            CategorySiteHeader.classList.remove('is-invisible');
-          }
-        },
-      });
-    }
+    //   // Slide the category header out of view while scrolling down, bring it back while
+    //   // scrolling up, so it doesn't permanently eat vertical space. self.direction is
+    //   // 1 (down) / -1 (up). Using a ScrollTrigger (not a native scroll listener) so it
+    //   // works with ScrollSmoother. Small buffer keeps both headers visible at the top.
+    //   // The slide itself lives on .category-site-header__inner (see _header.scss) -
+    //   // GSAP owns the transform on the outer <header> for pinning.
+    //   const hideThreshold = AllProjectsCarousel.offsetHeight;
+    //   ScrollTrigger.create({
+    //     start: 0,
+    //     end: "max",
+    //     onUpdate: (self) => {
+    //       if(self.direction === 1 && self.scroll() > hideThreshold){
+    //         CategorySiteHeader.classList.add('is-invisible');
+    //       }
+    //       else if(self.direction === -1){
+    //         CategorySiteHeader.classList.remove('is-invisible');
+    //       }
+    //     },
+    //   });
+    // }
   }
   //#endregion
   
@@ -520,7 +520,9 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
   //#endregion
 
-  // Mobile menu (placeholder)
+  // ==============================================
+  //#region   MOBILE MENU PLACE HOLDER
+  // ===============================================
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
   if (toggle) {
@@ -528,7 +530,12 @@ document.addEventListener("DOMContentLoaded", () => {
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
     });
   }
-  // Function to split text content of an element into spans for each character
+  //#endregion
+
+
+  // ==========================================
+  //#region        SPLIT CHARACTERS
+  // ==========================================
   function splitTextToSpans(el) {
     const text = el.textContent;//Only take the text content (no HTML)
     el.textContent = '';//Remove text nodes making them splittable
@@ -544,6 +551,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     return chars;
   }
+  //#endregion
+  
   // ==============================================
   //#region   HEADER PINNING & HERO SCROLL BUTTON
   // ===============================================
@@ -568,6 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
   const allProjectsCarousel = document.querySelector(".all-projects-carousel");
   const gridAllProjects = document.querySelector(".grid-all-projects");
+  
 
   function scrollAutoSnap(trigger, target, start, end = null, offset = undefined) {
   let snapped = false; // local flag per trigger instance
@@ -608,7 +618,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
   } 
 }
   if (window.innerWidth > MobileBreakPoint){
-      scrollAutoSnap(allProjectsCarousel, gridAllProjects, "top top", "bottom 85%");
+      scrollAutoSnap(allProjectsCarousel, CategorySiteHeader, "top top", "bottom 85%");
       // scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
   }
 
