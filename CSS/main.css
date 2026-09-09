@@ -1865,7 +1865,7 @@ html.light-mode .SVG-logo-light {
     margin-top: 16px;
     bottom: 22vh;
   }
-  .hero-scroll-btn {
+  .all-projects-carousel .hero-scroll-btn {
     display: none;
   }
 }
