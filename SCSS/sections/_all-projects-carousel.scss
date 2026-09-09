@@ -183,12 +183,23 @@
         }
     }
 
+    // ---- page-scoped hero scroll button ----
+    // .hero-scroll-btn is shared across pages; .all-projects-carousel only exists
+    // here, so this block only affects All_Projects.html. Both this button and the
+    // JS-injected __dots are position:absolute inside this same relative box, so we
+    // just stack them by bottom offset - dots sit above, button sits under.
+    .hero-scroll-btn {
+        padding: 10px 20px;
+        bottom: 0;
+        z-index: 0;
+    }
+
     // ---- pagination dots (injected by All_Projects.js) ----
     &__dots {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: clamp(14px, 2.4vw, 26px);
+        bottom: clamp(52px, 5vw, 60px); // lifted to clear .hero-scroll-btn beneath
         // z-index: 3;
         display: flex;
         justify-content: center;
@@ -288,5 +299,8 @@
             margin-top: 16px;
             bottom: 22vh;
         }
+    }
+    .hero-scroll-btn{
+        display: none;
     }
 }

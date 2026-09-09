@@ -544,7 +544,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     return chars;
   }
+  // ==============================================
+  //#region   HEADER PINNING & HERO SCROLL BUTTON
+  // ===============================================
+  const continueBtn = document.querySelectorAll('.hero-scroll-btn'); //For the EXPLORE, CONTINUE, and any other similar buttons
 
+  continueBtn.forEach(button => {
+    button.addEventListener('click', () => {
+    const target = button.dataset.scrollTarget; //Avoid hard coding target element. Determine it in HTML repsectively for each target
+      if (smoother) {
+        smoother.scrollTo(target, true, "top top");
+      } 
+    });
+  });
   // ========================================
   //#region   HERO AUTO-SNAP
   // ========================================
