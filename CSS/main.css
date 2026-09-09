@@ -821,7 +821,7 @@ html.disable-scroll-padding {
 /* Hero Scroll Button - Glassmorphism Style */
 .hero-scroll-btn {
   position: absolute;
-  bottom: 10%;
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1773,11 +1773,16 @@ html.light-mode .SVG-logo-light {
 .all-projects-carousel__arrow--next:hover {
   transform: translate(3px, -50%);
 }
+.all-projects-carousel .hero-scroll-btn {
+  padding: 10px 20px;
+  bottom: 0;
+  z-index: 0;
+}
 .all-projects-carousel__dots {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(14px, 2.4vw, 26px);
+  bottom: clamp(52px, 5vw, 60px);
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -1859,6 +1864,9 @@ html.light-mode .SVG-logo-light {
   .all-projects-carousel__dots {
     margin-top: 16px;
     bottom: 22vh;
+  }
+  .hero-scroll-btn {
+    display: none;
   }
 }
 .about-section {
