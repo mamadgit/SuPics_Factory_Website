@@ -231,10 +231,8 @@ $menu-transition: 0.4s;
     // multiple lines so the links never overflow the screen edge. The header row
     // grows to fit the wrapped lines instead of clipping them (the parent
     // .category-site-header has overflow:hidden).
-    .category-site-header .header-inner {
-        height: auto;
-        min-height: 60px;
-        padding-block: 14px;
+    .category-site-header  {
+        display: none;
     }
     .nav.category {
         flex-wrap: wrap;
