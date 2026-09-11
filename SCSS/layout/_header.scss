@@ -231,9 +231,9 @@ $menu-transition: 0.4s;
     // multiple lines so the links never overflow the screen edge. The header row
     // grows to fit the wrapped lines instead of clipping them (the parent
     // .category-site-header has overflow:hidden).
-    .category-site-header  {
-        display: none;
-    }
+    // .category-site-header  {
+    //     display: none;
+    // }
     .nav.category {
         flex-wrap: wrap;
         gap: 12px 18px; // row-gap column-gap

@@ -12,8 +12,8 @@
     display: grid;
     column-gap: 150px;
     row-gap: 20px;
-    padding: 0 20px;
-    margin: 0 0 7vh; //Necessary to give page enough height so header can fully cover video
+    // padding: 0 20px;
+    margin: 0 50px 7vh; //Necessary to give page enough height so header can fully cover video
     justify-content: center;
     // align-items: center;
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 340px), 1fr));

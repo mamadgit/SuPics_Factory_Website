@@ -367,20 +367,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector('.all-projects-carousel');
     if (!carousel) return;
     const track = carousel.querySelector('.all-projects-carousel__track');
-    const slides = Array.from(carousel.querySelectorAll('.all-projects-carousel__slide'));
+    const allSlides = Array.from(carousel.querySelectorAll('.all-projects-carousel__slide'));
     const prevBtn = carousel.querySelector('.all-projects-carousel__arrow--prev');
     const nextBtn = carousel.querySelector('.all-projects-carousel__arrow--next');
 
-    if (!track || !slides.length) return;
+    if (!track || !allSlides.length) return;
 
     let index = 0;
 
     // --- pagination dots (built here so the count always matches the markup) ---
     let dotsWrap = null;
-    if (slides.length > 1) {
+    if (allSlides.length > 1) {
       dotsWrap = document.createElement('div');
       dotsWrap.className = 'all-projects-carousel__dots';
-      slides.forEach((_, i) => {
+      allSlides.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.type = 'button';
         dot.setAttribute('aria-label', `Go to project ${i + 1}`);
@@ -391,11 +391,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function goTo(newIndex) {
-      index = (newIndex + slides.length) % slides.length;
+      //In case of filtering, update the slides to the ones that do not contain "is-filtered-out"
+      slides = allSlides.filter(slide => !slide.classList.contains('is-filtered-out'));
+      index = (newIndex + slides.length) % slides.length; //To allow the carousel to wrap
+
       // Translate by the target slide's pixel offset from the first slide - works
       // for any slide width (100% on desktop, 84% + gap on mobile).
       const offset = slides[index].offsetLeft - slides[0].offsetLeft;
       track.style.transform = `translateX(-${offset}px)`;
+
       if (dotsWrap) {
         dotsWrap.querySelectorAll('button').forEach((dot, i) => {
           dot.setAttribute('aria-current', i === index ? 'true' : 'false');
@@ -474,8 +478,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     goTo(0);
   })();
-
-
   //#endregion
 
   // ===============================================
@@ -486,25 +488,47 @@ document.addEventListener("DOMContentLoaded", () => {
   (function () {
     const chips = Array.from(document.querySelectorAll('.project-filters .filter-chip'));
     const cards = Array.from(document.querySelectorAll('.grid-all-projects .case-card'));
-    if (!chips.length || !cards.length) return;
 
-    // Cache each card's disciplines once.
-    const cardTags = cards.map((card) =>
-      Array.from(card.querySelectorAll('.card-tag'))
+    //Including the all-projects slides in the flitering too
+    const carousel = document.querySelector('.all-projects-carousel');
+    if (!carousel) return;
+    const slides = Array.from(carousel.querySelectorAll('.all-projects-carousel__slide'));
+
+    if (!chips.length || !slides.length || !cards.length) return;
+
+    // Cache Slides and Cards card's disciplines in case the oder or the tags of Slides and Cards differ (to define one tag only works if the slides and cards have the same array order and tags).
+    const slideTags = slides.map((slide) =>
+      Array.from(slide.querySelectorAll('.card-tag'))
         .map((tag) => {
-          const mod = Array.from(tag.classList).find((c) => c.startsWith('card-tag--'));
+          const mod = Array.from(tag.classList)
+            .find((c) => c.startsWith('card-tag--'));
+
           return mod ? mod.slice('card-tag--'.length) : null;
         })
         .filter(Boolean)
     );
 
-    function applyFilter(filter) {
-      cards.forEach((card, i) => {
-        const match = filter === 'all' || cardTags[i].includes(filter);
-        card.classList.toggle('is-filtered-out', !match);
+    const cardTags = cards.map((card) =>
+      Array.from(card.querySelectorAll('.card-tag'))
+        .map((tag) => {
+          const mod = Array.from(tag.classList)
+            .find((c) => c.startsWith('card-tag--'));
+
+          return mod ? mod.slice('card-tag--'.length) : null;
+        })
+        .filter(Boolean)
+    );
+
+    function applyFilter(items, tags, filter) {
+      items.forEach((item, i) => {
+        const match = filter === 'all' || tags[i].includes(filter);
+
+        item.classList.toggle('is-filtered-out', !match);
       });
-      // Grid height changed - let pinned headers recalc their trigger points.
-      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
     }
 
     chips.forEach((chip) => {
@@ -514,7 +538,8 @@ document.addEventListener("DOMContentLoaded", () => {
           c.classList.toggle('is-active', active);
           c.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
-        applyFilter(chip.dataset.filter);
+        applyFilter(slides, slideTags, chip.dataset.filter);
+        applyFilter(cards, cardTags, chip.dataset.filter);
       });
     });
   })();

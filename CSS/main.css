@@ -392,8 +392,7 @@ body {
   -moz-column-gap: 150px;
        column-gap: 150px;
   row-gap: 20px;
-  padding: 0 20px;
-  margin: 0 0 7vh;
+  margin: 0 50px 7vh;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 340px), 1fr));
 }
@@ -630,9 +629,6 @@ body {
   .nav.fa {
     flex-direction: column-reverse;
     justify-content: center;
-  }
-  .category-site-header {
-    display: none;
   }
   .nav.category {
     flex-wrap: wrap;
@@ -1238,6 +1234,10 @@ html.light-mode .SVG-logo-light {
   color: #fff;
   background: #d97706;
   border-color: #d97706;
+}
+
+.all-projects-carousel__slide.is-filtered-out {
+  display: none;
 }
 
 .case-card.is-filtered-out {

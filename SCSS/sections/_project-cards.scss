@@ -133,7 +133,9 @@
             &.is-active[data-filter="branding"]       { color: #fff; background: #d97706; border-color: #d97706; }
         }
     }
-
+    .all-projects-carousel__slide.is-filtered-out {
+        display: none;
+    }
     .case-card.is-filtered-out {
         display: none;
     }
