@@ -77,6 +77,18 @@ $menu-transition: 0.4s;
     transform: translateY(0);
 }
 
+// On mobile there's no scroll-triggered reveal on the all-projects page -
+// keep it visible and static there, and make room for it so content isn't hidden under it.
+@media (max-width: 768px) {
+    .all-projects-page .offcanvas-header {
+        transition: none;
+        transform: translateY(0);
+    }
+    .all-projects-page #content {
+        padding-top: 100px; // matches .header-inner height
+    }
+}
+
 .header-inner {
     display: flex;
     align-items: center;

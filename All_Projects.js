@@ -651,8 +651,8 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       scrollAutoSnap(allProjectsCarousel, CategorySiteHeader, "bottom 85%");
       // scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
   }
-  //Snapping the header into view
-  if(ProjDesHeader){
+  //Snapping the header into view (desktop only - stays static on mobile)
+  if(ProjDesHeader && window.innerWidth > MobileBreakPoint){
     //header starts hidden
     ProjDesHeader.classList.remove("is-visible");
     ScrollTrigger.create({

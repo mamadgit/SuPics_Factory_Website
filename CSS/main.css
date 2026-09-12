@@ -496,6 +496,15 @@ body {
   transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+  .all-projects-page .offcanvas-header {
+    transition: none;
+    transform: translateY(0);
+  }
+  .all-projects-page #content {
+    padding-top: 100px;
+  }
+}
 .header-inner {
   display: flex;
   align-items: center;
@@ -1811,6 +1820,7 @@ html.light-mode .SVG-logo-light {
 @media (max-width: 786px) {
   .all-projects-carousel {
     height: auto;
+    margin-top: 20px;
   }
   .all-projects-carousel .card-tag {
     font-size: 1rem;
