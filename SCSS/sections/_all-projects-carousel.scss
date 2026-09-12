@@ -38,7 +38,7 @@
     &__slide {
         position: relative;
         flex: 0 0 100%;
-        height: 85vh;
+        height: 90vh;
         overflow: hidden;
         text-decoration: none;
         color: #fff;
@@ -190,7 +190,7 @@
     // just stack them by bottom offset - dots sit above, button sits under.
     .hero-scroll-btn {
         padding: 10px 20px;
-        bottom: 0;
+        bottom: 5px;
         z-index: 0;
     }
 
@@ -199,7 +199,7 @@
         position: absolute;
         left: 0;
         right: 0;
-        bottom: clamp(52px, 5vw, 60px); // lifted to clear .hero-scroll-btn beneath
+        bottom: clamp(55px, 5vw, 60px); // lifted to clear .hero-scroll-btn beneath
         // z-index: 3;
         display: flex;
         justify-content: center;

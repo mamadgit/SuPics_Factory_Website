@@ -24,7 +24,7 @@ $menu-transition: 0.4s;
     position: sticky;
     top: -1px;
     z-index: 1;
-    margin-top: 50px;
+    margin: 10px 0;
     overflow: hidden; // clip the inner wrapper when it slides up out of view
 }
 // The inner wrapper is what we animate - GSAP never touches it.
@@ -243,6 +243,7 @@ $menu-transition: 0.4s;
         animation: click-pulse 3s ease-in-out infinite;
         transform-origin: center;
     }
+
 }
 html {
   scroll-padding-top: var(--header-height); //Defining a variable header-height upon height change
