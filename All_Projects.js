@@ -651,12 +651,13 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       scrollAutoSnap(allProjectsCarousel, CategorySiteHeader, "bottom 85%");
       // scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
   }
+  //Snapping the header into view
   if(ProjDesHeader){
     //header starts hidden
     ProjDesHeader.classList.remove("is-visible");
     ScrollTrigger.create({
     trigger: allProjectsCarousel,
-    start: `bottom 15%`,
+    start: "top+=75% top",
     scroller: smoother?.wrapper() || window,
     onEnter: ()=> ProjDesHeader.classList.add("is-visible"),
     onLeaveBack: () => ProjDesHeader.classList.remove("is-visible"),
