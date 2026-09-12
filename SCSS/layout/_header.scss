@@ -88,8 +88,10 @@ $menu-transition: 0.4s;
 // height than the main nav and should center the chips rather than space them.
 .category-site-header .header-inner {
     height: auto;
+    width: auto;
     min-height: 64px;
     padding-block: 12px;
+    margin: 0 15px;
     justify-content: center;
 }
 

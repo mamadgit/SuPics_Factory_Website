@@ -142,7 +142,7 @@
 
     @media (max-width: 786px) {
         .project-filters {
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             justify-content: flex-start;
             overflow-x: auto;
             scrollbar-width: none;

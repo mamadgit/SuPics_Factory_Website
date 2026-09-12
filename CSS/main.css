@@ -505,8 +505,10 @@ body {
 
 .category-site-header .header-inner {
   height: auto;
+  width: auto;
   min-height: 64px;
   padding-block: 12px;
+  margin: 0 15px;
   justify-content: center;
 }
 
@@ -1246,7 +1248,7 @@ html.light-mode .SVG-logo-light {
 
 @media (max-width: 786px) {
   .project-filters {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: flex-start;
     overflow-x: auto;
     scrollbar-width: none;
