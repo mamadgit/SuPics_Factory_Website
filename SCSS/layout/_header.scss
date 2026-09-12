@@ -60,7 +60,7 @@ $menu-transition: 0.4s;
 .offcanvas-header {
   position: fixed;
   width: 100vw;
-  background: #0b0c10;
+  background: var(--bg);
   color: #e9eef3;
   z-index: 2;        // higher than .site-header (yours is 1)
 //   border-bottom: 1px solid var(--border);
