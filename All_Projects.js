@@ -594,12 +594,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================================
   //#region   HERO AUTO-SNAP
   // ========================================
+  const ProjDesHeader = document.querySelector(".offcanvas-header");
+
   let pageReady = false; // Prevent snap on page load/refresh
   // Wait 1.5 seconds after page load before enabling snap
   setTimeout(() => {
     pageReady = true;
   }, 1500);
-  const headerH = document.querySelector(".site-header")?.offsetHeight || 0;
+  const headerH = document.querySelector(".offcanvas-header")?.offsetHeight || 0;
   const allProjectsCarousel = document.querySelector(".all-projects-carousel");
   const gridAllProjects = document.querySelector(".grid-all-projects");
   
@@ -627,9 +629,12 @@ document.addEventListener("DOMContentLoaded", () => {
             handleSnap(target, offset);
           }
         }),
-    onEnterBack: () =>{
-      snapped = false;
-    }
+      onEnterBack: () =>{
+        snapped = false;
+      },
+      onLeaveBack: () =>{
+        snapped = false;
+      }
   });
 }
 
@@ -643,9 +648,19 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
   } 
 }
   if (window.innerWidth > MobileBreakPoint){
-      scrollAutoSnap(allProjectsCarousel, CategorySiteHeader, "top top", "bottom 85%");
+      scrollAutoSnap(allProjectsCarousel, CategorySiteHeader, "bottom 85%");
       // scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 25);
   }
-
+  if(ProjDesHeader){
+    //header starts hidden
+    ProjDesHeader.classList.remove("is-visible");
+    ScrollTrigger.create({
+    trigger: allProjectsCarousel,
+    start: `bottom 15%`,
+    scroller: smoother?.wrapper() || window,
+    onEnter: ()=> ProjDesHeader.classList.add("is-visible"),
+    onLeaveBack: () => ProjDesHeader.classList.remove("is-visible"),
+    });
+  }
   // ...existing code...
 });
