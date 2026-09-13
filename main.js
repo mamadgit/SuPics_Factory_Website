@@ -222,14 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pin the header at the top once it reaches there (replaces CSS sticky)
 
   if(window.innerWidth > 786){//Pining only for desktop version, mobile version has sticky to keep it pinned
-  ScrollTrigger.create({
-    trigger: ".site-header",
-    start: "top top",
-    end: "max",
-    pin: true,
-    pinSpacing: false,
-    // markers: true
-  });
+    ScrollTrigger.create({
+      trigger: ".site-header",
+      start: "top top",
+      end: "max",
+      pin: true,
+      pinSpacing: false,
+      // markers: true
+    });
   }
 
   const continueBtn = document.querySelectorAll('.hero-scroll-btn'); //For the EXPLORE, CONTINUE, and any other similar buttons
