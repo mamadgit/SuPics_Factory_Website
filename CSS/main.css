@@ -482,7 +482,7 @@ body {
   width: 100vw;
   background: var(--bg);
   color: #e9eef3;
-  z-index: 2;
+  z-index: 1;
   transition: background 0.6s ease, color 0.6s ease, border-bottom 0.6s ease, transform 0.35s ease;
   will-change: transform;
   transform: translateY(-100%);
@@ -497,9 +497,10 @@ body {
 }
 
 @media (max-width: 768px) {
-  .all-projects-page .offcanvas-header {
+  .offcanvas-header.all-projects-page {
     transition: none;
     transform: translateY(0);
+    position: relative;
   }
   .all-projects-page #content {
     padding-top: 100px;
@@ -1820,7 +1821,6 @@ html.light-mode .SVG-logo-light {
 @media (max-width: 786px) {
   .all-projects-carousel {
     height: auto;
-    margin-top: 20px;
   }
   .all-projects-carousel .card-tag {
     font-size: 1rem;
