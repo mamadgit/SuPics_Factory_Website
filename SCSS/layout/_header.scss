@@ -80,11 +80,35 @@ $menu-transition: 0.4s;
 // On mobile there's no scroll-triggered reveal on the all-projects page -
 // keep it visible and static there, and make room for it so content isn't hidden under it.
 @media (max-width: 768px) {
-    .offcanvas-header.all-projects-page {
-        transition: none;
-        transform: translateY(0);
-        position: relative;
-    }
+.offcanvas-header {
+    position: sticky;
+    top: -1px;
+    width: 100%;
+    z-index: 2;
+    overflow: visible;
+}
+
+.offcanvas-header__inner {
+    background: var(--bg);
+    color: #e9eef3;
+
+    transition:
+        background variables.$transition-slow,
+        color variables.$transition-slow,
+        border-bottom variables.$transition-slow,
+        transform 0.35s ease;
+
+    transform: translateY(-100%);
+}
+
+.offcanvas-header.is-visible .offcanvas-header__inner {
+    transform: translateY(0);
+}
+
+.offcanvas-header.white .offcanvas-header__inner {
+    background: #e9e9e9;
+    color: #101418;
+}
     .all-projects-page #content {
         padding-top: 100px; // matches .header-inner height
     }

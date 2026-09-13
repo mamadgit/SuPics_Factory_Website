@@ -678,13 +678,6 @@ const siteHeader = document.querySelector(".offcanvas-header");
         headerStart = siteHeader.offsetTop || 100;
       };
 
-      document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
-        anchor.addEventListener('click', () => {
-          ignoreNextUpdate = true; // <-- ignore the next scroll update after any hash click
-          siteHeader.classList.add('is-invisible');
-          lastScroll = window.scrollY; // <-- reset reference point, to avoid large delta
-        });
-      });
       // Header visibility upon direction of scroll. Use native scroll on mobile so this
       // keeps working after pinned/animated sections and horizontal carousel gestures.
       const updateHeaderVisibility = () => {
