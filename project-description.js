@@ -210,7 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
   //#region   HERO AUTO-SNAP
   // ========================================
   const ProjDesHeader = document.querySelector(".offcanvas-header");
-
+  let dynamicHeaderActive = false;
+  let ignoreNextHeaderUpdate = false;
+  
   let pageReady = false;
   setTimeout(() =>{
     pageReady = true;
@@ -286,8 +288,18 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger: ".project-fullscreen",
     start: "bottom 35%",
     scroller: smoother?.wrapper() || window,
-    onEnter: ()=> ProjDesHeader.classList.add("is-visible"),
-    onLeaveBack: () => ProjDesHeader.classList.remove("is-visible"),
+    onEnter: ()=> {
+      console.log("HEADER TRIGGER: ENTER");
+      dynamicHeaderActive = false; 
+      ProjDesHeader.classList.add("is-visible")
+    },
+    onLeave: () =>{
+      dynamicHeaderActive = true; //Header reaches point where dynamic header should take over, we enable it.
+    },
+    onLeaveBack: () => {
+      dynamicHeaderActive = false;
+      ProjDesHeader.classList.remove("is-visible")
+    }
     });
   }
   //#endregion
@@ -295,80 +307,57 @@ document.addEventListener("DOMContentLoaded", () => {
 //#region  MOBILE HEADER DYNAMIC APPEARENCE
 //==============================================
 const siteHeader = document.querySelector(".offcanvas-header");
-  const mm = gsap.matchMedia();
-  mm.add("(max-width: 786px)", () => {
-    if (siteHeader) {
-      let ignoreNextUpdate = false; // <-- flag
-      const threshold = 10;
-      // let headerStart = siteHeader.offsetTop || 0;
+const mm = gsap.matchMedia();
 
-      const refreshHeaderStart = () => {
-        headerStart = siteHeader.offsetTop || 100;
-      };
+mm.add("(max-width: 786px)", () => {
 
-      document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
-        anchor.addEventListener('click', () => {
-          ignoreNextUpdate = true; // <-- ignore the next scroll update after any hash click
-          siteHeader.classList.add('is-invisible');
-          lastScroll = window.scrollY; // <-- reset reference point, to avoid large delta
-        });
-      });
-      // Header visibility upon direction of scroll. Use native scroll on mobile so this
-      // keeps working after pinned/animated sections and horizontal carousel gestures.
-      const updateHeaderVisibility = () => {
-          const current = window.scrollY || window.pageYOffset || 0;
-          const headerPinned = current >= headerStart - 1;
-          // console.log("current", current);
-          // console.log("headerStart", headerStart);
+  if (!siteHeader) return;
 
-          if(!headerPinned) {
-            siteHeader.classList.remove("is-visible"); //Make it visible
-            lastScroll = current;
-            return;
-          }
-          //Catch both the local link click AND the cross-page initial load scroll
-          if (ignoreNextUpdate || window.isInitialHashScrolling) {
-            ignoreNextUpdate = false;
-            window.isInitialHashScrolling = false; // reset the global flag
-            siteHeader.classList.add('is-visible'); // Hide it during the fast slide down
-            lastScroll = current; // update baseline to current scroll position
-            return;
-          }
-          
-          const delta = current - lastScroll;          
-          const JmpThrsh = window.innerHeight * 0.5;
+  let ignoreNextUpdate = false;
+  let lastScroll = window.scrollY || 0;
 
-          // <-- skip the update right after a hash click
-          if(ignoreNextUpdate){
-            ignoreNextUpdate = false;
-            lastScroll = current;
-            return;
-          }
+  const threshold = 10;
 
-          if(Math.abs(delta) < threshold){
-            return;
-          }
+  const updateHeaderVisibility = () => {
 
-          if (delta >= 0){
-            siteHeader.classList.add('is-visible'); // Scrolling down, hide it
-          } else {
-            // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
-               siteHeader.classList.remove('is-visible');//Make it visible
-            }
-          lastScroll = current;
-      };
+    // IMPORTANT:
+    // ScrollTrigger owns the header until this becomes true.
+    if (!dynamicHeaderActive) return;
 
-      refreshHeaderStart();
-      updateHeaderVisibility();
-      window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
-      // ScrollTrigger.addEventListener('refreshInit', refreshHeaderStart);
+    const current =
+      window.scrollY ||
+      window.pageYOffset ||
+      0;
 
-      return () => {
-        window.removeEventListener('scroll', updateHeaderVisibility);
-        // ScrollTrigger.removeEventListener('refreshInit', refreshHeaderStart);
-      };
+    const delta = current - lastScroll;
+
+    if (Math.abs(delta) < threshold) {
+      return;
     }
-  });
+
+    if (delta >= 0) {
+
+      // Scrolling down
+      siteHeader.classList.remove("is-visible");
+
+    } else {
+
+      // Scrolling up
+      siteHeader.classList.add("is-visible");
+    }
+
+    lastScroll = current;
+  };
+
+  updateHeaderVisibility();
+
+  window.addEventListener("scroll", updateHeaderVisibility, { passive: true }
+  );
+
+  return () => {
+    window.removeEventListener("scroll", updateHeaderVisibility);
+  };
+});
   //#endregion
 
   // ===============================================
