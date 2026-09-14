@@ -400,7 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
         anchor.addEventListener('click', () => {
           ignoreNextUpdate = true; // <-- ignore the next scroll update after any hash click
-          siteHeader.classList.add('is-invisible');
+          siteHeader.classList.add('is-invisible'); //Header be visible after nav hash
           lastScroll = window.scrollY; // <-- reset reference point, to avoid large delta
         });
       });

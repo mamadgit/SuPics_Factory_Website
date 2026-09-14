@@ -504,6 +504,9 @@ body {
     z-index: 2;
     overflow: visible;
   }
+  .offcanvas-header.project-desp {
+    position: fixed;
+  }
   .offcanvas-header__inner {
     background: var(--bg);
     color: #e9eef3;

@@ -86,6 +86,10 @@ $menu-transition: 0.4s;
     width: 100%;
     z-index: 2;
     overflow: visible;
+
+    &.project-desp{
+        position: fixed;
+    }
 }
 
 .offcanvas-header__inner {

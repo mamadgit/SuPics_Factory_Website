@@ -303,61 +303,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   //#endregion
-//============================================== 
-//#region  MOBILE HEADER DYNAMIC APPEARENCE
-//==============================================
-const siteHeader = document.querySelector(".offcanvas-header");
-const mm = gsap.matchMedia();
 
-mm.add("(max-width: 786px)", () => {
+  //============================================== 
+  //#region  MOBILE HEADER DYNAMIC APPEARENCE
+  //==============================================
+    const siteHeader = document.querySelector(".offcanvas-header");
+    const mm = gsap.matchMedia();
 
-  if (!siteHeader) return;
+    mm.add("(max-width: 786px)", () => {
 
-  let ignoreNextUpdate = false;
-  let lastScroll = window.scrollY || 0;
+    if (!siteHeader) return;
+    let lastScroll = window.scrollY || 0;
+    const threshold = 10;
+    const updateHeaderVisibility = () => {
 
-  const threshold = 10;
+      // IMPORTANT: ScrollTrigger owns the header until this becomes true.
+      if (!dynamicHeaderActive) return;
 
-  const updateHeaderVisibility = () => {
+      const current = window.scrollY || window.pageYOffset || 0;
+      const delta = current - lastScroll;
+      if (Math.abs(delta) < threshold) {
+        return;
+      }
+      if (delta >= 0) {
+        // Scrolling down
+        siteHeader.classList.remove("is-visible");
+      } else {
+        // Scrolling up
+        siteHeader.classList.add("is-visible");
+      }
+      lastScroll = current;
+    };
 
-    // IMPORTANT:
-    // ScrollTrigger owns the header until this becomes true.
-    if (!dynamicHeaderActive) return;
-
-    const current =
-      window.scrollY ||
-      window.pageYOffset ||
-      0;
-
-    const delta = current - lastScroll;
-
-    if (Math.abs(delta) < threshold) {
-      return;
-    }
-
-    if (delta >= 0) {
-
-      // Scrolling down
-      siteHeader.classList.remove("is-visible");
-
-    } else {
-
-      // Scrolling up
-      siteHeader.classList.add("is-visible");
-    }
-
-    lastScroll = current;
-  };
-
-  updateHeaderVisibility();
-
-  window.addEventListener("scroll", updateHeaderVisibility, { passive: true }
-  );
-
-  return () => {
-    window.removeEventListener("scroll", updateHeaderVisibility);
-  };
-});
+      updateHeaderVisibility();
+      window.addEventListener("scroll", updateHeaderVisibility, { passive: true }
+      );
+      return () => {
+        window.removeEventListener("scroll", updateHeaderVisibility);
+      };
+    });
   //#endregion
 
   // ===============================================
