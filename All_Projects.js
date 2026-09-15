@@ -374,25 +374,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!track || !allSlides.length) return;
 
     let index = 0;
+    let slides = allSlides;
 
-    // --- pagination dots (built here so the count always matches the markup) ---
+    // --- pagination dots (rebuilt whenever the filtered slide set changes, so the
+    // dot count always matches the currently visible slides, not the full markup) ---
     let dotsWrap = null;
     if (allSlides.length > 1) {
       dotsWrap = document.createElement('div');
       dotsWrap.className = 'all-projects-carousel__dots';
-      allSlides.forEach((_, i) => {
+      carousel.appendChild(dotsWrap);
+    }
+
+    function buildDots() {
+      if (!dotsWrap) return;
+      dotsWrap.innerHTML = '';
+      slides.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.type = 'button';
         dot.setAttribute('aria-label', `Go to project ${i + 1}`);
         dot.addEventListener('click', () => goTo(i));
         dotsWrap.appendChild(dot);
       });
-      carousel.appendChild(dotsWrap);
     }
+    buildDots();
 
     function goTo(newIndex) {
       //In case of filtering, update the slides to the ones that do not contain "is-filtered-out"
       slides = allSlides.filter(slide => !slide.classList.contains('is-filtered-out'));
+      if (!slides.length) return;
       index = (newIndex + slides.length) % slides.length; //To allow the carousel to wrap
 
       // Translate by the target slide's pixel offset from the first slide - works
@@ -406,6 +415,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // The filter-chips IIFE toggles 'is-filtered-out' on slides and notifies us here,
+    // since it lives in a separate closure with no other way to reach this carousel's state.
+    carousel.addEventListener('projects-filtered', () => {
+      slides = allSlides.filter(slide => !slide.classList.contains('is-filtered-out'));
+      buildDots();
+      goTo(0);
+    });
 
     if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
@@ -540,6 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         applyFilter(slides, slideTags, chip.dataset.filter);
         applyFilter(cards, cardTags, chip.dataset.filter);
+        carousel.dispatchEvent(new CustomEvent('projects-filtered'));
       });
     });
   })();
@@ -663,74 +681,76 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     onLeaveBack: () => ProjDesHeader.classList.remove("is-visible"),
     });
   }
+//#endregion
+
   //============================================== 
-//#region  MOBILE HEADER DYNAMIC APPEARENCE
-//==============================================
-const siteHeader = document.querySelector(".offcanvas-header");
-  const mm = gsap.matchMedia();
-  mm.add("(max-width: 786px)", () => {
-    if (siteHeader) {
-      let ignoreNextUpdate = false; // <-- flag
-      const threshold = 10;
-      // let headerStart = siteHeader.offsetTop || 0;
+  //#region  MOBILE HEADER DYNAMIC APPEARENCE
+  //==============================================
+  const siteHeader = document.querySelector(".offcanvas-header");
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 786px)", () => {
+      if (siteHeader) {
+        let ignoreNextUpdate = false; // <-- flag
+        const threshold = 10;
+        // let headerStart = siteHeader.offsetTop || 0;
 
-      const refreshHeaderStart = () => {
-        headerStart = siteHeader.offsetTop || 100;
-      };
+        const refreshHeaderStart = () => {
+          headerStart = siteHeader.offsetTop || 100;
+        };
 
-      // Header visibility upon direction of scroll. Use native scroll on mobile so this
-      // keeps working after pinned/animated sections and horizontal carousel gestures.
-      const updateHeaderVisibility = () => {
-          const current = window.scrollY || window.pageYOffset || 0;
-          const headerPinned = current >= headerStart - 1;
+        // Header visibility upon direction of scroll. Use native scroll on mobile so this
+        // keeps working after pinned/animated sections and horizontal carousel gestures.
+        const updateHeaderVisibility = () => {
+            const current = window.scrollY || window.pageYOffset || 0;
+            const headerPinned = current >= headerStart - 1;
 
-          if(!headerPinned) {
-            siteHeader.classList.add("is-visible"); //Make it visible
-            lastScroll = current;
-            return;
-          }
-          //Catch both the local link click AND the cross-page initial load scroll
-          if (ignoreNextUpdate || window.isInitialHashScrolling) {
-            ignoreNextUpdate = false;
-            window.isInitialHashScrolling = false; // reset the global flag
-            siteHeader.classList.remove('is-visible'); // Hide it during the fast slide down
-            lastScroll = current; // update baseline to current scroll position
-            return;
-          }
-          
-          const delta = current - lastScroll;          
-          const JmpThrsh = window.innerHeight * 0.5;
-
-          // <-- skip the update right after a hash click
-          if(ignoreNextUpdate){
-            ignoreNextUpdate = false;
-            lastScroll = current;
-            return;
-          }
-
-          if(Math.abs(delta) < threshold){
-            return;
-          }
-
-          if (delta >= 0){
-            siteHeader.classList.remove('is-visible'); // Scrolling down, hide it
-          } else {
-            // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
-               siteHeader.classList.add('is-visible');//Make it visible
+            if(!headerPinned) {
+              siteHeader.classList.add("is-visible"); //Make it visible
+              lastScroll = current;
+              return;
             }
-          lastScroll = current;
-      };
+            //Catch both the local link click AND the cross-page initial load scroll
+            if (ignoreNextUpdate || window.isInitialHashScrolling) {
+              ignoreNextUpdate = false;
+              window.isInitialHashScrolling = false; // reset the global flag
+              siteHeader.classList.remove('is-visible'); // Hide it during the fast slide down
+              lastScroll = current; // update baseline to current scroll position
+              return;
+            }
+            
+            const delta = current - lastScroll;          
+            const JmpThrsh = window.innerHeight * 0.5;
 
-      refreshHeaderStart();
-      updateHeaderVisibility();
-      window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
+            // <-- skip the update right after a hash click
+            if(ignoreNextUpdate){
+              ignoreNextUpdate = false;
+              lastScroll = current;
+              return;
+            }
 
-      return () => {
-        window.removeEventListener('scroll', updateHeaderVisibility);
-      };
-    }
-  });
-  //#endregion
+            if(Math.abs(delta) < threshold){
+              return;
+            }
+
+            if (delta >= 0){
+              siteHeader.classList.remove('is-visible'); // Scrolling down, hide it
+            } else {
+              // Only show the header on normal scroll ups IF the accordion (button closing) isn't animating
+                siteHeader.classList.add('is-visible');//Make it visible
+              }
+            lastScroll = current;
+        };
+
+        refreshHeaderStart();
+        updateHeaderVisibility();
+        window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
+
+        return () => {
+          window.removeEventListener('scroll', updateHeaderVisibility);
+        };
+      }
+    });
+    //#endregion
 
   // ...existing code...
 });
