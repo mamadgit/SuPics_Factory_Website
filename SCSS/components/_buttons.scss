@@ -1,9 +1,8 @@
 @use '../abstracts/mixins';
 @use '../abstracts/variables';
-
 .btn {
     // @include mixins.flex-center();
-    padding: 10px 16px;
+    padding: 7px 12px;
     border-radius: 10px;
     border: 1px solid var(--border);
     transition: transform variables.$transition-base, box-shadow variables.$transition-base;
@@ -11,14 +10,17 @@
     -webkit-tap-highlight-color: transparent;
     background: var(--bg);
     cursor: pointer;
-
+    font-size: large;
     &:hover {
-        transform: translateY(-1px);
+        transform: translateY(-3px);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     &.solid {
         @include mixins.btn-variant(solid);
+    }
+    &.muted{
+        @include mixins.btn-variant(muted);
     }
 
     &.ghost {// This is for buttons we want to change with theme color change, hence the name ghost
@@ -28,7 +30,7 @@
 
     &.xl {
         padding: 14px 20px;
-        font-size: 1.05rem;
+        font-size: 1.25rem;
     }
 
     &.sm {
@@ -37,7 +39,59 @@
         border-radius: 8px;
     }
 }
+$transition-slow: 0.4s ease-out;
 
+.collapsbile-btn{
+    @include mixins.flex-row(15px);
+    width: 100%;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+
+    &.active{
+        .icon{
+            transform: rotate(45deg);
+        }
+    }
+    .icon {
+        font-weight: bold;
+        font-size: larger;
+        @include mixins.transition(transform);
+  }
+}
+.collapsible-content {
+  overflow: hidden;
+  display: block;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100px);
+  transition: transform $transition-slow, opacity $transition-slow;
+
+  &.active{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+}
+
+@media(max-width: 768px){
+    .collapsbile-btn{
+        display: none;
+    }
+    .btn{
+        display: none;
+    }
+
+    // Read More toggle stays visible, stacked under the heading (see .flex-row in _flexbox.scss)
+    .flex-row{
+        .btn.muted,
+        .collapsbile-btn{
+            display: flex;
+        }
+    }
+}
 /* Hero Scroll Button - Glassmorphism Style */
 .hero-scroll-btn {
     position: absolute;

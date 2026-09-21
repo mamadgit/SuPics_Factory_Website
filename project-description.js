@@ -483,6 +483,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   //#endregion
 
+  // ======================================================
+  //#region   COLLAPSIBLE "READ MORE" BUTTON ICON TOGGLE
+  // ======================================================
+const btn = document.querySelector(".collapsbile-btn");
+const content = document.querySelector(".collapsible-content");
 
+if (btn && content) {
+  btn.addEventListener('click', () => {
+    const isActive = btn.classList.toggle('active');
+    content.classList.toggle('active', isActive);
+  });
+}
+  //#endregion
 });
 
