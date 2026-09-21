@@ -537,12 +537,61 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     function applyFilter(items, tags, filter) {
+
       items.forEach((item, i) => {
         const match = filter === 'all' || tags[i].includes(filter);
 
         item.classList.toggle('is-filtered-out', !match);
       });
 
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+    }
+
+    function applyGridFilter(items, tags, filter) {
+      //First we record where every card currently sits
+      const firstPositions = items.map(item =>{
+
+        const rect = item.getBoundingClientRect();
+
+        return{ //The positions are identified by the cards left and top coordinates
+          x: rect.left,
+          y: rect.top
+        };
+      })
+      //Change the layout
+      items.forEach((item, i) => {
+        const match = filter === 'all' || tags[i].includes(filter);
+
+        item.classList.toggle('is-filtered-out', !match);
+      });
+      //Force the browser to calculate the new layout
+      items.forEach(item => item.offsetHeight);
+      //Animate from old position to new position
+      items.forEach((item, i) => {
+
+        if (item.classList.contains('is-filtered-out')) return;
+
+        const rect = item.getBoundingClientRect();
+
+        const dx = firstPositions[i].x - rect.left;
+        const dy = firstPositions[i].y - rect.top;
+
+        gsap.fromTo(
+          item,
+          {
+            x: dx,
+            y: dy
+          },
+          {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out'
+          }
+        );
+      });
       if (typeof ScrollTrigger !== 'undefined') {
         ScrollTrigger.refresh();
       }
@@ -556,7 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
           c.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
         applyFilter(slides, slideTags, chip.dataset.filter);
-        applyFilter(cards, cardTags, chip.dataset.filter);
+        applyGridFilter(cards, cardTags, chip.dataset.filter);
         carousel.dispatchEvent(new CustomEvent('projects-filtered'));
       });
     });
