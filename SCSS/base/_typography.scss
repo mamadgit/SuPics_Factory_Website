@@ -82,7 +82,7 @@ body {
 }
 
 .animated-text {
-  text-align: center;
+  // text-align: center;
   flex-direction: column;
   align-items: center; // centers each line
   gap: 0; // adjust if you want spacing between lines
@@ -142,26 +142,14 @@ body {
     }
   }
 
-  @media (max-width: 768px) {
-    .heading {
-      /* Responsive sizing that fills screen on mobile */
-      font-size: clamp(2.5rem, 25vw, 6rem);
-      font-weight: 900;
-
-      &--word-feelings {
-        letter-spacing: 0.05em;
-        margin-left: 0;
-      }
-    }
-  }
-
   h2 {
     font-size: clamp(40px, 5.4vw, 55px);
     font-weight: 700;
     line-height: 1.1;
-    margin: 10px 10px;
+    // margin: 10px 10px;
     color: var(--text);
     white-space: nowrap;
+    margin: 0;
   }
 
   p {
@@ -183,6 +171,19 @@ body {
     /* keeps bullets readable */
     text-align: left;
     /* prevents justification */
+  }
+
+    @media (max-width: 768px) {
+    .heading {
+      /* Responsive sizing that fills screen on mobile */
+      font-size: clamp(2.5rem, 25vw, 6rem);
+      font-weight: 900;
+
+      &--word-feelings {
+        letter-spacing: 0.05em;
+        margin-left: 0;
+      }
+    }
   }
 
 }

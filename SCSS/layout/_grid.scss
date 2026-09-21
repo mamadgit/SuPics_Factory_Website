@@ -8,21 +8,14 @@
     // padding-left: var(--grid-gutter, 25px);
     // padding-right: var(--grid-gutter, 25px);
 }
-.grid-row-second{
-    display: grid;
-    column-gap: 150px;
-    row-gap: 20px;
-    // padding: 0 20px;
-    margin: 0 50px 7vh; //Necessary to give page enough height so header can fully cover video
-    justify-content: center;
-    // align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 340px), 1fr));
-}
+$transition-slow: 0.4s ease-out;
+
 .grid-all-projects{
     display: grid;
     row-gap: 40px;
     column-gap: 40px;
     padding: 20px;
+    margin-bottom: 10vh;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(var(--grid-column-width, 350px), 1fr));
 }
@@ -34,6 +27,127 @@
         display: block;
     }
 }
+// Asymmetrical media grid: 12 columns, rows of different splits.
+// Rows: 12 / 12 / 6+6 / 8+4 (dir="rtl" pages mirror automatically).
+.grid-asymmetric {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-gap, 12px);
+    margin-top: 40px;
+
+    .grid-item {
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        min-width: 0;
+        aspect-ratio: var(--ratio, 16 / 9);
+        grid-column: span var(--span, 12);
+
+        img,
+        video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
+    .grid-item--wide {
+        --span: 12;
+        --ratio: 2.4 / 1;
+    }
+
+    .grid-item--half {
+        --span: 6;
+        --ratio: 4 / 3;
+    }
+
+    .grid-item--large {
+        --span: 8;
+        --ratio: 16 / 10;
+    }
+
+    .grid-item--small {
+        --span: 4;
+        --ratio: 4 / 5;
+    }
+}
+
+// Read-more reveal row: image grid + description panel side by side,
+// panel top-aligns with the grid's top and slides in from the right.
+.project-media-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 40px;
+    padding-inline: 40px;
+
+    .grid-asymmetric {
+        flex: 1 1 auto;
+        min-width: 0;
+        margin-top: 0;
+    }
+
+    // Kill the paragraph's default top margin so the text's top edge
+    // sits flush with the top of the first image.
+    .collapsible-content .animated-text p {
+        margin: 0;
+        max-width: none;
+    }
+
+    .collapsible-content {
+        flex: 0 0 0;
+        width: 0;
+        transition: flex-basis 0.4s ease-out, width 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out;
+
+        // Inner content keeps its resting width so the outer box's width
+        // transition reads as the panel sliding into view, not text reflow.
+        .project-cards {
+            width: 340px;
+        }
+
+        &.active {
+            flex: 0 0 45vw;
+            width: 45vw;
+        }
+    }
+}
+
+@media (max-width: 786px) {
+    .grid-asymmetric {
+        grid-template-columns: 1fr;
+
+        .grid-item {
+            --span: 1;
+            --ratio: 4 / 3;
+        }
+    }
+
+    .project-media-row {
+        flex-direction: column;
+        padding-inline: 16px;
+
+        .collapsible-content {
+            width: 100%;
+            flex-basis: auto;
+            max-height: 0;
+            transform: translateY(20px);
+
+            .project-cards {
+                width: 100%;
+            }
+
+            &.active {
+                max-height: 2000px;
+                width: 100%;
+                transform: translateY(0);
+            }
+        }
+    }
+}
+
 .grid-gutter {
     padding-left: var(--grid-gutter, 16px);
     padding-right: var(--grid-gutter, 16px);

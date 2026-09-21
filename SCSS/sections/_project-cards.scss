@@ -18,6 +18,7 @@
 
         .case-card {
             position: relative;
+            opacity: 1;
         }
 
         .card-image {
@@ -40,6 +41,13 @@
             align-items: flex-start;
             gap: 6px;
             pointer-events: none;
+
+            &.project-description{
+                position: sticky;
+                flex-direction: row;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
         }
 
         .card-tag {
@@ -62,6 +70,13 @@
             opacity: 0;
             transform: translateX(-14px);
             transition: opacity 0.35s ease, transform 0.35s ease;
+
+            &.project-description{
+                will-change: auto;
+                transform: none;
+                opacity: 1;
+                font-size: 0.8rem;
+            }
         }
 
         // second tag trails the first slightly
@@ -136,8 +151,14 @@
     .all-projects-carousel__slide.is-filtered-out {
         display: none;
     }
+    $transition-slow: 0.4s ease-out;
+
     .case-card.is-filtered-out {
         display: none;
+        opacity: 0;
+          transition: transform $transition-slow, opacity $transition-slow;
+
+
     }
 
     @media (max-width: 786px) {

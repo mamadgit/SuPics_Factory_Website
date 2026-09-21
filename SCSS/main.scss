@@ -15,13 +15,14 @@
 // 3. Layout (Structure, Header, Footer)
 @use 'layout/container';
 @use 'layout/grid';
-@use 'layout/header';
+@use 'layout/flexbox';
 @use 'layout/footer';
 
 // 4. Components (Reusable UI elements)
 @use 'components/buttons';
 @use 'components/cards';
 @use 'components/nav'; 
+@use 'components/header';
 @use 'components/tags';
 @use 'components/hero';
 @use 'components/project-video-cover'; // New component for video covers
@@ -32,7 +33,6 @@
 @use 'sections/logo-carousel';
 @use 'sections/features';
 // @use 'sections/rotator';
-@use 'sections/ai-demo';
 @use 'sections/gallery';
 @use 'sections/project-cards';
 @use 'sections/project-description';

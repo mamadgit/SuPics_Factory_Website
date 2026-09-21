@@ -10,7 +10,9 @@
         --#{$key}: #{$val};
     }
 }
-
+@mixin margin ($top, $right, $bottom, $left) {
+    margin: $top $right $bottom $left;
+}
 
 // Center helpers
 @mixin flex-center($gap: 0) {
@@ -18,6 +20,22 @@
     align-items: center;
     justify-content: center;
     gap: $gap;
+}
+@mixin flex-row($gap: 0){
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: $gap;
+    
+    &.fa{
+        flex-direction: row-reverse;
+    }
+}
+@mixin flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 $breakpoint-map: variables.$breakpoints;
@@ -67,4 +85,7 @@ $breakpoint-map: variables.$breakpoints;
 @mixin gsap-reveal-prep {
     display: inline-block;
     will-change: transform, opacity;
+}
+@mixin transition($property, $animation: variables.$transition-base){
+    transition: $property $animation;
 }

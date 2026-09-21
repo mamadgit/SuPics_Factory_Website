@@ -1,1 +1,105 @@
-/* navigation styles are in layout/_header.scss and reused here if needed */
+@use '../abstracts/mixins';
+@use '../abstracts/variables';
+
+$menu-blur: 10px;
+$menu-transition: 0.4s;
+
+.nav {
+    display: flex;
+    gap: 2vw;
+    flex: 1; // Take up available space
+    justify-content: end; // Center the nav items
+    font-size: larger;
+}
+.nav.fa{
+    justify-content: flex-start;
+}
+.nav.category{
+    justify-content: center;
+}
+
+.nav a {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.nav a:hover {
+    color: var(--text);
+}
+
+@include mixins.respond(sm) {
+    .menu-toggle {
+        display: block;
+    }
+    // .category variant stays a normal inline nav row on mobile (same as desktop);
+    // only the main site nav collapses into the fullscreen hamburger menu.
+    .nav{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 101dvh;
+        overflow-y: auto;
+        background-color: rgba(11, 12, 16, 0.7);
+        -webkit-backdrop-filter: blur($menu-blur);
+        backdrop-filter: blur($menu-blur);
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px)scale(0.95);
+        transition: all $menu-transition cubic-bezier(0.25, 0.8, 0.25, 1);
+        
+        &.active{
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0)scale(1);
+        }
+        a {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            transition: color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            // Hover state (.nav a:hover)
+            &:hover {
+                color: #007BFF; // Change to your project's accent color
+            }
+        }
+    }
+    // fa.html orders the nav for desktop RTL reading (most important item last in
+    // the DOM). A plain column would stack that order top-to-bottom, putting the
+    // EN/theme controls on top and خانه at the bottom - so flip it back here.
+    // Excludes .category (the Persian category nav is `nav category fa`), which
+    // must keep its desktop inline-row layout on mobile.
+    .nav.fa {
+        flex-direction: column-reverse;
+        justify-content: center;
+    }
+
+    // Category nav keeps its desktop text size, but is allowed to wrap onto
+    // multiple lines so the links never overflow the screen edge. The header row
+    // grows to fit the wrapped lines instead of clipping them (the parent
+    // .category-site-header has overflow:hidden).
+    // .category-site-header  {
+    //     display: none;
+    // }
+    .nav.category {
+        flex-wrap: wrap;
+        gap: 12px 18px; // row-gap column-gap
+    }
+    //Giving the logo-header click-pluse animation to indicate clickable
+    .logo-header-image{
+        animation: click-pulse 3s ease-in-out infinite;
+        transform-origin: center;
+    }
+
+}
+
