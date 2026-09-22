@@ -204,6 +204,15 @@ body {
 .animated-text .heading--word-feelings {
   letter-spacing: 0.05em;
 }
+.animated-text .flex-row {
+  margin: 50px 0;
+  gap: 20vw;
+  justify-content: initial;
+}
+.animated-text .flex-column {
+  gap: 2rem;
+  align-items: flex-start;
+}
 .animated-text h2 {
   font-size: clamp(40px, 5.4vw, 55px);
   font-weight: 700;
@@ -460,7 +469,7 @@ body {
 .project-media-row {
   display: flex;
   align-items: flex-start;
-  gap: 24px;
+  gap: 30px;
   margin-top: 40px;
   padding-inline: 40px;
 }

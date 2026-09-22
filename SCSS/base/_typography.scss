@@ -141,7 +141,15 @@ body {
       // margin-left: 2rem;
     }
   }
-
+  .flex-row{
+    margin: 50px 0;
+    gap: 20vw;
+    justify-content: initial;
+  }
+  .flex-column{
+    gap: 2rem;
+    align-items: flex-start;
+  }
   h2 {
     font-size: clamp(40px, 5.4vw, 55px);
     font-weight: 700;
