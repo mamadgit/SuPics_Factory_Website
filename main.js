@@ -921,6 +921,16 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     let targetX = 0;
     let rafId = null;
 
+    // One-shot: hides the "Scroll" hint in the carousel's left gutter as soon
+    // as the user actually drives the carousel once.
+    const horizontalCarouselSection = horizontalSection.closest('.horizontal-carousel');
+    let hasInteractedWithCarousel = false;
+    function markCarouselInteracted() {
+      if (hasInteractedWithCarousel) return;
+      hasInteractedWithCarousel = true;
+      horizontalCarouselSection?.classList.add('is-interacted');
+    }
+
     //Function for determining the extra scroll width for screen
     const getMaxScroll = () => {
       const trackWidth = horizontalTrack.scrollWidth;
@@ -983,6 +993,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       if (atStart || atEnd) return;
       // Consume the scroll event — drive the carousel instead
       e.preventDefault();
+      markCarouselInteracted();
       targetX += e.deltaY;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
       startAnimate();
@@ -1028,6 +1039,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 
       // Horizontal swipe — drive the carousel
       e.preventDefault();
+      markCarouselInteracted();
       targetX += dx;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
       startAnimate();
@@ -1368,5 +1380,15 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     }, {passive: true});
   }
 //#endregion
+
+  // ======================================================
+  //#region   COLLAPSIBLE "READ MORE" BUTTON ICON TOGGLE
+  // ======================================================
+  document.querySelectorAll('.collapsbile-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+    });
+  });
+  //#endregion
 
 });

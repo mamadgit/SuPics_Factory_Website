@@ -4,30 +4,100 @@
     padding: 0;
     // background: var(--surface);
     position: relative;
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     width: 100%;
+    // Reserves room for the pinned .site-header (100px tall - see _header.scss),
+    // which sits on top of whatever is at the top of the viewport, whether the
+    // user scrolls here or jumps straight in via #Projects. Because the header
+    // row and carousel below are laid out in normal flow (not stacked with
+    // absolute positioning), they can never overlap each other, and this
+    // padding is the only thing that has to clear the fixed header height.
+    padding-top: clamp(120px, 14vh, 160px);
+    padding-bottom: clamp(24px, 5vh, 56px);
+
+    // Header row above the carousel: title on the start edge, "All Projects"
+    // link on the end edge, both on the same line. In normal flow (not
+    // absolutely positioned over the carousel), so it can't ever be covered by
+    // the track, and min-height:100vh above lets the section grow instead of
+    // clipping if this row + the min card height don't both fit in 100vh.
+    .carousel-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+        row-gap: 12px;
+        column-gap: 24px;
+        margin-bottom: clamp(20px, 4vh, 48px);
+
+        h2 {
+            margin: 0;
+            font-size: clamp(48px, 6.4vw, 60px);
+        }
+    }
 
     .carousel-inner {
-        position: absolute;
-        top: 0;
-        height: 70%;
+        position: relative;
+        flex: 1 1 auto;
+        min-height: 0;
         width: 100%;
-        margin-top: 20vh;
         display: flex;
         align-items: center;
         overflow: hidden;
     }
 
+    // Hints that there's more to the left than just empty space - the gutter
+    // here (see .carousel-track's margin) is intentionally there so the user
+    // can position their cursor/finger over it and scroll the page normally
+    // instead of driving the carousel. Fades out after the first interaction.
+    .carousel-drag-hint {
+        position: absolute;
+        inset-inline-start: 0;
+        top: 0;
+        bottom: 0;
+        width: 25vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+        color: var(--muted, rgba(255, 255, 255, 0.5));
+        opacity: 0.6;
+        transition: opacity 0.6s ease;
+        z-index: 1;
+
+        svg {
+            width: 28px;
+            height: 28px;
+            animation: carousel-hint-sway 1.8s ease-in-out infinite;
+        }
+
+        span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+    }
+
+    &.is-interacted .carousel-drag-hint {
+        opacity: 0;
+    }
+
     .carousel-track {
         display: flex;
-        gap: 60px; 
+        gap: 60px;
         will-change: transform;
         // padding: 0 10vw;
         margin: 0 0 0 25vw;
-        padding: 50px 0; 
+        padding: 50px 0;
         cursor: grab;
         //scroll-snap-type: x manditory
-        
+
         &:active {
             cursor: grabbing;
         }
@@ -46,9 +116,9 @@
         justify-content: flex-start;
         //scroll-snap-align: center;
         //scroll-snap-type: always;
-        
+
         // ... inside .case-card
-        
+
         .card-image {
             position: absolute;
             inset: 0; // This makes the wrapper fill the whole card
@@ -136,72 +206,64 @@
             }
         }
     }
+
+    // "All Projects" link - sits beside the title in the header row on desktop.
+    .All-Projects-Link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+        flex: 0 0 auto;
+        white-space: nowrap;
+        -webkit-tap-highlight-color: transparent;
+
+        svg {
+            transition: transform 0.3s ease;
+        }
+
+        &:hover {
+            color: var(--accent, #6366f1);
+
+            svg {
+                transform: translateX(5px);
+            }
+        }
+    }
 }
 .outer-wrapper{
     padding:0;
 }
-// Header row above the carousel: title on the left edge of the first card,
-// "All Projects" link on the right edge, both on the same line.
-.carousel-header {
-    position: absolute;
-    inset: 0;
-    // z-index: 2;
-    pointer-events: none;
-
-    h2 {
-        position: absolute;
-        // Min bound raised to clear the pinned .site-header (100px tall - see
-        // _header.scss), which sits on top of this section's content regardless
-        // of scroll offset. 8vh alone drops below 100px on most desktop heights.
-        top: clamp(100px, 8vh, 130px);
-        // left: 10vw;
-        margin: 0;
-        font-size: clamp(48px, 6.4vw, 60px);
-        pointer-events: auto;
-    }
-}
-// All Projects Link - top right of horizontal carousel, aligned with the title
-.All-Projects-Link {
-    position: absolute;
-    top: clamp(120px, 11vh, 130px);
-    inset-inline-end: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text);
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: 600;
-    pointer-events: auto;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
-    z-index: 0;
-    -webkit-tap-highlight-color: transparent;
-
-    svg {
-        transition: transform 0.3s ease;
-    }
-
-    &:hover {
-        color: var(--accent, #6366f1);
-
-        svg {
-            transform: translateX(5px);
-        }
-    }
+@keyframes carousel-hint-sway {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-6px); }
 }
 @media (max-width: 768px) {
-    .horizontal-carousel .carousel-inner{
-        margin-top: 5vh;
+    .horizontal-carousel {
+        // No title row to clear on mobile (hidden below), so this only needs
+        // to clear the fixed header height.
+        padding-top: clamp(110px, 16vh, 130px);
+        padding-bottom: clamp(16px, 4vh, 32px);
     }
     .horizontal-carousel .carousel-track{
         margin: 0 10vw;
     }
+    .horizontal-carousel .carousel-drag-hint {
+        width: 10vw;
+
+        span {
+            display: none;
+        }
+    }
     .horizontal-carousel .case-card{
         width: 80vw;
         height: 70vh;
-        
+
         .card-description{
             p{
                 margin: 5px 0 0 0;
@@ -217,9 +279,6 @@
     }
 
     .carousel-header h2 {
-        // top: 75px;
-        // inset-inline-start: 6vw;
-        // font-size: clamp(30px, 8vh, 44px);
         display: none;
     }
 
@@ -230,6 +289,7 @@
         bottom: 80px;
         left: 50%;
         transform: translateX(-50%);
+        z-index: 1;
 
         font-size: 1.5rem;
         -webkit-backdrop-filter: blur(20px);
