@@ -476,6 +476,7 @@ body {
 .project-media-row .collapsible-content {
   flex: 0 0 0;
   width: 0;
+  max-height: 0;
   transition: flex-basis 0.4s ease-out, width 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out;
 }
 .project-media-row .collapsible-content .project-cards {
@@ -484,6 +485,7 @@ body {
 .project-media-row .collapsible-content.active {
   flex: 0 0 45vw;
   width: 45vw;
+  max-height: none;
 }
 
 @media (max-width: 786px) {

@@ -100,6 +100,10 @@ $transition-slow: 0.4s ease-out;
     .collapsible-content {
         flex: 0 0 0;
         width: 0;
+        // Without this, the closed panel still reports its full text height
+        // to the flex row (only its width is collapsed), leaving dead space
+        // under the (shorter) grid until it's opened.
+        max-height: 0;
         transition: flex-basis 0.4s ease-out, width 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out;
 
         // Inner content keeps its resting width so the outer box's width
@@ -111,6 +115,7 @@ $transition-slow: 0.4s ease-out;
         &.active {
             flex: 0 0 45vw;
             width: 45vw;
+            max-height: none;
         }
     }
 }
