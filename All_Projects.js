@@ -505,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
   (function () {
     const chips = Array.from(document.querySelectorAll('.project-filters .filter-chip'));
     const cards = Array.from(document.querySelectorAll('.grid-all-projects .case-card'));
-
+    const grid = document.querySelector(".grid-all-projects");
     //Including the all-projects slides in the flitering too
     const carousel = document.querySelector('.all-projects-carousel');
     if (!carousel) return;
@@ -553,19 +553,24 @@ document.addEventListener("DOMContentLoaded", () => {
       //First we record where every card currently sits
       const firstPositions = items.map(item =>{
 
+        //Hidden cards (display: none) report a rect of 0,0 - the viewport's top-left corner -
+        //so we mark them as having no previous position instead of animating from there
+        if (item.classList.contains('is-filtered-out')) return null;
+
         const rect = item.getBoundingClientRect();
 
-        return{ //The positions are identified by the cards left and top coordinates
-          x: rect.left,
+        return{ //Take a snapshot of where each card is relative to the viewport
+          x: rect.left ,
           y: rect.top
         };
       })
       //Change the layout
       items.forEach((item, i) => {
-        const match = filter === 'all' || tags[i].includes(filter);
 
+        const match = filter === 'all' || tags[i].includes(filter);
         item.classList.toggle('is-filtered-out', !match);
       });
+      
       //Force the browser to calculate the new layout
       items.forEach(item => item.offsetHeight);
       //Animate from old position to new position
@@ -573,7 +578,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (item.classList.contains('is-filtered-out')) return;
 
-        const rect = item.getBoundingClientRect();
+        //Card was hidden before this filter - fade it in where it lands rather than sliding
+        if (!firstPositions[i]) {
+          gsap.fromTo(
+            item,
+            { x: 0, y: 0, opacity: 0, scale: 0.95 },
+            { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }
+          );
+          return;
+        }
+
+        const rect = item.getBoundingClientRect(); //Get card's new position
 
         const dx = firstPositions[i].x - rect.left;
         const dy = firstPositions[i].y - rect.top;
