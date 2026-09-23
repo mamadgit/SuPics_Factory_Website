@@ -478,6 +478,9 @@ body {
   min-width: 0;
   margin-top: 0;
 }
+.project-media-row .collapsible-btn {
+  display: flex;
+}
 .project-media-row .collapsible-content .animated-text p {
   margin: 0;
   max-width: none;
@@ -486,7 +489,7 @@ body {
   flex: 0 0 0;
   width: 0;
   max-height: 0;
-  transition: flex-basis 0.4s ease-out, width 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out;
+  transition: flex-basis 0.4s ease-in-out, width 0.4s ease-in-out, transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
 .project-media-row .collapsible-content .project-cards {
   width: 340px;
@@ -500,13 +503,30 @@ body {
 @media (max-width: 786px) {
   .grid-asymmetric {
     grid-template-columns: 1fr;
+    position: relative;
   }
   .grid-asymmetric .grid-item {
     --span: 1;
     --ratio: 4 / 3;
   }
+  .grid-asymmetric > .btn.muted {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    z-index: 5;
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+    transform: translate(-50%, 50%);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  .grid-asymmetric > .btn.muted .collapsbile-btn {
+    display: flex;
+  }
   .project-media-row {
     flex-direction: column;
+    align-items: stretch;
     padding-inline: 16px;
   }
   .project-media-row .collapsible-content {
@@ -1507,7 +1527,6 @@ html.light-mode .SVG-logo-light {
   row-gap: 12px;
   -moz-column-gap: 24px;
        column-gap: 24px;
-  margin-bottom: clamp(20px, 4vh, 48px);
 }
 .horizontal-carousel .carousel-header h2 {
   margin: 0;
