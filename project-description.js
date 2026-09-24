@@ -278,30 +278,50 @@ document.addEventListener("DOMContentLoaded", () => {
     ScrollToSnap(".project-fullscreen", ".project-fullscreen", "top+=15% top", null, 99);
   }
   else{
-    ScrollToSnap(".typography", ".typography", "top 90%", null, 100);
+    //Snap to whatever block comes right after the video (.container on the new layout, .typography on older pages)
+    ScrollToSnap(".project-fullscreen + *", ".project-fullscreen + *", "top 90%", null, 100);
   }
+//#endregion
 
-  if(ProjDesHeader){
-    //header starts hidden
-    ProjDesHeader.classList.remove("is-visible");
-    ScrollTrigger.create({
-    trigger: ".project-fullscreen",
-    start: "bottom 35%",
-    scroller: smoother?.wrapper() || window,
-    onEnter: ()=> {
-      console.log("HEADER TRIGGER: ENTER");
-      dynamicHeaderActive = false; 
-      ProjDesHeader.classList.add("is-visible")
-    },
-    onLeave: () =>{
-      dynamicHeaderActive = true; //Header reaches point where dynamic header should take over, we enable it.
-    },
-    onLeaveBack: () => {
-      dynamicHeaderActive = false;
-      ProjDesHeader.classList.remove("is-visible")
-    }
-    });
+  //============================================== 
+  //#region   DYNAIMC ELEMENT APPEARENCE
+  //==============================================
+  const Button = document.querySelector(".btn.muted")
+  // isHeader: only the header should hand control over to the dynamic (scroll-direction) header
+  // end / endTrigger (optional): hide the element again once that point is passed
+  function dynamicElement(element, trigger, start, end = null, isHeader = false, endTrigger = null){
+    if (!element) return;
+    //element starts hidden
+    element.classList.remove("is-visible");
+    const vars = {
+      trigger: trigger,
+      start: start,
+      scroller: smoother?.wrapper() || window,
+      onEnter: ()=> {
+        if (isHeader) dynamicHeaderActive = false;
+        element.classList.add("is-visible")
+      },
+      onLeave: () =>{
+        if (isHeader) dynamicHeaderActive = true; //Header reaches point where dynamic header should take over, we enable it.
+        if (end) element.classList.remove("is-visible"); //Passed the end point, hide it
+      },
+      onEnterBack: () => {
+        if (end) element.classList.add("is-visible"); //Scrolled back above the end point, show it again
+      },
+      onLeaveBack: () => {
+        if (isHeader) dynamicHeaderActive = false;
+        element.classList.remove("is-visible")
+      }
+    };
+    //Only set these when given, so the header keeps ScrollTrigger's default end
+    if (end) vars.end = end;
+    if (endTrigger) vars.endTrigger = endTrigger;
+    ScrollTrigger.create(vars);
   }
+  dynamicElement (ProjDesHeader, ".project-fullscreen", "bottom 35%", null, true);
+  //Hide the button as soon as the footer's top edge enters from the bottom of the screen
+  dynamicElement (Button, ".project-cards", "bottom 90%", "top bottom", false, ".site-footer");
+  
   //#endregion
 
   //============================================== 
@@ -495,6 +515,25 @@ if (btn && content) {
     content.classList.toggle('active', isActive);
   });
 }
+
+  // On mobile, float the "Read More" pill over the bottom-center of the
+  // image grid (see .grid-asymmetric > .btn.muted in _grid.scss) instead
+  // of leaving it stacked under the heading.
+  const readMoreWrap = btn ? btn.closest('.btn.muted') : null;
+  const mediaGrid = document.querySelector('.project-media-row .grid-asymmetric');
+
+  if (readMoreWrap && mediaGrid) {
+    const homeParent = readMoreWrap.parentNode;
+    const homeNextSibling = readMoreWrap.nextSibling;
+
+    mm.add('(max-width: 786px)', () => {
+      mediaGrid.appendChild(readMoreWrap);
+      return () => {
+        homeParent.insertBefore(readMoreWrap, homeNextSibling);
+      };
+    });
+  }
   //#endregion
+
 });
 

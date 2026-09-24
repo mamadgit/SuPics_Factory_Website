@@ -89,6 +89,9 @@ $transition-slow: 0.4s ease-out;
         min-width: 0;
         margin-top: 0;
     }
+    .collapsible-btn{
+        display: flex;
+    }
 
     // Kill the paragraph's default top margin so the text's top edge
     // sits flush with the top of the first image.
@@ -104,7 +107,12 @@ $transition-slow: 0.4s ease-out;
         // to the flex row (only its width is collapsed), leaving dead space
         // under the (shorter) grid until it's opened.
         max-height: 0;
-        transition: flex-basis 0.4s ease-out, width 0.4s ease-out, transform 0.4s ease-out, opacity 0.4s ease-out;
+        transition: 
+            flex-basis 0.6s ease-in-out, 
+            width 0.6s ease-in-out, 
+            transform 0.6s ease-in-out, 
+            opacity 0.6s ease-in-out, 
+            max-height 0s linear 0.6s; //on close: wait for the width animation to finish, then collapse
 
         // Inner content keeps its resting width so the outer box's width
         // transition reads as the panel sliding into view, not text reflow.
@@ -115,7 +123,8 @@ $transition-slow: 0.4s ease-out;
         &.active {
             flex: 0 0 45vw;
             width: 45vw;
-            max-height: none;
+            max-height: 200vh; //A real length (not 'none') so it can be delayed
+            transition-delay: 0s; // on open remove the height cap immediately
         }
     }
 }
@@ -123,32 +132,78 @@ $transition-slow: 0.4s ease-out;
 @media (max-width: 786px) {
     .grid-asymmetric {
         grid-template-columns: 1fr;
+        position: relative;
 
         .grid-item {
             --span: 1;
             --ratio: 4 / 3;
         }
+
+        // Read More toggle (moved here by JS on mobile) floats over the
+        // bottom-center of the image grid, straddling its lower edge.
+        > .btn.muted {
+            display: flex;
+            position: fixed;
+            left: 50%;
+            bottom: 5%;
+            z-index: 5;
+            width: auto;
+            margin: 0;
+            white-space: nowrap;
+            transform: translate(-50%, 200%);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            opacity: 0.77;
+            transition: transform 0.5s ease-out;
+
+            .collapsbile-btn {
+                display: flex;
+            }
+
+            // Added by JS once .project-cards has scrolled past
+            &.is-visible {
+                transform: translate(-50%, 75%);
+            }
+        }
     }
+    $menu-transition: 0.5s 0s;
 
     .project-media-row {
         flex-direction: column;
+        // align-items: flex-start (set above for the desktop row layout)
+        // controls height there, but in column direction it controls width
+        // instead — reset to stretch so the grid/panel fill the row.
+        align-items: stretch;
         padding-inline: 16px;
+        margin-bottom: 20px;
 
         .collapsible-content {
-            width: 100%;
-            flex-basis: auto;
-            max-height: 0;
-            transform: translateY(20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            opacity: 0;
+            display: flex;
+            visibility: hidden;
+            transition: all $menu-transition cubic-bezier(0.25, 0.8, 0.25, 1);
+            // width: 100%;
+            // flex-basis: auto;
+            // max-height: 0;
+            // transform: translateY(20px);
 
             .project-cards {
                 width: 100%;
             }
 
             &.active {
-                max-height: 2000px;
-                width: 100%;
-                transform: translateY(0);
+            opacity: 1;
+            width: 100vw;
+            height: 100vh;
+            visibility: visible;
+            background: var(--bg);
             }
+        }
+        .animated-text{
+            padding: 20px;
         }
     }
 }
