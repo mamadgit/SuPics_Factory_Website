@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================================
   const ProjDesHeader = document.querySelector(".offcanvas-header");
   let dynamicHeaderActive = false;
+  let readMoreOpen = false; //While the mobile Read More overlay is open, nothing is allowed to show the header
   let ignoreNextHeaderUpdate = false;
   
   let pageReady = false;
@@ -299,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scroller: smoother?.wrapper() || window,
       onEnter: ()=> {
         if (isHeader) dynamicHeaderActive = false;
+        if (isHeader && readMoreOpen) return; //Read More overlay is open, keep the header hidden
         element.classList.add("is-visible")
       },
       onLeave: () =>{
@@ -320,6 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   dynamicElement (ProjDesHeader, ".project-fullscreen", "bottom 35%", null, true);
   //Hide the button as soon as the footer's top edge enters from the bottom of the screen
+  
   dynamicElement (Button, ".project-cards", "bottom 90%", "top bottom", false, ".site-footer");
   
   //#endregion
@@ -339,6 +342,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // IMPORTANT: ScrollTrigger owns the header until this becomes true.
       if (!dynamicHeaderActive) return;
+      // Read More overlay is open, don't let scrolling up bring the header back
+      if (readMoreOpen) return;
 
       const current = window.scrollY || window.pageYOffset || 0;
       const delta = current - lastScroll;
@@ -513,6 +518,13 @@ if (btn && content) {
   btn.addEventListener('click', () => {
     const isActive = btn.classList.toggle('active');
     content.classList.toggle('active', isActive);
+
+    // Mobile only: the floating pill opens a fullscreen overlay, so hide the header
+    // while it's open and bring it back when it closes. (On desktop it's a side panel, header stays as is.)
+    if (window.matchMedia('(max-width: 786px)').matches) {
+      readMoreOpen = isActive;
+      ProjDesHeader?.classList.toggle('is-visible', !isActive);
+    }
   });
 }
 
