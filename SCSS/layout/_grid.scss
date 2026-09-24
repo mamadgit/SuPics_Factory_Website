@@ -147,6 +147,7 @@ $transition-slow: 0.4s ease-out;
             left: 50%;
             bottom: 5%;
             z-index: 5;
+            padding: 10px 15px;
             width: auto;
             margin: 0;
             white-space: nowrap;
@@ -161,7 +162,7 @@ $transition-slow: 0.4s ease-out;
 
             // Added by JS once .project-cards has scrolled past
             &.is-visible {
-                transform: translate(-50%, 75%);
+                transform: translate(-50%, 50%);
             }
         }
     }

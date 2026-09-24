@@ -516,6 +516,7 @@ body {
     left: 50%;
     bottom: 5%;
     z-index: 5;
+    padding: 10px 15px;
     width: auto;
     margin: 0;
     white-space: nowrap;
@@ -528,7 +529,7 @@ body {
     display: flex;
   }
   .grid-asymmetric > .btn.muted.is-visible {
-    transform: translate(-50%, 75%);
+    transform: translate(-50%, 50%);
   }
   .project-media-row {
     flex-direction: column;
