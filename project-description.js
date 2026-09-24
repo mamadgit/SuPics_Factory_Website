@@ -524,6 +524,7 @@ if (btn && content) {
     if (window.matchMedia('(max-width: 786px)').matches) {
       readMoreOpen = isActive;
       ProjDesHeader?.classList.toggle('is-visible', !isActive);
+      document.body.style.overflow = isActive ? 'hidden' : ''; //Lock scrolling while open, unlock on close
     }
   });
 }
