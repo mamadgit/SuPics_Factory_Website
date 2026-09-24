@@ -19,3 +19,4 @@ Media
 *.pdf
 # *.json
 server.js
+!logo-light.mp4

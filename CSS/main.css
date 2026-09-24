@@ -489,7 +489,7 @@ body {
   flex: 0 0 0;
   width: 0;
   max-height: 0;
-  transition: flex-basis 0.4s ease-in-out, width 0.4s ease-in-out, transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transition: flex-basis 0.6s ease-in-out, width 0.6s ease-in-out, transform 0.6s ease-in-out, opacity 0.6s ease-in-out, max-height 0s linear 0.6s;
 }
 .project-media-row .collapsible-content .project-cards {
   width: 340px;
@@ -497,7 +497,8 @@ body {
 .project-media-row .collapsible-content.active {
   flex: 0 0 45vw;
   width: 45vw;
-  max-height: none;
+  max-height: 200vh;
+  transition-delay: 0s;
 }
 
 @media (max-width: 786px) {
@@ -511,37 +512,52 @@ body {
   }
   .grid-asymmetric > .btn.muted {
     display: flex;
-    position: absolute;
+    position: fixed;
     left: 50%;
-    bottom: 0;
+    bottom: 5%;
     z-index: 5;
     width: auto;
     margin: 0;
     white-space: nowrap;
-    transform: translate(-50%, 50%);
+    transform: translate(-50%, 200%);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    opacity: 0.77;
+    transition: transform 0.5s ease-out;
   }
   .grid-asymmetric > .btn.muted .collapsbile-btn {
     display: flex;
+  }
+  .grid-asymmetric > .btn.muted.is-visible {
+    transform: translate(-50%, 75%);
   }
   .project-media-row {
     flex-direction: column;
     align-items: stretch;
     padding-inline: 16px;
+    margin-bottom: 20px;
   }
   .project-media-row .collapsible-content {
-    width: 100%;
-    flex-basis: auto;
-    max-height: 0;
-    transform: translateY(20px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 0;
+    display: flex;
+    visibility: hidden;
+    transition: all 0.5s 0s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
   .project-media-row .collapsible-content .project-cards {
     width: 100%;
   }
   .project-media-row .collapsible-content.active {
-    max-height: 2000px;
-    width: 100%;
-    transform: translateY(0);
+    opacity: 1;
+    width: 100vw;
+    height: 100vh;
+    visibility: visible;
+    background: var(--bg);
+  }
+  .project-media-row .animated-text {
+    padding: 20px;
   }
 }
 .grid-gutter {
@@ -567,7 +583,7 @@ body {
 
 @media (max-width: 768px) {
   .flex-row {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 15px;
   }
