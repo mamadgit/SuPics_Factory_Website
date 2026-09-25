@@ -1678,15 +1678,17 @@ html.light-mode .SVG-logo-light {
   font-size: clamp(1rem, 1vw, 1.5rem);
   margin: clamp(10px, 1vw, 32px) 0;
 }
-.horizontal-carousel .case-card .card-description {
-  display: flow-root;
+.horizontal-carousel .case-card .card-text .flex-row {
+  gap: 12px;
 }
-.horizontal-carousel .case-card .card-description p {
+.horizontal-carousel .case-card .card-text .flex-row .left-side p {
   margin: 10px 0 0 0;
 }
-.horizontal-carousel .case-card .card-description .btn {
-  float: right;
-  margin: 10px 0 0 0;
+.horizontal-carousel .case-card .card-text .flex-row .right-side {
+  flex-shrink: 0;
+}
+.horizontal-carousel .case-card .card-text .flex-row .btn {
+  display: inline-block;
   white-space: nowrap;
 }
 .horizontal-carousel .All-Projects-Link {
@@ -1742,13 +1744,25 @@ html.light-mode .SVG-logo-light {
   }
   .horizontal-carousel .case-card {
     width: 80vw;
-    height: 70vh;
+    height: auto;
+    aspect-ratio: 4/5;
   }
-  .horizontal-carousel .case-card .card-description p {
+  .horizontal-carousel .case-card .card-image img, .horizontal-carousel .case-card .card-image video {
+    transform: none;
+  }
+  .horizontal-carousel .case-card .card-text {
+    max-width: calc(100% - 2 * clamp(16px, 3vw, 32px));
+  }
+  .horizontal-carousel .case-card .card-text .flex-row {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .horizontal-carousel .case-card .card-text .flex-row .left-side p {
     margin: 5px 0 0 0;
   }
-  .horizontal-carousel .case-card .card-description .btn {
-    margin: 5px 0 0 0;
+  .horizontal-carousel .case-card .card-text .flex-row .right-side {
+    align-self: flex-end;
   }
   .card-text {
     backdrop-filter: blur(2.5px);
@@ -1760,7 +1774,7 @@ html.light-mode .SVG-logo-light {
     position: absolute;
     top: auto;
     inset-inline-end: auto;
-    bottom: 80px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;

@@ -191,18 +191,21 @@
                 margin: clamp(10px, 1vw, 32px) 0;
             }
         }
-        .card-description {
-            display: flow-root;
+        .card-text .flex-row {
+            gap: 12px;
 
-            p {
+            .left-side p {
                 margin: 10px 0 0 0;
             }
 
-            .btn {
-                float: right;
-                margin: 10px 0 0 0;
-                white-space: nowrap;
+            // Don't let the button column shrink, or "View case" wraps onto two lines
+            .right-side {
+                flex-shrink: 0;
+            } 
 
+            .btn {
+                display: inline-block;
+                white-space: nowrap;
             }
         }
     }
@@ -258,18 +261,33 @@
 
         span {
             display: none;
-        }
+        } 
     }
     .horizontal-carousel .case-card{
         width: 80vw;
-        height: 70vh;
+        height: auto;
+        aspect-ratio: 4 / 5; // match All Projects mobile images
 
-        .card-description{
-            p{
+        // Card is already portrait, so drop the desktop scaleY stretch
+        .card-image img, .card-image video{
+            transform: none;
+        }
+
+        // Card is narrow on mobile: let the text box use the card's width
+        // (minus its side margins) and stack the button under the text.
+        .card-text{ 
+            max-width: calc(100% - 2 * clamp(16px, 3vw, 32px));
+        }
+        .card-text .flex-row{
+            flex-direction: row;
+            align-items: stretch;
+            gap: 8px;
+
+            .left-side p{
                 margin: 5px 0 0 0;
             }
-            .btn{
-                margin: 5px 0 0 0;
+            .right-side{
+                align-self: flex-end;
             }
         }
     }
@@ -286,7 +304,7 @@
         position: absolute;
         top: auto;
         inset-inline-end: auto;
-        bottom: 80px;
+        bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1;
@@ -308,7 +326,7 @@
         justify-content: center;
         white-space: nowrap;
     }
-
+ 
     .All-Projects-Link svg {
         display: none;
     }
