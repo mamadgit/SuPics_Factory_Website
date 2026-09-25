@@ -48,31 +48,123 @@
         overflow: hidden;
     }
 
-    // Hints that there's more to the left than just empty space - the gutter
-    // here (see .carousel-track's margin) is intentionally there so the user
-    // can position their cursor/finger over it and scroll the page normally
-    // instead of driving the carousel. Fades out after the first interaction.
-    .carousel-drag-hint {
+    // Permanent page-scroll lane: the gutter left of the track (its starting
+    // margin - see .carousel-track) always scrolls the page instead of the
+    // carousel, even once cards have slid beneath it (see getPointerZone in
+    // main.js). Mouse/trackpad only - on touch a vertical swipe already
+    // scrolls the page from anywhere, so there's nothing to hint at.
+    .carousel-lane-hint {
         position: absolute;
-        inset-inline-start: 0;
+        left: 0;
         top: 0;
         bottom: 0;
         width: 25vw;
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
-        gap: 8px;
-        pointer-events: none;
+        gap: 14px;
+        pointer-events: none; // cards (and their buttons) pass underneath
         color: var(--muted, rgba(255, 255, 255, 0.5));
         opacity: 0.6;
+        transition: opacity 0.4s ease, color 0.4s ease, filter 0.4s ease;
+        z-index: 1;
+ 
+        @media (hover: hover) and (pointer: fine) {
+            display: flex;
+        }
+
+        // Faded vertical rule with a chevron travelling down it
+        .lane-line {
+            position: relative;
+            width: 1px;
+            height: 40%;
+            max-height: 320px;
+            background: linear-gradient(to bottom,
+                transparent,
+                color-mix(in srgb, currentColor 45%, transparent) 20%,
+                color-mix(in srgb, currentColor 45%, transparent) 80%,
+                transparent);
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 0;
+                width: 7px;
+                height: 7px;
+                border-right: 1.5px solid currentColor;
+                border-bottom: 1.5px solid currentColor;
+                transform: translate(-50%, -100%) rotate(45deg);
+                animation: carousel-lane-travel 2.4s ease-in-out infinite;
+            }
+        }
+
+        .lane-label {
+            writing-mode: vertical-rl;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+    }
+
+    // Cursor is in the lane: full strength, and the arrow cursor instead of
+    // the track's grab hand, so it's clear the wheel won't move the cards here
+    &.is-in-lane {
+        .carousel-lane-hint {
+            opacity: 1;
+        }
+
+        .carousel-track {
+            cursor: auto;
+        }
+    }
+
+    // Once cards have slid under the lane, only show the hint while the cursor
+    // is in it, in white with a shadow so it reads over the card images
+    &.is-carousel-scrolled {
+        .carousel-lane-hint {
+            color: #fff;
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+        }
+
+        &:not(.is-in-lane) .carousel-lane-hint {
+            opacity: 0;
+        }
+    }
+
+    // "More this way" pill on the right edge, over the cut-off card - a fixed
+    // dark glass rather than theme colours, since it always sits on imagery.
+    // Fades out after the first time the user drives the carousel.
+    .carousel-drag-hint {
+        position: absolute;
+        right: clamp(16px, 3vw, 40px);
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px 10px 18px;
+        border-radius: 50px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        pointer-events: none;
         transition: opacity 0.6s ease;
         z-index: 1;
 
         svg {
-            width: 28px;
-            height: 28px;
-            animation: carousel-hint-sway 1.8s ease-in-out infinite;
+            width: 18px;
+            height: 18px;
+
+            // Static on desktop so only the lane hint animates; on touch
+            // there's no lane hint, so this one gets the motion instead
+            @media (hover: none), (pointer: coarse) {
+                animation: carousel-hint-sway 1.8s ease-in-out infinite;
+            }
         }
 
         span {
@@ -244,7 +336,25 @@
 }
 @keyframes carousel-hint-sway {
     0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+}
+@keyframes carousel-lane-travel {
+    0% { top: 0; opacity: 0; }
+    25%, 75% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .horizontal-carousel {
+        // Park the chevron at the foot of the line so it still points down
+        .carousel-lane-hint .lane-line::after {
+            animation: none;
+            top: 100%;
+        }
+
+        .carousel-drag-hint svg {
+            animation: none;
+        }
+    }
 }
 @media (max-width: 768px) {
     .horizontal-carousel {
@@ -256,12 +366,32 @@
     .horizontal-carousel .carousel-track{
         margin: 0 10vw;
     }
-    .horizontal-carousel .carousel-drag-hint {
+    .horizontal-carousel .carousel-lane-hint {
         width: 10vw;
+    }
+    // Mobile cards stop short of the right edge, leaving a 10vw gutter that
+    // mirrors the left one - the hint drops its pill and sits in there as a
+    // bare chevron instead of covering the card.
+    .horizontal-carousel .carousel-drag-hint {
+        right: 0;
+        width: 10vw;
+        justify-content: center;
+        padding: 0;
+        color: var(--muted, rgba(255, 255, 255, 0.5));
+        opacity: 0.6;
+        background: none;
+        border: 0;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
 
         span {
             display: none;
-        } 
+        }
     }
     .horizontal-carousel .case-card{
         width: 80vw;

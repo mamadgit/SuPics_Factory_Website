@@ -1556,27 +1556,93 @@ html.light-mode .SVG-logo-light {
   align-items: center;
   overflow: hidden;
 }
-.horizontal-carousel .carousel-drag-hint {
+.horizontal-carousel .carousel-lane-hint {
   position: absolute;
-  inset-inline-start: 0;
+  left: 0;
   top: 0;
   bottom: 0;
   width: 25vw;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   pointer-events: none;
   color: var(--muted, rgba(255, 255, 255, 0.5));
   opacity: 0.6;
+  transition: opacity 0.4s ease, color 0.4s ease, filter 0.4s ease;
+  z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .horizontal-carousel .carousel-lane-hint {
+    display: flex;
+  }
+}
+.horizontal-carousel .carousel-lane-hint .lane-line {
+  position: relative;
+  width: 1px;
+  height: 40%;
+  max-height: 320px;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, currentColor 45%, transparent) 20%, color-mix(in srgb, currentColor 45%, transparent) 80%, transparent);
+}
+.horizontal-carousel .carousel-lane-hint .lane-line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translate(-50%, -100%) rotate(45deg);
+  animation: carousel-lane-travel 2.4s ease-in-out infinite;
+}
+.horizontal-carousel .carousel-lane-hint .lane-label {
+  writing-mode: vertical-rl;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.horizontal-carousel.is-in-lane .carousel-lane-hint {
+  opacity: 1;
+}
+.horizontal-carousel.is-in-lane .carousel-track {
+  cursor: auto;
+}
+.horizontal-carousel.is-carousel-scrolled .carousel-lane-hint {
+  color: #fff;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+.horizontal-carousel.is-carousel-scrolled:not(.is-in-lane) .carousel-lane-hint {
+  opacity: 0;
+}
+.horizontal-carousel .carousel-drag-hint {
+  position: absolute;
+  right: clamp(16px, 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 10px 18px;
+  border-radius: 50px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 1;
 }
 .horizontal-carousel .carousel-drag-hint svg {
-  width: 28px;
-  height: 28px;
-  animation: carousel-hint-sway 1.8s ease-in-out infinite;
+  width: 18px;
+  height: 18px;
+}
+@media (hover: none), (pointer: coarse) {
+  .horizontal-carousel .carousel-drag-hint svg {
+    animation: carousel-hint-sway 1.8s ease-in-out infinite;
+  }
 }
 .horizontal-carousel .carousel-drag-hint span {
   font-size: 0.75rem;
@@ -1722,7 +1788,29 @@ html.light-mode .SVG-logo-light {
     transform: translateX(0);
   }
   50% {
-    transform: translateX(-6px);
+    transform: translateX(6px);
+  }
+}
+@keyframes carousel-lane-travel {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .horizontal-carousel .carousel-lane-hint .lane-line::after {
+    animation: none;
+    top: 100%;
+  }
+  .horizontal-carousel .carousel-drag-hint svg {
+    animation: none;
   }
 }
 @media (max-width: 768px) {
@@ -1733,8 +1821,23 @@ html.light-mode .SVG-logo-light {
   .horizontal-carousel .carousel-track {
     margin: 0 10vw;
   }
-  .horizontal-carousel .carousel-drag-hint {
+  .horizontal-carousel .carousel-lane-hint {
     width: 10vw;
+  }
+  .horizontal-carousel .carousel-drag-hint {
+    right: 0;
+    width: 10vw;
+    justify-content: center;
+    padding: 0;
+    color: var(--muted, rgba(255, 255, 255, 0.5));
+    opacity: 0.6;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+  }
+  .horizontal-carousel .carousel-drag-hint svg {
+    width: 24px;
+    height: 24px;
   }
   .horizontal-carousel .carousel-drag-hint span {
     display: none;

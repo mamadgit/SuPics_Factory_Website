@@ -916,7 +916,6 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 
   if (horizontalSection && horizontalTrack) {
     const Offset = 1000;
-    let isOverCarousel = false;
     let currentX = 0;
     let targetX = 0;
     let rafId = null;
@@ -965,25 +964,43 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       if (!rafId) rafId = requestAnimationFrame(animate);
     }
 
-    // Only treat the cursor as "over the carousel" when it's actually within the
-    // track's box — the section has empty margin space to the left of where the
-    // track begins, and hovering there should scroll the page vertically.
-    horizontalSection.addEventListener('mousemove', (e) => {
+    // Permanent page-scroll lane: the track's starting left margin (25vw, 10vw
+    // on mobile - see .carousel-track in _horizontal-carousel.scss) always
+    // scrolls the page, even once cards have slid underneath it, so the user
+    // can skip past the carousel without scrolling through every card.
+    const getLaneWidth = () => parseFloat(getComputedStyle(horizontalTrack).marginLeft) || 0;
+    let laneWidth = getLaneWidth();
+
+    // 'lane' | 'carousel' | null (outside the track's rows, e.g. its padding)
+    function getPointerZone(x, y) {
+      const innerRect = horizontalSection.getBoundingClientRect();
       const trackRect = horizontalTrack.getBoundingClientRect();
-      isOverCarousel =
-        e.clientX >= trackRect.left &&
-        e.clientX <= trackRect.right &&
-        e.clientY >= trackRect.top &&
-        e.clientY <= trackRect.bottom;
+      if (y < trackRect.top || y > trackRect.bottom) return null;
+      if (x < innerRect.left || x > innerRect.right) return null;
+      return x < innerRect.left + laneWidth ? 'lane' : 'carousel';
+    }
+
+    // Drives the lane hint's hover state (brightens it, drops the grab cursor)
+    horizontalSection.addEventListener('mousemove', (e) => {
+      const inLane = getPointerZone(e.clientX, e.clientY) === 'lane';
+      horizontalCarouselSection?.classList.toggle('is-in-lane', inLane);
     });
 
     horizontalSection.addEventListener('mouseleave', () => {
-      isOverCarousel = false;
+      horizontalCarouselSection?.classList.remove('is-in-lane');
     });
+
+    // Cards cover the lane once the carousel leaves its start position, so the
+    // lane hint only shows there on hover (see .is-carousel-scrolled in SCSS)
+    function syncScrolledState() {
+      horizontalCarouselSection?.classList.toggle('is-carousel-scrolled', targetX > 0);
+    }
 
     // Intercept wheel event
     horizontalSection.addEventListener('wheel', (e) => {
-      if (!isOverCarousel) return; // let it scroll the page
+      // Zone is checked from the event itself rather than cached on mousemove,
+      // which goes stale when the page scrolls under a still cursor.
+      if (getPointerZone(e.clientX, e.clientY) !== 'carousel') return; // let it scroll the page
 
       const maxScroll = getMaxScroll();
       // If we've hit the end or the start, let the page scroll
@@ -996,11 +1013,13 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       markCarouselInteracted();
       targetX += e.deltaY;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
+      syncScrolledState();
       startAnimate();
     }, { passive: false });
 
     // Handle resize
     window.addEventListener('resize', () => {
+      laneWidth = getLaneWidth();
       const maxScroll = getMaxScroll();
       targetX = Math.min(targetX, maxScroll);
       currentX = Math.min(currentX, maxScroll);
@@ -1042,6 +1061,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       markCarouselInteracted();
       targetX += dx;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
+      syncScrolledState();
       startAnimate();
 
       // Reset so next move is a delta, not cumulative
