@@ -101,7 +101,7 @@
 
         .lane-label {
             writing-mode: vertical-rl;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -148,10 +148,10 @@
         padding: 10px 14px 10px 18px;
         border-radius: 50px;
         color: #fff;
-        background: rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        -webkit-backdrop-filter: blur(12px);
-        backdrop-filter: blur(12px);
+        // background: rgba(0, 0, 0, 0.35);
+        // border: 1px solid rgba(255, 255, 255, 0.2);
+        // -webkit-backdrop-filter: blur(12px);
+        // backdrop-filter: blur(12px);
         pointer-events: none;
         transition: opacity 0.6s ease;
         z-index: 1;
@@ -177,7 +177,7 @@
     }
 
     &.is-interacted .carousel-drag-hint {
-        opacity: 0;
+        opacity: 1;
     }
 
     .carousel-track {
