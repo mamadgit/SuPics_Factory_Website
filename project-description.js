@@ -515,9 +515,15 @@ const btn = document.querySelector(".collapsbile-btn");
 const content = document.querySelector(".collapsible-content");
 
 if (btn && content) {
+  // The label is the bare text node before the icon span, swap it without touching the icon
+  const label = [...btn.childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+  const openText = label ? label.textContent.trim() : '';
+  const closeText = btn.classList.contains('fa') ? 'بستن' : 'Close';
+
   btn.addEventListener('click', () => {
     const isActive = btn.classList.toggle('active');
     content.classList.toggle('active', isActive);
+    if (label) label.textContent = ` ${isActive ? closeText : openText} `;
 
     // Mobile only: the floating pill opens a fullscreen overlay, so hide the header
     // while it's open and bring it back when it closes. (On desktop it's a side panel, header stays as is.)
