@@ -207,7 +207,7 @@ body {
 .animated-text .flex-row {
   margin: 50px 0;
   gap: 20vw;
-  justify-content: initial;
+  justify-content: space-around;
 }
 .animated-text .flex-column {
   gap: 2rem;
@@ -1307,7 +1307,7 @@ html.disable-scroll-padding {
 }
 
 .logo-item {
-  width: clamp(130px, 12vw, 180px);
+  width: clamp(130px, 46vw, 180px);
   height: auto;
   color: var(--muted);
   opacity: 0.65;
@@ -1347,10 +1347,7 @@ html.light-mode .SVG-logo-light {
 }
 @media (max-width: 768px) {
   .logo-carousel {
-    margin: 5vh 0;
-  }
-  .logo-item {
-    width: clamp(110px, 40vw, 150px);
+    margin: 5vh 0 0 0;
   }
   .logo-track__group {
     gap: 40px;
@@ -1548,7 +1545,7 @@ html.light-mode .SVG-logo-light {
 }
 .horizontal-carousel .carousel-header h2 {
   margin: 0;
-  font-size: clamp(48px, 6.4vw, 60px);
+  font-size: clamp(4vw, 11vw, 60px);
 }
 .horizontal-carousel .carousel-inner {
   position: relative;
@@ -1556,7 +1553,7 @@ html.light-mode .SVG-logo-light {
   min-height: 0;
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   overflow: hidden;
 }
 .horizontal-carousel .carousel-drag-hint {

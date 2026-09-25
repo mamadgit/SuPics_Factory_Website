@@ -38,7 +38,7 @@
 }
 
 .logo-item {
-    width: clamp(130px, 12vw, 180px);
+    width: clamp(130px, 46vw, 180px);
     height: auto;
     color: var(--muted);
     opacity: 0.65;
@@ -85,11 +85,11 @@ html.light-mode{
 
 @media (max-width: 768px) {
     .logo-carousel{
-        margin: 5vh 0;
+        margin: 5vh 0 0 0;
     }
-    .logo-item {
-        width: clamp(110px, 40vw, 150px);
-    }
+    // .logo-item {
+    //     width: clamp(110px, 40vw, 150px);
+    // }
 
     .logo-track__group {
         gap: 40px;
