@@ -1556,7 +1556,7 @@ html.light-mode .SVG-logo-light {
   min-height: 0;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow: hidden;
 }
 .horizontal-carousel .carousel-drag-hint {
@@ -1766,9 +1766,6 @@ html.light-mode .SVG-logo-light {
   }
   .card-text {
     backdrop-filter: blur(2.5px);
-  }
-  .carousel-header h2 {
-    display: none;
   }
   .All-Projects-Link {
     position: absolute;

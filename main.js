@@ -311,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mobile: #Projects points at the whole section (shows the title/header),
     // not the absolutely-positioned .carousel-track. Desktop unchanged.
     if (TargetID === '#Projects' && window.innerWidth <= 786) {
-      TargetElement = document.querySelector('.carousel-track') || TargetElement;
+      TargetElement = document.querySelector('.carousel-header') || TargetElement;
     }
 
     if(TargetElement){
