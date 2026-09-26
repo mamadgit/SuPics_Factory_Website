@@ -2,8 +2,8 @@
 @use '../abstracts/variables';
 .btn {
     // @include mixins.flex-center();
-    padding: 7px 12px;
-    border-radius: 10px;
+    padding: 5px 12px;
+    // border-radius: 10px;
     border: 1px solid var(--border);
     transition: transform variables.$transition-base, box-shadow variables.$transition-base;
     font-weight: 600;

@@ -143,8 +143,9 @@ body {
   }
   .flex-row{
     margin: 50px 0;
-    gap: 20vw;
-    justify-content: space-around;
+    gap: 15vw;
+    justify-content: flex-start;
+    font-weight: 100;
   }
   .flex-column{
     gap: 2rem;
