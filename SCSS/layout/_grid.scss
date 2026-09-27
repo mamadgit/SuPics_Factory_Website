@@ -214,9 +214,16 @@ $transition-slow: 0.4s ease-out;
             visibility: visible;
             background: var(--bg);
             }
-        }
+        } 
         .animated-text{
+            // The overlay is a flex row with a fixed 100vh height, so the default
+            // stretch locks this box to 100vh and long text spills out past its
+            // padding. Size it to its content instead. 
+            align-self: flex-start;
             padding: 20px;
+            // Extra scroll room at the end of the overlay so the floating
+            // Read More pill (bottom: 5%) ends up below the text, not over it.
+            padding-bottom: calc(5vh + 50px);
         }
     }
 }

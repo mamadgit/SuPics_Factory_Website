@@ -568,7 +568,9 @@ body {
     background: var(--bg);
   }
   .project-media-row .animated-text {
+    align-self: flex-start;
     padding: 20px;
+    padding-bottom: calc(5vh + 50px);
   }
 }
 .grid-gutter {
