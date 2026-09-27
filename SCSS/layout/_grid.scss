@@ -98,6 +98,7 @@ $transition-slow: 0.4s ease-out;
     .collapsible-content .animated-text p {
         margin: 0;
         max-width: none;
+        margin-bottom: 1.5rem;
     }
 
     .collapsible-content {
@@ -126,6 +127,16 @@ $transition-slow: 0.4s ease-out;
             max-height: 200vh; //A real length (not 'none') so it can be delayed
             transition-delay: 0s; // on open remove the height cap immediately
         }
+
+        // Set by JS once the open transition finishes: the pinned text moves
+        // outside the panel's box while scrolling, so stop clipping it
+        &.is-pinned {
+            overflow: visible;
+            max-height: none;
+        }
+    }
+    &.fa{
+        flex-direction: row-reverse;
     }
 }
 

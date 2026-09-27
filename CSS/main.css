@@ -206,7 +206,7 @@ body {
 }
 .animated-text .flex-row {
   margin: 50px 0;
-  gap: 15vw;
+  gap: 10vw;
   justify-content: flex-start;
   font-weight: 100;
 }
@@ -485,6 +485,7 @@ body {
 .project-media-row .collapsible-content .animated-text p {
   margin: 0;
   max-width: none;
+  margin-bottom: 1.5rem;
 }
 .project-media-row .collapsible-content {
   flex: 0 0 0;
@@ -500,6 +501,13 @@ body {
   width: 45vw;
   max-height: 200vh;
   transition-delay: 0s;
+}
+.project-media-row .collapsible-content.is-pinned {
+  overflow: visible;
+  max-height: none;
+}
+.project-media-row.fa {
+  flex-direction: row-reverse;
 }
 
 @media (max-width: 786px) {
