@@ -13,7 +13,7 @@
     font-size: large;
     &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        // box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     &.solid {
@@ -120,7 +120,7 @@ $transition-slow: 0.4s ease-out;
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         border-color: rgba(255, 255, 255, 0.35);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        // box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
         transform: translateX(-50%) translateY(-4px);
     }
 
