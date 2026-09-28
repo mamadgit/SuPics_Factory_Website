@@ -95,10 +95,53 @@ $menu-transition: 0.4s;
         flex-wrap: wrap;
         gap: 12px 18px; // row-gap column-gap
     }
-    //Giving the logo-header click-pluse animation to indicate clickable
-    .logo-header-image{
+    // On mobile the logo is the menu button - stack a "MENU" caption under it and
+    // pulse the pair together so the label is read as part of the button.
+    // Pure CSS (::after + :has) so none of the HTML pages or page scripts change.
+    .brand{
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        z-index: 11; // above the open .nav overlay (z-index 10) so the logo can close it
         animation: click-pulse 3s ease-in-out infinite;
         transform-origin: center;
+
+        &::after{
+            content: "MENU";
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0.35em;
+            padding-inline-start: 0.35em; // balance the trailing letter-spacing so it centers
+            text-transform: uppercase;
+            color: var(--text);
+            opacity: 0.75;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+    }
+    // Menu open: caption becomes "CLOSE", pulse stops, and logo + caption go
+    // white so they stay readable on the dark overlay in light mode too.
+    .header-inner:has(.nav.active) .brand{
+        animation: none;
+
+        &::after{
+            content: "CLOSE";
+            color: #ffffff;
+            opacity: 1;
+        }
+        .logo-header-image img{
+            filter: brightness(0) invert(1);
+        }
+    }
+    // Persian pages (nav carries .fa) - letter-spacing breaks joined Persian script
+    .header-inner:has(.nav.fa) .brand::after{
+        content: "منو";
+        font-size: 12px;
+        letter-spacing: 0;
+        padding-inline-start: 0;
+    }
+    .header-inner:has(.nav.fa.active) .brand::after{
+        content: "بستن";
     }
 
 }
