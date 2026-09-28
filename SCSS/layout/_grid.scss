@@ -126,13 +126,10 @@ $transition-slow: 0.4s ease-out;
             width: 45vw;
             max-height: 200vh; //A real length (not 'none') so it can be delayed
             transition-delay: 0s; // on open remove the height cap immediately
-        }
-
-        // Set by JS once the open transition finishes: the pinned text moves
-        // outside the panel's box while scrolling, so stop clipping it
-        &.is-pinned {
-            overflow: visible;
-            max-height: none;
+            // Stretch the panel itself to the full row height (the row uses
+            // align-items: flex-start), so the pinned text travels inside it
+            align-self: stretch; 
+            overflow: visible; // don't clip the pinned text while it moves
         }
     }
     &.fa{

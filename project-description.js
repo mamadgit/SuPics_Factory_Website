@@ -520,10 +520,42 @@ if (btn && content) {
   const openText = label ? label.textContent.trim() : '';
   const closeText = btn.classList.contains('fa') ? 'بستن' : 'Close';
 
+  const pipTarget = document.querySelector(".project-media-row");
+  const panel = pipTarget?.querySelector(".collapsible-content");
+  const animatedText = panel?.querySelector(".animated-text");
+  const grid = pipTarget?.querySelector(".grid-asymmetric");
+
+  let textPin;
+
   btn.addEventListener('click', () => {
     const isActive = btn.classList.toggle('active');
     content.classList.toggle('active', isActive);
     if (label) label.textContent = ` ${isActive ? closeText : openText} `;
+    
+    if (window.matchMedia('(min-width: 787px)').matches){
+      if (isActive) {
+        // Wait for the panel's opening animation to finish
+        setTimeout(() => {
+          textPin?.kill();
+
+          textPin = ScrollTrigger.create({
+            trigger: pipTarget,
+            pin: animatedText,
+            start: `top ${ProjDesHeader.offsetHeight}px`,
+            endTrigger: grid,
+            end: () => `bottom ${ProjDesHeader.offsetHeight + animatedText.offsetHeight}px`,
+            pinSpacing: false,
+          });
+
+          ScrollTrigger.refresh();
+        }, 600);
+      } else {
+        // Closing → remove the pin
+        textPin?.kill();
+        textPin = null;
+        ScrollTrigger.refresh();
+      }
+    }
 
     // Mobile only: the floating pill opens a fullscreen overlay, so hide the header
     // while it's open and bring it back when it closes. (On desktop it's a side panel, header stays as is.)
@@ -553,6 +585,5 @@ if (btn && content) {
     });
   }
   //#endregion
-
 });
 

@@ -501,10 +501,8 @@ body {
   width: 45vw;
   max-height: 200vh;
   transition-delay: 0s;
-}
-.project-media-row .collapsible-content.is-pinned {
+  align-self: stretch;
   overflow: visible;
-  max-height: none;
 }
 .project-media-row.fa {
   flex-direction: row-reverse;
