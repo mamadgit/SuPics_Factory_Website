@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================
   // Only create smoother if the screen is wider than a tablet (e.g., 1024px)
   let smoother;
-  if (window.innerWidth > 1024) {
+  if (window.innerWidth > 787) {
     smoother = ScrollSmoother.create({
       wrapper: "#scroll-wrapper",
       content: "#scroll-content",
