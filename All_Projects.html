@@ -14,190 +14,177 @@
   <link rel="stylesheet" href="CSS/main.css" />
 </head>
 
-<!-- <body class="all-projects-page"> -->
+<body>
   <div id="preloader">
     <video src="logo.gif.mp4" autoplay loop muted playsinline id="loader-logo"></video>
   </div>
   <div id="preloader-light">
     <video src="logo-light.mp4" autoplay loop muted playsinline id="loader-logo"></video>
   </div>
+
   <!-- Header -->
-  <header class="offcanvas-header">
-    <div class="offcanvas-header__inner">
-      <div class="container header-inner">
-          <a class="brand" href="#">
-            <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
-          </a>
-        <nav class="nav">
-          <a href="index.html#Home">Home</a>
-          <a href="index.html#Projects">Projects</a>
-          <!-- <a href="index.html#Services">Services</a> -->
-          <a href="index.html#About">About Us</a>
-          <a href="index.html#Contact">Contact</a>
-          <div class="absolute top-4 right-4">
-            <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
-              bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-              <span class="icon-wrap">
-                <!-- Sun Icon -->
-                <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="lucide lucide-sun">
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <path d="M12 2v2"></path>
-                  <path d="M12 20v2"></path>
-                  <path d="m4.93 4.93 1.41 1.41"></path>
-                  <path d="m17.66 17.66 1.41 1.41"></path>
-                  <path d="M2 12h2"></path>
-                  <path d="M20 12h2"></path>
-                  <path d="m6.34 17.66-1.41 1.41"></path>
-                  <path d="m19.07 4.93-1.41 1.41"></path>
-                </svg>
-                <!-- Moon Icon -->
-                <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="lucide lucide-moon">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-          <a href="All_Projects-fa.html" class="language"> فارسی </a>
-        </nav>
-        <div class="header-cta">
-          <!-- <a class="btn ghost" href="#">Log in</a> -->
-          <!-- <a class="btn solid" href="#cta">Get started</a> -->
+  <header class="all-projects-page offcanvas-header">
+    <div class="container header-inner">
+      <nav class="nav fa">
+        <a href="All_Projects-EN.html" class="language"> EN </a>
+        <div class="absolute top-4 right-4">
+          <button id="theme-toggle" class="inline-flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-md p-2
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <span class="icon-wrap">
+              <!-- Sun Icon -->
+              <svg id="icon-star" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-sun">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+              <!-- Moon Icon -->
+              <svg id="icon-cloud" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-moon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"></path>
+              </svg>
+            </span>
+          </button>
         </div>
-      </div>
+        <a href="fa.html#Contact">ارتباط با ما</a>
+        <a href="fa.html#About">درباره ما</a>
+        <!-- <a href="fa.html#Services">خدمات</a> -->
+        <a href="fa.html#Projects">پروژه‌ها</a>
+        <a href="fa.html#Home">خانه</a>
+      </nav>
+      <a class="brand" href="#">
+        <span class="logo-header-image"><img src="SU-LOGO-web-W.svg" alt="Light-Image-header-Logo" /></span>
+      </a>
     </div>
   </header>
-  
+
   <div id="content">
     <div id="scroll-wrapper">
       <div id="scroll-content">
-        <!--Projects hero: intro heading + featured-work carousel-->
-        <!-- <div class="container projects-intro">
-          <h1>Projects Overview</h1>
-          <p class="projects-intro__meta">Nine projects across production, cinematography, teasing, VOD &amp; branding.</p>
-        </div> -->
-        <!-- Featured-work carousel. Slides mirror the grid below (same image / link /
-             tags). Pagination dots are injected by All_Projects.js. To add a slide,
-             copy one __slide anchor; the dots update automatically. -->
         <section class="all-projects-carousel">
           <div class="all-projects-carousel__track">
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description1.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project1.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-10.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--production">Production</span>
                   <span class="card-tag card-tag--branding">Branding</span>
                 </div>
                 <p class="all-projects-carousel__blurb">A nostalgic voyage through cereal seas-reviving childhood joy for adults.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description2.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project2.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-1.PNG" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                   <span class="card-tag card-tag--vod">VOD</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Iranians are hardworking people but at the end of the day, its all about family.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description3.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project3.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-2.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--production">Production</span>
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Brining Energy and work to even the most remote parts of Iran.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description4.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project4.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-3.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--vod">VOD</span>
                   <span class="card-tag card-tag--teasing">Teasing</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Take this short tutorial to gain new perspectives how to hire the most suitable candidates.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description5.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project5.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-4.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--production">Production</span>
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Take a look at the new programs we have created for our junior football team.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description6.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project6.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-6.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                   <span class="card-tag card-tag--branding">Branding</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Tehran's Book Garden: A place of wonder for all groups of people.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description7.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project7.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-7.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--production">Production</span>
                   <span class="card-tag card-tag--teasing">Teasing</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Take part in the Sepehr competition and witness the technological advancements of young Iranians.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description8.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project8.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-14.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                   <span class="card-tag card-tag--vod">VOD</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Take a look into the future of energy with Iran's solar panel project.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
-            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project-Description9.html">
+            <a class="all-projects-carousel__slide" href="Project-Descriptions/Project9.html">
               <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-9.jpg" alt="">
-              <div class="all-projects-carousel__caption">
+              <div class="all-projects-carousel__caption" dir="rtl">
                 <div class="all-projects-carousel__tags">
                   <span class="card-tag card-tag--cinematography">Cinematography</span>
                   <span class="card-tag card-tag--branding">Branding</span>
                 </div>
                 <p class="all-projects-carousel__blurb">Take a look into the historical museum of Najaf.</p>
-                <span class="all-projects-carousel__cta">View project
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <span class="all-projects-carousel__cta">مشاهده پروژه
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 5 12 12 19"></polyline></svg>
                 </span>
               </div>
             </a>
@@ -213,8 +200,8 @@
               <polyline points="9 6 15 12 9 18"></polyline>
             </svg>
           </button>
-          <div class="hero-scroll-btn" data-scroll-target=".category-site-header">
-            <span class="btn-text">Explore</span>
+          <div class="hero-scroll-btn" data-scroll-target=".category-site-header" dir="rtl">
+            <span class="btn-text">اطلاعات بیشتر</span>
             <svg class="btn-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
@@ -223,7 +210,7 @@
         </section>
 
         <!--Discipline filter: filters the project grid below-->
-        <section class="category-site-header">
+        <header class="category-site-header">
           <div class="category-site-header__inner">
             <div class="container header-inner">
               <nav class="project-filters" aria-label="Filter projects by discipline">
@@ -236,12 +223,13 @@
               </nav>
             </div>
           </div>
-        </section>
+        </header>
+
         <!-- Hero -->        
         <section class="project-cards">
             <div class="grid-all-projects">
               <!-- Project 1 -->
-              <a href="Project-Descriptions/Project-Description1.html" class="case-card">
+              <a href="Project-Descriptions/Project1.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-10.jpg" alt="">
                   <div class="card-tags">
@@ -249,13 +237,13 @@
                     <span class="card-tag card-tag--branding">Branding</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>A nostalgic voyage through cereal seas-reviving childhood joy for adults.</p>
                   <!-- <a href="Project-Descriptions/Project-Description1.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 2 -->
-              <a href="Project-Descriptions/Project-Description2.html" class="case-card">
+              <a href="Project-Descriptions/Project2.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-1.PNG" alt="">
                   <div class="card-tags">
@@ -263,13 +251,13 @@
                     <span class="card-tag card-tag--vod">VOD</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Iranians are hardworking people but at the end of the day, its all about family.</p>
                   <!-- <a href="Project-Descriptions/Project-Description2.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 3 -->
-              <a href="Project-Descriptions/Project-Description3.html" class="case-card">
+              <a href="Project-Descriptions/Project3.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-2.jpg" alt="">
                   <div class="card-tags">
@@ -277,13 +265,13 @@
                     <span class="card-tag card-tag--cinematography">Cinematography</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Brining Energy and work to even the most remote parts of Iran.</p>
                   <!-- <a href="Project-Descriptions/Project-Description3.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 4 -->
-              <a href="Project-Descriptions/Project-Description4.html" class="case-card">
+              <a href="Project-Descriptions/Project4.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-3.jpg" alt="">
                   <div class="card-tags">
@@ -291,13 +279,13 @@
                     <span class="card-tag card-tag--teasing">Teasing</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Take this short tutorial to gain new perspectives how to hire the most suitable candidates.</p>
                   <!-- <a href="Project-Descriptions/Project-Description4.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 5 -->
-              <a href="Project-Descriptions/Project-Description5.html" class="case-card">
+              <a href="Project-Descriptions/Project5.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-4.jpg" alt="">
                   <div class="card-tags">
@@ -305,13 +293,13 @@
                     <span class="card-tag card-tag--cinematography">Cinematography</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Take a look at the new programs we have created for our junior football team.</p>
                   <!-- <a href="Project-Descriptions/Project-Description5.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 6 -->
-              <a href="Project-Descriptions/Project-Description6.html" class="case-card">
+              <a href="Project-Descriptions/Project6.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-6.jpg" alt="">
                   <div class="card-tags">
@@ -319,13 +307,13 @@
                     <span class="card-tag card-tag--branding">Branding</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Tehran's Book Garden: A place of wonder for all groups of people.</p>
                   <!-- <a href="Project-Descriptions/Project-Description6.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 7 -->
-              <a href="Project-Descriptions/Project-Description7.html" class="case-card">
+              <a href="Project-Descriptions/Project7.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-7.jpg" alt="" >
                   <div class="card-tags">
@@ -333,13 +321,13 @@
                     <span class="card-tag card-tag--teasing">Teasing</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Take part in the Sepehr competition and witness the technological advancements of young Iranians.</p>
                   <!-- <a href="Project-Descriptions/Project-Description7.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 8 -->
-              <a href="Project-Descriptions/Project-Description8.html" class="case-card">
+              <a href="Project-Descriptions/Project8.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-14.jpg" alt="">
                   <div class="card-tags">
@@ -347,13 +335,13 @@
                     <span class="card-tag card-tag--vod">VOD</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Take a look into the future of energy with Iran's solar panel project.</p>
                   <!-- <a href="Project-Descriptions/Project-Description8.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 9 -->
-              <a href="Project-Descriptions/Project-Description9.html" class="case-card">
+              <a href="Project-Descriptions/Project9.html" class="case-card">
                 <div class="card-image">
                   <img src="https://pub-e6ffa653d0ed40419e60b992b3f8e146.r2.dev/Card-Content/Cover-Images/Project-9.jpg" alt="">
                   <div class="card-tags">
@@ -361,9 +349,9 @@
                     <span class="card-tag card-tag--branding">Branding</span>
                   </div>
                 </div>
-                <div class="card-text-allprojects">
+                <div class="card-text-allprojects" dir="rtl">
                   <p>Take a look into the historical museum of Najaf.</p>
-                  <!-- <a href="Project-Descriptions/Project-Description9.html" class="btn ghost sm">View case</a> -->
+                  <!-- <a href="Project-Descriptions/Project9.html" class="btn ghost sm">View case</a> -->
                 </div>
               </a>
               <!-- Project 10 -->
@@ -373,7 +361,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 10.</p>
-                  <a href="Project-Descriptions/Project-Description10.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project10.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 11 -->
@@ -383,7 +371,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 11.</p>
-                  <a href="Project-Descriptions/Project-Description11.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project11.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 12 -->
@@ -393,7 +381,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 12.</p>
-                  <a href="Project-Descriptions/Project-Description12.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project12.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 13 -->
@@ -403,7 +391,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 13.</p>
-                  <a href="Project-Descriptions/Project-Description13.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project13.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 14 -->
@@ -413,7 +401,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 14.</p>
-                  <a href="Project-Descriptions/Project-Description14.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project14.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 15 -->
@@ -423,7 +411,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 15.</p>
-                  <a href="Project-Descriptions/Project-Description15.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project15.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 16 -->
@@ -433,7 +421,7 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 16.</p>
-                  <a href="Project-Descriptions/Project-Description16.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project16.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
               <!-- Project 17 -->
@@ -443,28 +431,27 @@
                 </div>
                 <div class="card-text">
                   <p>Brief description of Project 17.</p>
-                  <a href="Project-Descriptions/Project-Description17.html" class="btn ghost sm">View case</a>
+                  <a href="Project-Descriptions/Project17.html" class="btn ghost sm">View case</a>
                 </div>
               </div> -->
             </div>
         </section>
         <!-- Footer -->
-        <div class="container">
-          <div class="contact-title">
-            <h1>Contact Us</h1>
-          </div>
+        <div class="container" dir="rtl">
+           <div class="contact-title">
+             <h1>ارتباط با ما</h1>
+           </div>
          </div>
         <footer id="Contact" class="site-footer">
           <div class="container footer-inner">
             <div class="footer-brand">
               <span class="footer-logo">
                 <img class="footer-logo--dark" src="SU-LOGO-web-W.svg" alt="SuPics Factory logo" />
-                <!-- <img class="footer-logo--light" src="SU-LOGO-web.svg" alt="SuPics Factory logo" /> -->
               </span>
               <span class="logo-dot">SuPics Factory</span> 
               <div class="muted">© 2026 SuPics Factory</div>
             </div>
-            <div class="footer-contact">
+            <div class="footer-contact" dir="rtl">
               <!-- Address -->
               <div class="contact-item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -473,7 +460,7 @@
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
                 <a href="https://maps.app.goo.gl/KDmsPnNeRyFCXXXV9" target="_blank" rel="noopener noreferrer">
-                  Tehran, N Sohrevardi Ave, Ebn-e-Yamin St, No.83
+                  تهران، خیابان سهروردی، کوچه ابن‌یمین، پلاک ۸۳، واحد ۴
                 </a>
               </div>
               <!-- Phone -->
@@ -488,14 +475,14 @@
               </div>
               <!-- Instagram -->
               <div class="contact-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
                 <a href="https://www.instagram.com/su.pic.factory/" target="_blank" rel="noopener noreferrer"
                   class="social-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
                   <span>@supicsfactory</span>
                 </a>
               </div>
@@ -512,6 +499,6 @@
       </div>
     </div>
   </div>
-<!-- </body> -->
+</body>
 
 </html>
