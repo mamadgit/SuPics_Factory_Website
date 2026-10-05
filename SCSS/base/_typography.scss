@@ -196,7 +196,11 @@ body {
   }
 
 }
+.underline{
+  text-decoration: underline;
+      text-underline-offset: 4px;
 
+}
 /* === Word/Heading Variants === */
 /* Base styling for all heading words */
 .heading {

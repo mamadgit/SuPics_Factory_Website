@@ -34,7 +34,8 @@
 
         h2 {
             margin: 0;
-            font-size: clamp(4vw, 11vw, 60px);
+            font-size: clamp(3vw, 11vw, 45px);
+            font-weight: 800;
         }
     }
 
@@ -197,9 +198,9 @@
 
     .case-card {
         position: relative;
-        min-width: clamp(300px, 85vw, 1400px);
+        min-width: clamp(300px, 80vw, 1400px);
         height: clamp(300px, 50vh, 70vh);
-        border-radius: clamp(12px, 2vw, 24px);
+        // border-radius: clamp(12px, 2vw, 24px);
         overflow: hidden;
         background: var(--card);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
@@ -266,7 +267,7 @@
             margin-block-end: clamp(16px, 3vw, 32px);
             margin-inline-start: clamp(16px, 3vw, 32px);
             max-width: clamp(200px, 45vw, 400px);
-            border-radius: clamp(20px, 1.5vw, 16px);
+            // border-radius: clamp(20px, 1.5vw, 16px);
 
             h3 {
                 color: var(--bg);
@@ -309,7 +310,7 @@
         gap: 8px;
         color: var(--text);
         text-decoration: none;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 600;
         letter-spacing: 0.5px;
         text-transform: uppercase;
