@@ -103,7 +103,7 @@ $menu-transition: 0.4s;
         gap: 6px;
         position: relative;
         z-index: 11; // above the open .nav overlay (z-index 10) so the logo can close it
-        animation: click-pulse 3s ease-in-out infinite;
+        animation: click-pulse 2.45s ease-in-out infinite;
         transform-origin: center;
 
         &::after{
