@@ -1,3 +1,4 @@
+@use '../abstracts/mixins';
 /* === Horizontal Carousel === */
 .horizontal-carousel {
     overflow: hidden;
@@ -139,42 +140,7 @@
     // dark glass rather than theme colours, since it always sits on imagery.
     // Fades out after the first time the user drives the carousel.
     .carousel-drag-hint {
-        position: absolute;
-        right: clamp(16px, 3vw, 40px);
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 10px 14px 10px 18px;
-        border-radius: 50px;
-        color: #fff;
-        // background: rgba(0, 0, 0, 0.35);
-        // border: 1px solid rgba(255, 255, 255, 0.2);
-        // -webkit-backdrop-filter: blur(12px);
-        // backdrop-filter: blur(12px);
-        pointer-events: none;
-        transition: opacity 0.6s ease;
-        z-index: 1;
-
-        svg {
-            width: 18px;
-            height: 18px;
-
-            // Static on desktop so only the lane hint animates; on touch
-            // there's no lane hint, so this one gets the motion instead
-            @media (hover: none), (pointer: coarse) {
-                animation: carousel-hint-sway 1.8s ease-in-out infinite;
-            }
-        }
-
-        span {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
+        @include mixins.carousel-drag-hint();
     }
 
     &.is-interacted .carousel-drag-hint {
@@ -335,25 +301,13 @@
 .outer-wrapper{
     padding:0;
 }
-@keyframes carousel-hint-sway {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(6px); }
-}
-@keyframes carousel-lane-travel {
-    0% { top: 0; opacity: 0; }
-    25%, 75% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-}
+
 @media (prefers-reduced-motion: reduce) {
     .horizontal-carousel {
         // Park the chevron at the foot of the line so it still points down
         .carousel-lane-hint .lane-line::after {
             animation: none;
             top: 100%;
-        }
-
-        .carousel-drag-hint svg {
-            animation: none;
         }
     }
 }
@@ -374,26 +328,9 @@
     // mirrors the left one - the hint drops its pill and sits in there as a
     // bare chevron instead of covering the card.
     .horizontal-carousel .carousel-drag-hint {
-        right: 0;
-        width: 10vw;
-        justify-content: center;
-        padding: 0;
-        color: var(--muted, rgba(255, 255, 255, 0.5));
-        opacity: 0.6;
-        background: none;
-        border: 0;
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-
-        svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        span {
-            display: none;
-        }
+        @include mixins.carousel-drag-hint();
     }
+
     .horizontal-carousel .case-card{
         width: 80vw;
         height: auto;

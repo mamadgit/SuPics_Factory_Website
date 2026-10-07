@@ -68,6 +68,27 @@ html.light-mode #preloader-light {
     transform: scale(1);
   }
 }
+@keyframes carousel-hint-sway {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+@keyframes carousel-lane-travel {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
 * {
   box-sizing: border-box;
 }
@@ -805,6 +826,65 @@ body {
   transform: translateX(0);
 }
 
+.carousel-drag-hint {
+  position: absolute;
+  display: flex;
+  right: clamp(16px, 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 10px 18px;
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+.carousel-drag-hint svg {
+  width: 25px;
+  height: 25px;
+  animation: carousel-hint-sway 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .carousel-drag-hint svg {
+    animation: none;
+  }
+}
+.carousel-drag-hint span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.carousel-drag-hint.left {
+  left: clamp(16px, 3vw, 40px);
+  right: auto;
+}
+.carousel-drag-hint.left svg {
+  scale: -1 1;
+}
+@media (max-width: 768px) {
+  .carousel-drag-hint {
+    right: 0;
+    width: 10vw;
+    justify-content: center;
+    padding: 0;
+    color: #fff;
+    opacity: 0.6;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+  }
+  .carousel-drag-hint svg {
+    width: 24px;
+    height: 24px;
+  }
+  .carousel-drag-hint span {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .collapsbile-btn {
     display: none;
@@ -973,7 +1053,7 @@ body {
     gap: 6px;
     position: relative;
     z-index: 11;
-    animation: click-pulse 3s ease-in-out infinite;
+    animation: click-pulse 2.45s ease-in-out infinite;
     transform-origin: center;
   }
   .brand::after {
@@ -1324,7 +1404,7 @@ html.disable-scroll-padding {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 10px 0;
+  padding: 25px 0;
   margin-top: 7vh;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
@@ -1337,6 +1417,64 @@ html.disable-scroll-padding {
 }
 .logo-carousel:hover .logo-track {
   animation-play-state: paused;
+}
+.logo-carousel .carousel-drag-hint {
+  position: absolute;
+  display: flex;
+  right: clamp(16px, 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 10px 18px;
+  color: #fff;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+.logo-carousel .carousel-drag-hint svg {
+  width: 25px;
+  height: 25px;
+  animation: carousel-hint-sway 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-carousel .carousel-drag-hint svg {
+    animation: none;
+  }
+}
+.logo-carousel .carousel-drag-hint span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.logo-carousel .carousel-drag-hint.left {
+  left: clamp(16px, 3vw, 40px);
+  right: auto;
+}
+.logo-carousel .carousel-drag-hint.left svg {
+  scale: -1 1;
+}
+@media (max-width: 768px) {
+  .logo-carousel .carousel-drag-hint {
+    right: 0;
+    width: 10vw;
+    justify-content: center;
+    padding: 0;
+    color: #fff;
+    opacity: 0.6;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+  }
+  .logo-carousel .carousel-drag-hint svg {
+    width: 24px;
+    height: 24px;
+  }
+  .logo-carousel .carousel-drag-hint span {
+    display: none;
+  }
 }
 
 .logo-track {
@@ -1674,26 +1812,26 @@ html.disable-scroll-padding {
 }
 .horizontal-carousel .carousel-drag-hint {
   position: absolute;
+  display: flex;
   right: clamp(16px, 3vw, 40px);
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
   align-items: center;
   gap: 6px;
   padding: 10px 14px 10px 18px;
-  border-radius: 50px;
   color: #fff;
   pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 1;
 }
 .horizontal-carousel .carousel-drag-hint svg {
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
+  animation: carousel-hint-sway 1.8s ease-in-out infinite;
 }
-@media (hover: none), (pointer: coarse) {
+@media (prefers-reduced-motion: reduce) {
   .horizontal-carousel .carousel-drag-hint svg {
-    animation: carousel-hint-sway 1.8s ease-in-out infinite;
+    animation: none;
   }
 }
 .horizontal-carousel .carousel-drag-hint span {
@@ -1702,6 +1840,33 @@ html.disable-scroll-padding {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   white-space: nowrap;
+}
+.horizontal-carousel .carousel-drag-hint.left {
+  left: clamp(16px, 3vw, 40px);
+  right: auto;
+}
+.horizontal-carousel .carousel-drag-hint.left svg {
+  scale: -1 1;
+}
+@media (max-width: 768px) {
+  .horizontal-carousel .carousel-drag-hint {
+    right: 0;
+    width: 10vw;
+    justify-content: center;
+    padding: 0;
+    color: #fff;
+    opacity: 0.6;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+  }
+  .horizontal-carousel .carousel-drag-hint svg {
+    width: 24px;
+    height: 24px;
+  }
+  .horizontal-carousel .carousel-drag-hint span {
+    display: none;
+  }
 }
 .horizontal-carousel.is-interacted .carousel-drag-hint {
   opacity: 1;
@@ -1833,34 +1998,10 @@ html.disable-scroll-padding {
   padding: 0;
 }
 
-@keyframes carousel-hint-sway {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(6px);
-  }
-}
-@keyframes carousel-lane-travel {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-  25%, 75% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .horizontal-carousel .carousel-lane-hint .lane-line::after {
     animation: none;
     top: 100%;
-  }
-  .horizontal-carousel .carousel-drag-hint svg {
-    animation: none;
   }
 }
 @media (max-width: 768px) {
@@ -1875,11 +2016,53 @@ html.disable-scroll-padding {
     width: 10vw;
   }
   .horizontal-carousel .carousel-drag-hint {
+    position: absolute;
+    display: flex;
+    right: clamp(16px, 3vw, 40px);
+    top: 50%;
+    transform: translateY(-50%);
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px 10px 18px;
+    color: #fff;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    z-index: 1;
+  }
+  .horizontal-carousel .carousel-drag-hint svg {
+    width: 25px;
+    height: 25px;
+    animation: carousel-hint-sway 1.8s ease-in-out infinite;
+  }
+}
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .horizontal-carousel .carousel-drag-hint svg {
+    animation: none;
+  }
+}
+@media (max-width: 768px) {
+  .horizontal-carousel .carousel-drag-hint span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .horizontal-carousel .carousel-drag-hint.left {
+    left: clamp(16px, 3vw, 40px);
+    right: auto;
+  }
+  .horizontal-carousel .carousel-drag-hint.left svg {
+    scale: -1 1;
+  }
+}
+@media (max-width: 768px) and (max-width: 768px) {
+  .horizontal-carousel .carousel-drag-hint {
     right: 0;
     width: 10vw;
     justify-content: center;
     padding: 0;
-    color: var(--muted, rgba(255, 255, 255, 0.5));
+    color: #fff;
     opacity: 0.6;
     background: none;
     border: 0;
@@ -1892,6 +2075,8 @@ html.disable-scroll-padding {
   .horizontal-carousel .carousel-drag-hint span {
     display: none;
   }
+}
+@media (max-width: 768px) {
   .horizontal-carousel .case-card {
     width: 80vw;
     height: auto;
