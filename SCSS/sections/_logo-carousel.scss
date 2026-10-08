@@ -24,6 +24,10 @@
     }
     .carousel-drag-hint{
         @include mixins.carousel-drag-hint();
+        top: 10%;
+        @media (max-width: 768px){
+            top: 50%;
+        }
     }
 }
 

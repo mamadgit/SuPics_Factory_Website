@@ -73,7 +73,7 @@ html.light-mode #preloader-light {
     transform: translateX(0);
   }
   50% {
-    transform: translateX(6px);
+    transform: translateX(10px);
   }
 }
 @keyframes carousel-lane-travel {
@@ -1476,6 +1476,14 @@ html.disable-scroll-padding {
     display: none;
   }
 }
+.logo-carousel .carousel-drag-hint {
+  top: 10%;
+}
+@media (max-width: 768px) {
+  .logo-carousel .carousel-drag-hint {
+    top: 50%;
+  }
+}
 
 .logo-track {
   display: flex;
@@ -1772,6 +1780,7 @@ html.disable-scroll-padding {
 }
 .horizontal-carousel .carousel-lane-hint .lane-line {
   position: relative;
+  z-index: 0;
   width: 1px;
   height: 40%;
   max-height: 320px;

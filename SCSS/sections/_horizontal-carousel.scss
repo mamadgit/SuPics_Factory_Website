@@ -78,6 +78,7 @@
         // Faded vertical rule with a chevron travelling down it
         .lane-line {
             position: relative;
+            z-index: 0;
             width: 1px;
             height: 40%;
             max-height: 320px;
