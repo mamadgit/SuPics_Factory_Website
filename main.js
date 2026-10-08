@@ -915,7 +915,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
   const horizontalTrack = document.querySelector('.carousel-track');
 
   if (horizontalSection && horizontalTrack) {
-    const Offset = 1000;
+    const Offset = 500;
     let currentX = 0;
     let targetX = 0;
     let rafId = null;
@@ -964,10 +964,6 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       if (!rafId) rafId = requestAnimationFrame(animate);
     }
 
-    // Permanent page-scroll lane: the track's starting left margin (25vw, 10vw
-    // on mobile - see .carousel-track in _horizontal-carousel.scss) always
-    // scrolls the page, even once cards have slid underneath it, so the user
-    // can skip past the carousel without scrolling through every card.
     const getLaneWidth = () => parseFloat(getComputedStyle(horizontalTrack).marginLeft) || 0;
     let laneWidth = getLaneWidth();
 
@@ -975,15 +971,21 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     function getPointerZone(x, y) {
       const innerRect = horizontalSection.getBoundingClientRect();
       const trackRect = horizontalTrack.getBoundingClientRect();
+      
+      //If the pointer is top or bottom of the TRACK return
       if (y < trackRect.top || y > trackRect.bottom) return null;
+      //If the pointer is left or right of the SECTION, return
       if (x < innerRect.left || x > innerRect.right) return null;
       return x < innerRect.left + laneWidth ? 'lane' : 'carousel';
     }
 
+    // The lane only scrolls the page while the carousel sits at its start. Once
+    // cards have slid under it, the lane is gone and the wheel drives the cards.
+    const isPageScrollLane = (x, y) => getPointerZone(x, y) === 'lane' && targetX <= 0;
+
     // Drives the lane hint's hover state (brightens it, drops the grab cursor)
     horizontalSection.addEventListener('mousemove', (e) => {
-      const inLane = getPointerZone(e.clientX, e.clientY) === 'lane';
-      horizontalCarouselSection?.classList.toggle('is-in-lane', inLane);
+      horizontalCarouselSection?.classList.toggle('is-in-lane', isPageScrollLane(e.clientX, e.clientY));
     });
 
     horizontalSection.addEventListener('mouseleave', () => {
@@ -1000,13 +1002,13 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     horizontalSection.addEventListener('wheel', (e) => {
       // Zone is checked from the event itself rather than cached on mousemove,
       // which goes stale when the page scrolls under a still cursor.
-      if (getPointerZone(e.clientX, e.clientY) !== 'carousel') return; // let it scroll the page
+      // Outside the track's rows, or in the lane while the carousel is at its start: let it scroll the page
+      if (getPointerZone(e.clientX, e.clientY) === null || isPageScrollLane(e.clientX, e.clientY)) return;
 
       const maxScroll = getMaxScroll();
       // If we've hit the end or the start, let the page scroll
       const atStart = targetX <= 0 && e.deltaY < 0;
       const atEnd = targetX >= maxScroll && e.deltaY > 0;
-
       if (atStart || atEnd) return;
       // Consume the scroll event — drive the carousel instead
       e.preventDefault();
@@ -1209,7 +1211,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     const getStartBackX = () => window.innerWidth <= 768 ? 50 : 400;  //different values for start back and is function to update on resize
 
     // const getStartBackX = 150;
-    const END_BEFORE_X = 1000;
+    // const END_BEFORE_X = 1000;
 
     let isOverCarousel = false;
     let currentX = 0;
@@ -1313,7 +1315,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
         const atStart = targetX <= 0 && e.deltaY < 0;
         const atEnd = targetX >= maxScroll && e.deltaY > 0;
 
-        if (atStart || atEnd) return;
+        if (atStart || atEnd) return; //If at start or at end don't prevent default vertical scrolling
         
         // Trigger reverse animation when diagonal carousel scrolling starts
         if (!hasScrolledFromStart && targetX === 0 && e.deltaY > 0) {
