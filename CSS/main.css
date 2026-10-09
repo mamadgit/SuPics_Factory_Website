@@ -1489,6 +1489,7 @@ html.disable-scroll-padding {
   display: flex;
   width: -moz-max-content;
   width: max-content;
+  cursor: grab;
 }
 
 .logo-track__group {
