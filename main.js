@@ -922,16 +922,6 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     let isOverCarousel = false;
 
 
-    // One-shot: hides the "Scroll" hint in the carousel's left gutter as soon
-    // as the user actually drives the carousel once.
-    const horizontalCarouselSection = horizontalSection.closest('.horizontal-carousel');
-    let hasInteractedWithCarousel = false;
-    function markCarouselInteracted() {
-      if (hasInteractedWithCarousel) return;
-      hasInteractedWithCarousel = true;
-      horizontalCarouselSection?.classList.add('is-interacted');
-    }
-
     //Function for determining the extra scroll width for screen
     const getMaxScroll = () => {
       const trackWidth = horizontalTrack.scrollWidth;
@@ -994,8 +984,10 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       horizontalCarouselSection?.classList.remove('is-in-lane');
     });
 
-    // Cards cover the lane once the carousel leaves its start position, so the
-    // lane hint only shows there on hover (see .is-carousel-scrolled in SCSS)
+    // One-shot: hides the "Scroll" hint in the carousel's left gutter as soon
+    // as the user actually drives the carousel once (targetX is bigger than 0).
+    const horizontalCarouselSection = horizontalSection.closest('.horizontal-carousel');
+
     function syncScrolledState() {
       horizontalCarouselSection?.classList.toggle('is-carousel-scrolled', targetX > 0);
     }
@@ -1006,13 +998,28 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     horizontalSection.addEventListener('mouseleave', () =>{
       isOverCarousel = false;
     });
+    // Brief pause when the carousel reaches either end, so fast/momentum
+    // scrolling doesn't carry straight through into a page scroll.
+    const EDGE_PAUSE_MS = 1000;
+    let edgeLockUntil = 0;
+
     // Intercept wheel event
     horizontalSection.addEventListener('wheel', (e) => {
       if(!isOverCarousel) return;
       // Zone is checked from the event itself rather than cached on mousemove,
       // which goes stale when the page scrolls under a still cursor.
-      // Outside the track's rows, or in the lane while the carousel is at its start: let it scroll the page
-      if (getPointerZone(e.clientX, e.clientY) === null || isPageScrollLane(e.clientX, e.clientY)) return;
+      const zone = getPointerZone(e.clientX, e.clientY);
+      if (zone === null) return;
+
+      // Still inside the edge pause: swallow the wheel (checked before the lane
+      // rule, since arriving back at the start can leave the cursor in the lane)
+      if (performance.now() < edgeLockUntil) {
+        e.preventDefault();
+        return;
+      }
+
+      // In the lane while the carousel is at its start: let it scroll the page
+      if (isPageScrollLane(e.clientX, e.clientY)) return;
 
       const maxScroll = getMaxScroll();
       // If we've hit the end or the start, let the page scroll
@@ -1021,9 +1028,13 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       if (atStart || atEnd) return;
       // Consume the scroll event — drive the carousel instead
       e.preventDefault();
-      markCarouselInteracted();
+      const prevX = targetX;
       targetX += e.deltaY;
-      targetX = Math.max(0, Math.min(targetX, maxScroll));
+      targetX = Math.max(0, Math.min(targetX, maxScroll ));
+      // Just arrived at an end: start the pause
+      if (targetX !== prevX && (targetX === 0 || targetX === maxScroll)) {
+        edgeLockUntil = performance.now() + EDGE_PAUSE_MS;
+      }
       syncScrolledState();
       startAnimate();
     }, { passive: false });
@@ -1069,7 +1080,6 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 
       // Horizontal swipe — drive the carousel
       e.preventDefault();
-      markCarouselInteracted();
       targetX += dx;
       targetX = Math.max(0, Math.min(targetX, maxScroll));
       syncScrolledState();
