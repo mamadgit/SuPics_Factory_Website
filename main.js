@@ -845,8 +845,8 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
               rafID = requestAnimationFrame(animate);
           }
       }
-      // Mouse enters carousel
-      LogoCarousel.addEventListener('mouseenter', () => {
+      // Mouse moves after entering the carousel
+      LogoCarousel.addEventListener('mousemove', () => {
           isOverCarousel = true;
       });
       // Mouse leaves carousel
@@ -919,6 +919,8 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     let currentX = 0;
     let targetX = 0;
     let rafId = null;
+    let isOverCarousel = false;
+
 
     // One-shot: hides the "Scroll" hint in the carousel's left gutter as soon
     // as the user actually drives the carousel once.
@@ -997,9 +999,16 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     function syncScrolledState() {
       horizontalCarouselSection?.classList.toggle('is-carousel-scrolled', targetX > 0);
     }
-
+    // Mouse moves after entering the carousel
+    horizontalSection.addEventListener('mousemove', () =>{
+      isOverCarousel = true;
+    });
+    horizontalSection.addEventListener('mouseleave', () =>{
+      isOverCarousel = false;
+    });
     // Intercept wheel event
     horizontalSection.addEventListener('wheel', (e) => {
+      if(!isOverCarousel) return;
       // Zone is checked from the event itself rather than cached on mousemove,
       // which goes stale when the page scrolls under a still cursor.
       // Outside the track's rows, or in the lane while the carousel is at its start: let it scroll the page
