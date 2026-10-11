@@ -835,7 +835,7 @@ body {
   align-items: center;
   gap: 6px;
   padding: 10px 14px 10px 18px;
-  color: #fff;
+  color: var(--text);
   pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 1;
@@ -1427,7 +1427,7 @@ html.disable-scroll-padding {
   align-items: center;
   gap: 6px;
   padding: 10px 14px 10px 18px;
-  color: #fff;
+  color: var(--text);
   pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 1;
@@ -1829,7 +1829,7 @@ html.disable-scroll-padding {
   align-items: center;
   gap: 6px;
   padding: 10px 14px 10px 18px;
-  color: #fff;
+  color: var(--text);
   pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 1;
@@ -2034,7 +2034,7 @@ html.disable-scroll-padding {
     align-items: center;
     gap: 6px;
     padding: 10px 14px 10px 18px;
-    color: #fff;
+    color: var(--text);
     pointer-events: none;
     transition: opacity 0.6s ease;
     z-index: 1;
