@@ -846,8 +846,12 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
           }
       }
       // Mouse moves after entering the carousel
+      LogoCarousel.addEventListener('mouseenter', ()=>{
+        LogoCarousel.style.cursor = 'default';
+      });
       LogoCarousel.addEventListener('mousemove', () => {
           isOverCarousel = true;
+          LogoCarousel.style.cursor = 'grab';
       });
       // Mouse leaves carousel
       LogoCarousel.addEventListener('mouseleave', () => {
@@ -975,12 +979,16 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     // cards have slid under it, the lane is gone and the wheel drives the cards.
     const isPageScrollLane = (x, y) => getPointerZone(x, y) === 'lane' && targetX <= 0;
 
-    // Drives the lane hint's hover state (brightens it, drops the grab cursor)
+    // Drives the lane hint's hover state (brightens it, swaps the scroll cursor
+    // for the default arrow). isOverCarousel is set on move rather than on enter
+    // so the wheel only drives the carousel once the mouse is actually moved in.
     horizontalSection.addEventListener('mousemove', (e) => {
+      isOverCarousel = true;
       horizontalCarouselSection?.classList.toggle('is-in-lane', isPageScrollLane(e.clientX, e.clientY));
     });
 
     horizontalSection.addEventListener('mouseleave', () => {
+      isOverCarousel = false;
       horizontalCarouselSection?.classList.remove('is-in-lane');
     });
 
@@ -991,13 +999,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
     function syncScrolledState() {
       horizontalCarouselSection?.classList.toggle('is-carousel-scrolled', targetX > 0);
     }
-    // Mouse moves after entering the carousel
-    horizontalSection.addEventListener('mousemove', () =>{
-      isOverCarousel = true;
-    });
-    horizontalSection.addEventListener('mouseleave', () =>{
-      isOverCarousel = false;
-    });
+
     // Brief pause when the carousel reaches either end, so fast/momentum
     // scrolling doesn't carry straight through into a page scroll.
     const EDGE_PAUSE_MS = 1000;
