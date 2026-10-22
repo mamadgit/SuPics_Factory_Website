@@ -540,7 +540,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 }
   if (window.innerWidth > MobileBreakPoint){
       scrollAutoSnap(".hero-fullscreen", ".hero", "bottom 90%");
-      scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 45%", 100);
+      scrollAutoSnap(".hero", ".carousel-header", "top top", "bottom 15%", 100);
   }
   else {
       scrollAutoSnap(".hero-fullscreen", ".site-header", "bottom 90%", 0);
