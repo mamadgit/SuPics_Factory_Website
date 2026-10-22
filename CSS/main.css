@@ -1405,7 +1405,7 @@ html.disable-scroll-padding {
   width: 100%;
   overflow: hidden;
   padding: 25px 0;
-  margin-top: 7vh;
+  margin-top: 5vh;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
@@ -1810,9 +1810,6 @@ html.disable-scroll-padding {
 .horizontal-carousel.is-in-lane .carousel-lane-hint {
   opacity: 1;
 }
-.horizontal-carousel.is-in-lane .carousel-track {
-  cursor: auto;
-}
 .horizontal-carousel.is-carousel-scrolled .carousel-lane-hint {
   color: #fff;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
@@ -1886,7 +1883,6 @@ html.disable-scroll-padding {
   gap: 60px;
   will-change: transform;
   margin: 0 0 0 25vw;
-  cursor: grab;
 }
 .horizontal-carousel .case-card {
   position: relative;

@@ -46,7 +46,7 @@
         flex: 1 1 auto;
         min-height: 0;
         width: 100%;
-        display: flex;
+        display: flex; 
         align-items: center;
         overflow: hidden;
         // cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 32 32' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 8 4 16l8 8M20 8l8 8-8 8' stroke='black' stroke-opacity='.45' stroke-width='5.5'/%3E%3Cpath d='M12 8 4 16l8 8M20 8l8 8-8 8' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E") 16 16, ew-resize;  
@@ -114,16 +114,11 @@
         }
     }
 
-    // Cursor is in the lane: full strength, and the arrow cursor instead of
-    // the scroll cursor, so it's clear the wheel won't move the cards here
-    // (the track inherits its cursor from .carousel-inner)
+    // Cursor is in the lane: full strength (and no scroll cursor, see above), so
+    // it's clear the wheel won't move the cards here
     &.is-in-lane {
         .carousel-lane-hint {
             opacity: 1;
-        }
-
-        .carousel-track {
-            cursor: auto;
         }
     }
 
@@ -158,12 +153,7 @@
         // padding: 0 10vw;
         margin: 0 0 0 25vw;
         // padding: 50px 0;
-        cursor: grab;
         // //scroll-snap-type: x manditory
-
-        // &:active {
-        //     cursor: grabbing;
-        // }
     }
 
     .case-card {

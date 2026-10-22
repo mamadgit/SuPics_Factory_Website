@@ -974,7 +974,15 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
       if (x < innerRect.left || x > innerRect.right) return null;
       return x < innerRect.left + laneWidth ? 'lane' : 'carousel';
     }
-
+    // Cursor stays default when the carousel merely enters under the mouse (e.g.
+    // the page scrolling it into place) and only turns to grab once the mouse
+    // moves over the track
+    horizontalTrack.addEventListener('mouseenter', () => {
+      horizontalTrack.style.cursor = 'default';
+    });
+    horizontalTrack.addEventListener('mousemove', () => {
+      horizontalTrack.style.cursor = 'grab';
+    });
     // The lane only scrolls the page while the carousel sits at its start. Once
     // cards have slid under it, the lane is gone and the wheel drives the cards.
     const isPageScrollLane = (x, y) => getPointerZone(x, y) === 'lane' && targetX <= 0;
@@ -989,7 +997,7 @@ function handleSnap(target, offset = headerH) {// If offset undefined, set it to
 
     horizontalSection.addEventListener('mouseleave', () => {
       isOverCarousel = false;
-      horizontalCarouselSection?.classList.remove('is-in-lane');
+      horizontalCarouselSection?.classList.remove('is-in-lane'); 
     });
 
     // One-shot: hides the "Scroll" hint in the carousel's left gutter as soon
